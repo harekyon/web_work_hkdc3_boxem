@@ -1,0 +1,51 @@
+@import "../../styles/_var";
+.menu-button {
+  &--wrap {
+    width: 140px;
+    height: 40px;
+    background: #adb2b533;
+    @include flexCenter();
+    list-style: none;
+    position: relative;
+    margin: 0 2px;
+    transition: margin 0.3s ease-in-out, background 0.2s ease-in-out;
+  }
+  &__barcode {
+    font-family: "Libre Barcode 39", cursive;
+    transform: translateY(1px) rotate(90deg) scaleY(0.5);
+    position: absolute;
+    transition: transform 0.3s;
+    left: -8px;
+    @include font(20, 1, 0.05, 400);
+    color: $c-font-barcode;
+  }
+  &__text {
+    width: 100%;
+    height: 100%;
+    @include flexCenter();
+    font-family: "ab-aki", sans-serif;
+    transition: transform 0.2s;
+  }
+}
+@media (min-width: 700px) {
+  .menu-button--wrap {
+    &:hover {
+      .menu-button__barcode {
+        transform: translateY(1px) rotate(90deg) scaleY(1);
+        color: $c-pre1;
+      }
+      margin-right: 10px;
+      margin-left: 10px;
+      background: #ffffffcc;
+
+      .menu-button__text {
+        color: $c-pre1;
+        font-size: 24px;
+        transform: translateY(-2px);
+      }
+      // .menu--hover-rect {
+      //   transform: translateX(140px);
+      // }
+    }
+  }
+}
