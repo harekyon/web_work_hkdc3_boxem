@@ -5,6 +5,16 @@ import styles from "@/styles/Home.module.scss";
 import { client } from "../libs/client";
 
 import Header from "@/components/Header";
+import CardList from "@/components/atomic/CardList";
+import CardUnit from "@/components/atomic/CardUnit";
+import { convertDateStringToDate } from "@/libs/core";
+import Footer from "@/components/Footer";
+
+const article = [
+  { title: "aaaaa", link: "harekyon.com", thumbnail: "/example_thumbnail.png" },
+  { title: "bbbbb", link: "harekyon.com", thumbnail: "/example_thumbnail.png" },
+  { title: "ccccc", link: "harekyon.com", thumbnail: "/example_thumbnail.png" },
+];
 
 export default function Home({ blogs }) {
   console.log(blogs);
@@ -14,10 +24,26 @@ export default function Home({ blogs }) {
       <Header></Header>
       <main className={styles.main}>
         <div className={styles["main--wrap"]}>
-          <div className={styles["main--card-list"]}></div>
+          <div className={styles["main--card-list"]}>
+            <CardList>
+              {blogs.map((b, idx) => {
+                console.log(b.thumbnail);
+                return (
+                  <CardUnit
+                    id={b.id}
+                    title={b.title}
+                    thumbnail={b.thumbnail.url}
+                    publishedAt={convertDateStringToDate(b.createdAt)}
+                    category={b.category.name}
+                  />
+                );
+              })}
+            </CardList>
+          </div>
           <div className={styles["main--side"]}></div>
         </div>
       </main>
+      <Footer />
     </>
   );
 }

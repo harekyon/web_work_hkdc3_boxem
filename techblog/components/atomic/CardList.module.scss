@@ -1,0 +1,25 @@
+@import "../../styles/_var";
+
+.card-list {
+  width: 100%;
+  height: auto;
+  // min-height: 50vh;
+  display: grid;
+  // grid-template-rows: 1fr 1fr 1fr;
+  // grid-auto-columns: 1fr;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: auto;
+  column-gap: 10px;
+  row-gap: 10px;
+  // background: cadetblue;
+}
+@media screen and (min-width:#{$breakpoint}px) and (max-width:#{$midbreakpoint}px) {
+  .card-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media screen and (max-width:#{$breakpoint}px) {
+  .card-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

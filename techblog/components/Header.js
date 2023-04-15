@@ -16,6 +16,7 @@ export default function Header() {
     menuRect = document.getElementById("menu-rect");
   });
   useEffect(() => {
+    //ボタンをマウスオーバーした時の追従エレメント
     menuWebRef.addEventListener("mouseover", () => {
       console.log("web");
       menuRect.style.cssText =
