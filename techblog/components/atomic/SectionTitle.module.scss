@@ -1,0 +1,10 @@
+@import "../../styles/_var";
+
+.section-title {
+  &--wrap {
+    width: 100%;
+    background-color: #ffffff33;
+    @include font(10, 1, 0.05, 400);
+    padding: 4px;
+  }
+}

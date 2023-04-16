@@ -1,0 +1,9 @@
+@import "../../styles/_var";
+
+.article-main {
+  &--wrap {
+    width: 100%;
+    @include font(10, 1, 0.05, 400);
+    padding: 4px;
+  }
+}

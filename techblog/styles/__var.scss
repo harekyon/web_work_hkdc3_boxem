@@ -57,6 +57,9 @@ $easeInCubic: cubic-bezier(0.32, 0, 0.67, 0);
 $easeInQuint: cubic-bezier(0.64, 0, 0.78, 0);
 $easeInBack: cubic-bezier(0.36, 0, 0.66, -0.56);
 
+/*=======================*/
+// Functions
+/*=======================*/
 // SPデザイン上のピクセル数を引数に与えるとちょうどデザイン幅のSPで見た時デザイン通りになる動的な値を返してくれる関数
 @function dynamicWidthSP($width) {
   @return ($width / $SPDesignWidth) * 100vw;

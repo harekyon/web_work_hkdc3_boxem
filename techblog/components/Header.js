@@ -2,7 +2,7 @@ import useEvent from "@react-hook/event";
 import styles from "./Header.module.scss";
 import Menu from "./atomic/Menu";
 import MenuButton from "./atomic/MenuButton";
-import { useEffect, useLayoutEffect } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 
 let menuWebRef = null;
 let menuCgRef = null;

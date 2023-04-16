@@ -1,17 +1,21 @@
 @import "../../styles/_var";
 
-.main-area--wrap {
+.main {
   &--wrap {
     width: 100%;
+    max-width: 1200px;
+    display: flex;
+    margin: 0 auto;
+    padding: 20px;
   }
 }
 
+//sp
 @include mq(sp) {
-  .main-area {
+  .main {
     &--wrap {
       width: 100%;
       height: 100vh;
-      background: red;
     }
   }
 }

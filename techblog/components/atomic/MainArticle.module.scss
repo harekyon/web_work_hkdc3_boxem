@@ -1,0 +1,23 @@
+@import "../../styles/_var";
+
+.main-article {
+  &--wrap {
+    flex-grow: 1;
+    background: $c-pre1;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+//sp
+@include mq(sp) {
+  .main-article {
+    &--wrap {
+      width: 100%;
+      height: 100vh;
+      background: red;
+    }
+  }
+}

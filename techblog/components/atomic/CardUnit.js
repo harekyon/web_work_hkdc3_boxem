@@ -13,7 +13,7 @@ export default function CardUnit({
     <article className={styles["card-unit--wrap"]}>
       <a href={`./blogs/${id}`} className={styles["card-unit--flex-container"]}>
         <date className={styles["card-unit__date"]}>
-          <span>{formatDateDot(publishedAt)}</span>
+          <span>{publishedAt}</span>
         </date>
         <div className={styles["card-unit__category"]}>
           <span>{category}</span>

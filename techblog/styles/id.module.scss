@@ -12,11 +12,14 @@
     max-width: 1200px;
   }
   &--card-list {
+    // min-height: 100vh;
     flex-grow: 3;
     padding: 20px;
   }
   &--side {
+    // min-height: 100vh;
     flex-grow: 1;
+    // background: red;
   }
 }
 

@@ -7,17 +7,36 @@
 import { useRouter } from "next/router";
 import { client } from "../../libs/client";
 import Header from "@/components/Header";
-import MainArea from "@/components/atomic/MainArea";
+import MainWrap from "@/components/atomic/MainWrap";
+import MainArticle from "@/components/atomic/MainArticle";
+import MainSide from "@/components/atomic/MainSide";
+import SectionTitle from "@/components/atomic/SectionTitle";
+import SectionMain from "@/components/atomic/SectionMain";
+import ArticleMain from "@/components/atomic/ArticleMain";
+import ArticleProperty from "@/components/atomic/ArticleProperty";
+import ArticleTitle from "@/components/atomic/ArticleTitle";
+import ArticleThumbnail from "@/components/atomic/ArticleThumbnail";
 
-export default function BlogId({ blog }) {
+export default function BlogId({ data }) {
+  console.log(data);
   return (
     <>
       <Header></Header>
-      <main>
-        <h1>{blog.title}</h1>
-        <p>{blog.publishedAt}</p>
-        <MainArea></MainArea>
-      </main>
+      <MainWrap>
+        <MainArticle data={data}>
+          <SectionTitle>ARTICLE</SectionTitle>
+          <SectionMain>
+            <ArticleProperty data={data}></ArticleProperty>
+            <ArticleTitle>{data.title}</ArticleTitle>
+            <ArticleThumbnail thumbnail={data.thumbnail}></ArticleThumbnail>
+            <ArticleMain>{data.content}</ArticleMain>
+            <ArticleMain>{data.content}</ArticleMain>
+          </SectionMain>
+        </MainArticle>
+        <MainSide>
+          <SectionTitle>{data.title}</SectionTitle>
+        </MainSide>
+      </MainWrap>
     </>
   );
 }
@@ -37,7 +56,7 @@ export const getStaticProps = async (context) => {
 
   return {
     props: {
-      blog: data,
+      data: data,
     },
   };
 };

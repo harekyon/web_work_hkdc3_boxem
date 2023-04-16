@@ -1,0 +1,19 @@
+@import "../../styles/_var";
+
+.main-side {
+  &--wrap {
+    width: 200px;
+    background: DarkSlateGrey;
+    display: flex;
+    align-items: flex-start;
+  }
+}
+
+//sp
+@include mq(sp) {
+  .main-side {
+    &--wrap {
+      display: none;
+    }
+  }
+}

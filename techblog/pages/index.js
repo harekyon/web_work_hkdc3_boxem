@@ -7,8 +7,10 @@ import { client } from "../libs/client";
 import Header from "@/components/Header";
 import CardList from "@/components/atomic/CardList";
 import CardUnit from "@/components/atomic/CardUnit";
-import { convertDateStringToDate } from "@/libs/core";
+import { convertDateStringToDate, formatDateDot } from "@/libs/core";
 import Footer from "@/components/Footer";
+import { Main } from "next/document";
+import MainWrap from "@/components/atomic/MainWrap";
 
 const article = [
   { title: "aaaaa", link: "harekyon.com", thumbnail: "/example_thumbnail.png" },
@@ -22,7 +24,8 @@ export default function Home({ blogs }) {
     <>
       <HeadGroup>{/* <title>Create Next App</title> */}</HeadGroup>
       <Header></Header>
-      <main className={styles.main}>
+      <MainWrap>
+        {/* <main className={styles.main}> */}
         <div className={styles["main--wrap"]}>
           <div className={styles["main--card-list"]}>
             <CardList>
@@ -33,7 +36,9 @@ export default function Home({ blogs }) {
                     id={b.id}
                     title={b.title}
                     thumbnail={b.thumbnail.url}
-                    publishedAt={convertDateStringToDate(b.createdAt)}
+                    publishedAt={formatDateDot(
+                      convertDateStringToDate(b.createdAt)
+                    )}
                     category={b.category.name}
                   />
                 );
@@ -42,7 +47,8 @@ export default function Home({ blogs }) {
           </div>
           <div className={styles["main--side"]}></div>
         </div>
-      </main>
+        {/* </main> */}
+      </MainWrap>
       <Footer />
     </>
   );
