@@ -4,7 +4,7 @@
 /*===================================*/
 
 /*=======================*/
-// Color
+// Color Preset
 /*=======================*/
 $c-bg: #001727;
 $c-base: #1f1f1f;
@@ -31,13 +31,22 @@ $breakpoint: 767;
 $midbreakpoint: 1024;
 $breakpoint-pc: 1024;
 $main-area-max-width: 1920;
-// コンテンツ両脇の空白
-$padding-side: 120;
-$padding-side-tab: 60;
-$padding-side-sp: 20;
-// ダークモード次のマージン
-$dark-padding: 101px;
 
+$breakpoints: (
+  "sp": "screen and (max-width:767px)",
+  "tb": "screen and (min-width:767px) and (max-width:1024px)",
+  "pc": "screen and (min-width:767px)",
+  "pcMax": "screen and (min-width:1920px)",
+) !default;
+@mixin mq($breakpoint) {
+  @media #{map-get($breakpoints,$breakpoint)} {
+    @content;
+  }
+}
+
+/*=======================*/
+// Value
+/*=======================*/
 $easeOutCubic: cubic-bezier(0.33, 1, 0.68, 1);
 $easeOutCirc: cubic-bezier(0, 0.55, 0.45, 1);
 $easeOutQuint: cubic-bezier(0.22, 1, 0.36, 1);
@@ -100,6 +109,9 @@ $easeInBack: cubic-bezier(0.36, 0, 0.66, -0.56);
 
 @mixin centerAbsY() {
   @include centerAbs(50%, 0, 0, 50%);
+}
+
+@mixin mediaSp($aaa) {
 }
 
 //JSに対して出力

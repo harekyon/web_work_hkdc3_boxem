@@ -6,18 +6,19 @@
 
 import { useRouter } from "next/router";
 import { client } from "../../libs/client";
+import Header from "@/components/Header";
+import MainArea from "@/components/atomic/MainArea";
 
 export default function BlogId({ blog }) {
   return (
-    <main>
-      <h1>{blog.title}</h1>
-      <p>{blog.publishedAt}</p>
-      <div
-        dangerouslySetInnerHTML={{
-          __html: `${blog.body}`,
-        }}
-      />
-    </main>
+    <>
+      <Header></Header>
+      <main>
+        <h1>{blog.title}</h1>
+        <p>{blog.publishedAt}</p>
+        <MainArea></MainArea>
+      </main>
+    </>
   );
 }
 
@@ -40,69 +41,3 @@ export const getStaticProps = async (context) => {
     },
   };
 };
-
-// export default function RouterBlog({ article }) {
-//   const router = useRouter();
-//   const routerJobNo = router.query.routerJobNo;
-//   return <div>{article.createdAt}</div>;
-// }
-
-// export const getStaticPaths = async () => {
-//   const data = await client.get({
-//     endpoint: "blogs",
-//   });
-//   // const paths = data.contents.map((content) => `/blog/${content.id}`);
-
-//   const paramArray = [];
-//   await Promise.all(
-//     data.contents.map((w) => {
-//       paramArray.push({ params: { article: w.id } });
-//       return w;
-//     })
-//   );
-
-//   return { paramArray, fallback: false };
-// };
-// export const getStaticProps = async (context) => {
-//   const id = context.params.id;
-//   console.log(id);
-//   const article = await client
-//     .get({
-//       endpoint: "blog",
-//       queries: `isClosed[equals]false[and]id[equals]${id}`,
-//     })
-//     .then((res) => {
-//       return res.contents[0];
-//     })
-//     .catch((err) => {
-//       console.error(err);
-//     });
-
-//   return {
-//     props: {
-//       article,
-//     },
-//   };
-// };
-
-// export async function getStaticProps(context) {
-//   const jobNo = context.params.routerJobNo;
-
-//   const targetWork = await client
-//     .get({
-//       endpoint: `blogs`,
-//       queries: { filters: `isClosed[equals]false[and]jobNo[equals]${jobNo}` },
-//     })
-//     .then((res) => {
-//       return res.contents[0];
-//     })
-//     .catch((err) => {
-//       console.error(err);
-//     });
-//   console.log(targetWork);
-//   return {
-//     props: {
-//       targetWork,
-//     },
-//   };
-// }

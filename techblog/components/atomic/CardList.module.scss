@@ -13,12 +13,13 @@
   row-gap: 10px;
   // background: cadetblue;
 }
-@media screen and (min-width:#{$breakpoint}px) and (max-width:#{$midbreakpoint}px) {
+
+@include mq(tb) {
   .card-list {
     grid-template-columns: repeat(3, 1fr);
   }
 }
-@media screen and (max-width:#{$breakpoint}px) {
+@include mq(sp) {
   .card-list {
     grid-template-columns: repeat(2, 1fr);
   }

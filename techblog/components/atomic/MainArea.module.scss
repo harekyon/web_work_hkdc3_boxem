@@ -1,0 +1,17 @@
+@import "../../styles/_var";
+
+.main-area--wrap {
+  &--wrap {
+    width: 100%;
+  }
+}
+
+@include mq(sp) {
+  .main-area {
+    &--wrap {
+      width: 100%;
+      height: 100vh;
+      background: red;
+    }
+  }
+}
