@@ -1,6 +1,6 @@
 @import "../../styles/_var";
 
-.main-article {
+.field-main {
   &--wrap {
     flex-grow: 1;
     background: $c-pre1;
@@ -13,7 +13,7 @@
 
 //sp
 @include mq(sp) {
-  .main-article {
+  .field-main {
     &--wrap {
       width: 100%;
       height: 100vh;

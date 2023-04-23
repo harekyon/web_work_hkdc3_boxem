@@ -8,8 +8,8 @@ import { useRouter } from "next/router";
 import { client } from "../../libs/client";
 import Header from "@/components/Header";
 import MainWrap from "@/components/atomic/MainWrap";
-import MainArticle from "@/components/atomic/MainArticle";
-import MainSide from "@/components/atomic/MainSide";
+import FieldMain from "@/components/atomic/FieldMain";
+import FieldSide from "@/components/atomic/FieldSide";
 import SectionTitle from "@/components/atomic/SectionTitle";
 import SectionMain from "@/components/atomic/SectionMain";
 import ArticleMain from "@/components/atomic/ArticleMain";
@@ -23,19 +23,18 @@ export default function BlogId({ data }) {
     <>
       <Header></Header>
       <MainWrap>
-        <MainArticle data={data}>
+        <FieldMain data={data}>
           <SectionTitle>ARTICLE</SectionTitle>
           <SectionMain>
             <ArticleProperty data={data}></ArticleProperty>
             <ArticleTitle>{data.title}</ArticleTitle>
             <ArticleThumbnail thumbnail={data.thumbnail}></ArticleThumbnail>
             <ArticleMain>{data.content}</ArticleMain>
-            <ArticleMain>{data.content}</ArticleMain>
           </SectionMain>
-        </MainArticle>
-        <MainSide>
+        </FieldMain>
+        <FieldSide>
           <SectionTitle>{data.title}</SectionTitle>
-        </MainSide>
+        </FieldSide>
       </MainWrap>
     </>
   );

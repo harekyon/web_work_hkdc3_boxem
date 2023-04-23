@@ -1,8 +1,9 @@
 @import "../../styles/_var";
 
-.main-side {
+.field-side {
   &--wrap {
     width: 200px;
+    min-width: 200px;
     background: DarkSlateGrey;
     display: flex;
     align-items: flex-start;

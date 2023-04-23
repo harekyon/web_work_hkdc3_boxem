@@ -9,7 +9,7 @@
   &__title {
     width: 100%;
     background: white;
-    @include font(24, 1, 0.05, 700);
+    @include font(32, 1.4, 0.05, 700);
     font-family: "m-plus-1m", sans-serif;
     color: $c-pre1;
     padding: 8px 30px 7px 10px;
