@@ -24,7 +24,7 @@ jobs:
           node-version: 18.x
 
       - name: Install NPM packages
-        run: npm ci
+        run: npm i
 
       - name: Build Next.js App
         run: npm run build
