@@ -3,5 +3,6 @@ on: [push]
 jobs:
   check-bats-version:
     runs-on: ubuntu-latest
+    environment: ${{ inputs.deployment_target }}
     steps:
-      - run: echo "ths is env=$ENVTEST"
+      - run: echo "ths is env=${{ vars.ENVTEST }}"
