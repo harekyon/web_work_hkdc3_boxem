@@ -1,7 +1,7 @@
 name: learn-github-actions
 on: [push]
 env:
-  ENVTEST: ${{secrets.ENVTEST}}
+  ENVTEST: ${{secrets.ENVTESTa}}
 jobs:
   check-bats-version:
     runs-on: ubuntu-latest
