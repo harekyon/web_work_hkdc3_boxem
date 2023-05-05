@@ -1,4 +1,8 @@
 /** @type {import('next').NextConfig} */
+
+const viewMode = "production";
+const prefixPath = viewMode === "production" ? "/hktech" : "";
+
 const nextConfig = {
   reactStrictMode: true,
   compiler: {
@@ -7,9 +11,7 @@ const nextConfig = {
   compilerOptions: {
     // 追加
     baseUrl: "src",
-    paths: {
-      "./*": ["/hktech/*"],
-    },
+    basePath: prefixPath,
   },
   images: { unoptimized: true },
 };
