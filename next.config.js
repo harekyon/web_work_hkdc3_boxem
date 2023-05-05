@@ -4,6 +4,13 @@ const nextConfig = {
   compiler: {
     emotion: true,
   },
+  compilerOptions: {
+    // 追加
+    baseUrl: "src",
+    paths: {
+      "./*": ["/hktech/*"],
+    },
+  },
   images: { unoptimized: true },
 };
 
