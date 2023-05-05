@@ -1,7 +1,14 @@
-name: learn-github-actions
+name: Shell Commands
 on: [push]
+
 jobs:
-  check-bats-version:
+  run-shell-commmand:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "this is pen"
+      - name: echo a string
+        # run: echo "Hello World"
+        run: eecho "Hello World" # eechoを指定
+      - name: multiline script
+        run: |
+          node -v
+          npm -v
