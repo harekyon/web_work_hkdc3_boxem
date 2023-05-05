@@ -11,7 +11,7 @@ const nextConfig = {
   compilerOptions: {
     // 追加
     baseUrl: "src",
-    basePath: prefixPath,
+    basePath: "/hktech",
   },
   images: { unoptimized: true },
 };
