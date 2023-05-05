@@ -25,7 +25,9 @@ jobs:
 
       - name: Install NPM packages
         run: npm i
-
+        env:
+        API_KEY: ${{ secrets.API_KEY }}
+        SERVICE_DOMAIN: ${{ secrets.SERVICE_DOMAIN }}
       - name: Build Next.js App
         run: npm run build
 
