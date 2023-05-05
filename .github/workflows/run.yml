@@ -1,8 +1,10 @@
 name: learn-github-actions
 on: [push]
+env:
+  ENVTEST: ${{secrets.ENVTEST}}
 jobs:
   check-bats-version:
     runs-on: ubuntu-latest
     environment: ${{ inputs.deployment_target }}
     steps:
-      - run: echo "ths is env=${{ vars.ENVTEST }}"
+      - run: echo "ths is env=${{ env.ENVTEST }}"
