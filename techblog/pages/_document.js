@@ -1,8 +1,14 @@
 import { Html, Head, Main, NextScript } from "next/document";
+import Link from "next/link";
 
 export default function Document() {
   return (
     <Html lang="en">
+      <Link
+        rel="stylesheet"
+        href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/grayscale.min.css"
+      />
+      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
       <Head />
       <script
         dangerouslySetInnerHTML={{

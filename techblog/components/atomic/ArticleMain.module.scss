@@ -60,7 +60,13 @@
         background: #ffffff05;
       }
     }
-
+    pre {
+      background: #1b2330;
+      code {
+        // background: #1b2330;
+        @include font(13, 1.4, 0.05, 700);
+      }
+    }
     br {
       display: block;
       height: 100px;
