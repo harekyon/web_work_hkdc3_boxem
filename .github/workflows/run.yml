@@ -11,6 +11,7 @@
 
 name: upload-server
 on:
+  [push]
   repository_dispatch:
     types: [update_post]
 jobs:
