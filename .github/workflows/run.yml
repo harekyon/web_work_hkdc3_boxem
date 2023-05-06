@@ -10,7 +10,9 @@
 #       - run: echo "ths is env=${{ env.ENVTEST }}"
 
 name: upload-server
-on: repository_dispatch:types: [update_post]
+on:
+  repository_dispatch:
+    types: [update_post]
 jobs:
   build:
     runs-on: ubuntu-latest
