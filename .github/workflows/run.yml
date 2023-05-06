@@ -9,8 +9,8 @@
 #     steps:
 #       - run: echo "ths is env=${{ env.ENVTEST }}"
 
-name: learn-github-actions
-on: [push]
+name: upload-server
+on: [push, repository_dispatch]
 jobs:
   build:
     runs-on: ubuntu-latest
