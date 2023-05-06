@@ -22,7 +22,6 @@ export default function Home({ blogs }) {
   console.log(blogs);
   return (
     <>
-      <HeadGroup>{/* <title>Create Next App</title> */}</HeadGroup>
       <Header></Header>
       <MainWrap>
         {/* <main className={styles.main}> */}
@@ -33,6 +32,7 @@ export default function Home({ blogs }) {
                 console.log(b.thumbnail);
                 return (
                   <CardUnit
+                    key={idx}
                     id={b.id}
                     title={b.title}
                     thumbnail={b.thumbnail.url}
