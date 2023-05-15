@@ -157,7 +157,6 @@ $hoverEffectVal: 4.5px;
       top: -1px;
       right: -1px;
       transition: 0.1s;
-      background: red;
     }
     .box--side__surface--left {
       width: $boxThic - $hoverEffectVal;
@@ -172,19 +171,19 @@ $hoverEffectVal: 4.5px;
       background: unset;
     }
     .box--front__surface__property1 {
-      background: #0e4c5b;
+      background: #000011;
       opacity: 1;
     }
     .box--front__surface__property2 {
-      background: #0e4c5b;
+      background: #000011;
       opacity: 1;
     }
     .box--front__surface__title {
-      background: #0e4c5b;
+      background: #000011;
       opacity: 1;
     }
     .box--front__surface__sub-title {
-      background: #0e4c5b;
+      background: #000011;
       opacity: 1;
     }
   }

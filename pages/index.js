@@ -29,19 +29,27 @@ export default function Home({ blogs }) {
           </div>
           <ul className={styles["nav--menu"]}>
             <li>
-              <a href="#">ABOUT ME</a>
+              <a href="#" className="notactive">
+                ABOUT ME
+              </a>
             </li>
             <li>
-              <a href="#">NEWS</a>
+              <a href="#" className="notactive">
+                NEWS
+              </a>
             </li>
             <li>
-              <a href="#">WORKS</a>
+              <a href="#" className="notactive">
+                WORKS
+              </a>
             </li>
             <li>
               <Link href="/blogs">TECHBLOG</Link>
             </li>
             <li>
-              <a href="#">SPECIAL</a>
+              <a href="#" className="notactive">
+                SPECIAL
+              </a>
             </li>
           </ul>
         </nav>

@@ -9,7 +9,7 @@ export default function Document() {
     <Html
       lang="en"
       css={css`
-        background: black;
+        // background: black;
       `}
     >
       <HeadGroup />

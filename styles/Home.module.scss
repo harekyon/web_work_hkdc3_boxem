@@ -52,6 +52,8 @@
     li {
       list-style: none;
       a {
+        width: 100%;
+        display: inline-block;
         font-family: "vox-round", sans-serif;
       }
     }
@@ -62,6 +64,14 @@
   height: 100%;
   // background: blue;
   flex-shrink: 0;
+}
+
+@include mq(pc) {
+  .nav--menu {
+    a:hover {
+      background: #ffffff33;
+    }
+  }
 }
 
 @media (max-width: 1024px) {

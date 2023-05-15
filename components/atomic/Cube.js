@@ -16,6 +16,7 @@ export default function Cube({
   title = "TITLE",
   subTitle = "SUB TITLE",
   src = "",
+  notActive = true,
 }) {
   return (
     <div
@@ -37,6 +38,7 @@ export default function Cube({
             }
           }
         `}
+        className={`${notActive ? "notactive" : ""}`}
       >
         <div
           id="box--front__surface"
