@@ -10,6 +10,8 @@ import { css } from "@emotion/react";
 import GridWrap from "@/components/atomic/GridWrap";
 import Link from "next/link";
 import CubeArticle from "@/components/atomic/CubeArticle";
+import { convertDateStringToDate } from "@/libs/core";
+import { formatDateDot } from "@/libs/core";
 
 const article = [
   { title: "aaaaa", link: "harekyon.com", thumbnail: "/example_thumbnail.png" },
@@ -17,8 +19,23 @@ const article = [
   { title: "ccccc", link: "harekyon.com", thumbnail: "/example_thumbnail.png" },
 ];
 
+let value = 0;
 export default function Home({ blogs }) {
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const wheelFunc = (e) => {
+      e.preventDefault();
+      console.log(e.deltaY);
+      value += e.deltaY * 2;
+      value = Math.min(
+        Math.max(0, value),
+        document.getElementById("main--wrap").scrollWidth
+      );
+      console.log(value);
+      document.getElementById("main--wrap").scrollLeft = value;
+      console.log(document.getElementById("main--wrap").scrollWidth - 80);
+    };
+    document.body.addEventListener("wheel", wheelFunc);
+  }, []);
   return (
     <main className={styles["main"]}>
       <div id="main--wrap" className={styles["main--wrap"]}>
@@ -172,18 +189,20 @@ export default function Home({ blogs }) {
               row-gap: 10px;
             `}
           >
+            {console.log(blogs[0])}
             <CubeArticle
               boxWidth="400px"
               boxHeight="100%"
               src="/sample1.png"
               property1="TECHBLOG"
-              property2="2022.05.14"
+              property2={formatDateDot(
+                convertDateStringToDate(blogs[0].publishedAt)
+              )}
               title="NEW POST"
               subTitle="BLOG"
-              articleTitle="TurbopackとViteの違いと内部仕様を調べてみた"
-              articleImgSrc="/sample1.png"
-              articleAbs="これまで、長年に渡ってJavaScriptのバンドルツールはwebpackがデファクトスタンダードとなり、Next.jsやNuxt.jsなどフレームワークにもデフォルトで組み込まれていました。その高機能性と安定性から現在も多くのWebサービスで利用されています。
-              一方で近年、webpackに続く次世代バンドルツールの開発競争が大きな注目を集めています。その中で特にwebpackに取って代わる勢いを見せているものにViteとTurbopackがあります。これらは、開発するアプリケーションの肥大化に伴って処理が遅くなってしまうwebpackの問題点を解決することが主要目的となっています。"
+              articleTitle={blogs[0].title}
+              articleImgSrc={blogs[0].thumbnail.url}
+              articleAbs={blogs[0].abstract}
             ></CubeArticle>
           </GridWrap>
         </div>

@@ -33,9 +33,9 @@ $breakpoint-pc: 1024;
 $main-area-max-width: 1920;
 
 $breakpoints: (
-  "sp": "screen and (max-width:767px)",
-  "tb": "screen and (min-width:767px) and (max-width:1024px)",
-  "pc": "screen and (min-width:767px)",
+  "sp": "screen and (max-width:840px)",
+  "tb": "screen and (min-width:840px) and (max-width:1024px)",
+  "pc": "screen and (min-width:840px)",
   "pcMax": "screen and (min-width:1920px)",
 ) !default;
 @mixin mq($breakpoint) {

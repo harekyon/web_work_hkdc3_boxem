@@ -27,7 +27,7 @@
     transition: transform 0.2s;
   }
 }
-@media (min-width: 700px) {
+@media (min-width: 768px) {
   .menu-button--wrap {
     &:hover {
       .menu-button__barcode {
@@ -47,5 +47,11 @@
       //   transform: translateX(140px);
       // }
     }
+  }
+}
+
+@include mq(sp) {
+  .menu-button--wrap {
+    display: none;
   }
 }

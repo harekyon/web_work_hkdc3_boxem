@@ -1,3 +1,4 @@
+@import "../styles/_var";
 .main {
   width: 100%;
   min-height: auto;
@@ -23,5 +24,10 @@
 @media (max-width: 1024px) {
   .main {
     column-gap: 0px;
+  }
+}
+@include mq(sp) {
+  .main--side {
+    display: none;
   }
 }

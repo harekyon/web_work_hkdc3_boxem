@@ -4,15 +4,17 @@
   &--wrap {
     width: 200px;
     min-width: 200px;
-    background: DarkSlateGrey;
+    background: #11212ccc;
     display: flex;
     align-items: flex-start;
+    flex-direction: column;
+    row-gap: 20px;
   }
 }
 
 //sp
 @include mq(sp) {
-  .main-side {
+  .field-side {
     &--wrap {
       display: none;
     }

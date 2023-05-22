@@ -16,9 +16,11 @@
     column-gap: 30px;
     justify-content: flex-start;
     padding-left: 80px;
+    padding-right: 80px;
     overflow-x: scroll;
-    transition: 0.2s;
+    // transition: 0.2s;
     scrollbar-width: none;
+    scroll-behavior: smooth;
     &::-webkit-scrollbar {
       display: none;
     }
