@@ -1,17 +1,30 @@
 import HeadGroup from "@/components/HeadGroup";
+import { css } from "@emotion/react";
 import { Html, Head, Main, NextScript } from "next/document";
 import Link from "next/link";
 import Script from "next/script";
 
 export default function Document() {
   return (
-    <Html lang="en">
+    <Html
+      lang="en"
+      css={css`
+        // background: black;
+      `}
+    >
       <HeadGroup />
       <Link
         rel="stylesheet"
         href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/grayscale.min.css"
       />
+      <link rel="stylesheet" href="https://use.typekit.net/ewv3fqu.css" />
       <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet"
+      />
       <Head />
       <script
         dangerouslySetInnerHTML={{

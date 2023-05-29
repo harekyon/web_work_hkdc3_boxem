@@ -2,8 +2,10 @@
 
 .field-main {
   &--wrap {
+    width: 100%;
+    height: 100%;
     flex-grow: 1;
-    background: $c-pre1;
+    background: #101929cc;
     display: flex;
     align-items: flex-start;
     flex-direction: column;
@@ -16,8 +18,6 @@
   .field-main {
     &--wrap {
       width: 100%;
-      height: 100vh;
-      background: red;
     }
   }
 }

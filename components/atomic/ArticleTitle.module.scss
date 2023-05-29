@@ -25,6 +25,13 @@
     }
   }
 }
+@include mq(sp) {
+  .article-title {
+    &__title {
+      @include font(24, 1.4, 0.05, 700);
+    }
+  }
+}
 
 // &--container {
 //   display: flex;
