@@ -8,7 +8,7 @@ import { client } from "../../libs/client";
 import Header from "@/components/Header";
 import CardList from "@/components/atomic/CardList";
 import CardUnit from "@/components/atomic/CardUnit";
-import { convertDateStringToDate, formatDateDot } from "@/libs/core";
+import { convertDateStringToDate, formatDateDot, formatTag } from "@/libs/core";
 import Footer from "@/components/Footer";
 import { Main } from "next/document";
 import MainWrap from "@/components/atomic/MainWrap";
@@ -28,17 +28,35 @@ const breadcrumb = [
   { name: "TECHBLOGS", href: "/blogs" },
 ];
 
-export default function Blogs({ blogs }) {
+export default function Blogs({ blogs, categories }) {
   const router = useRouter();
   const { post_id } = router.query;
-  const [tag, setTag] = useState("all");
+  const [tag, setTag] = useState(formatTag(null, "All"));
   const blogList = useRef(blogs);
+  const sortedblogList = useRef(blogs);
+  const [sortedBlogList, setSortedBlogList] = useState(blogs);
+  const categoryList = useRef(
+    categories.map((c) => {
+      return { id: c.id, name: c.name };
+    })
+  );
+  //TODO:カテゴリでソートするようにする
   const sortBlogList = () => {
-    console.log(
-      blogList.current.map((b) => {
-        return b.category.name;
-      })
-    );
+    sortedblogList.current = [];
+    let sortedArticleList = [];
+    switch (tag.id) {
+      case "all":
+        sortedArticleList = blogList.current;
+      default:
+        blogList.current.map((b) => {
+          console.log(b.category.id);
+          console.log(`b.id:${b.category.id}, tag.id:${tag.id} `);
+          if (b.category.id.includes(tag.id)) {
+            sortedArticleList.push(b);
+          }
+        });
+    }
+    setSortedBlogList(sortedArticleList);
   };
   useEffect(() => {
     sortBlogList();
@@ -56,19 +74,22 @@ export default function Blogs({ blogs }) {
               <TagUnit tag={tag} setTag={setTag}>
                 All
               </TagUnit>
-              <TagUnit tag={tag} setTag={setTag}>
-                WEB
-              </TagUnit>
-              <TagUnit tag={tag} setTag={setTag}>
-                CG
-              </TagUnit>
-              <TagUnit tag={tag} setTag={setTag}>
-                DESIGN
-              </TagUnit>
+              {categoryList.current.map((c, idx) => {
+                return (
+                  <TagUnit
+                    categoryList={categoryList}
+                    key={idx}
+                    tag={tag}
+                    setTag={setTag}
+                  >
+                    {c.name}
+                  </TagUnit>
+                );
+              })}
             </TagList>
             <div className={styles["main--card-list"]}>
               <CardList>
-                {blogList.current.map((b, idx) => {
+                {sortedBlogList.map((b, idx) => {
                   return (
                     <CardUnit
                       key={idx}
@@ -112,9 +133,11 @@ export default function Blogs({ blogs }) {
 
 export const getStaticProps = async () => {
   const data = await client.get({ endpoint: "blogs" });
+  const categories = await client.get({ endpoint: "categories" });
   return {
     props: {
       blogs: data.contents,
+      categories: categories.contents,
     },
   };
 };

@@ -9,7 +9,7 @@ export default function TagList({ tag, children }) {
       <div
         className={`${styles["taglist--unit"]} ${styles["taglist--unit__title"]}`}
       >
-        CATEGORY is {tag.toUpperCase()}
+        {/* CATEGORY is {tag.toUpperCase()} */}
       </div>
     </div>
   );

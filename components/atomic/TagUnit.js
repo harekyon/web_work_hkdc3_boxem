@@ -1,12 +1,16 @@
-import { convertDateStringToDate, formatDateDot } from "@/libs/core";
+import { convertDateStringToDate, formatDateDot, formatTag } from "@/libs/core";
 import styles from "./TagUnit.module.scss";
-export default function TagUnit({ tag, setTag, children }) {
-  console.log(tag.toLowerCase());
+export default function TagUnit({
+  categoryList = null,
+  tag,
+  setTag,
+  children,
+}) {
   return (
     <div
       className={styles["tagunit--wrap"]}
       onClick={() => {
-        setTag(children);
+        setTag(formatTag(categoryList, children));
       }}
       data-tag={children}
     >
