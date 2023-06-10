@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import styles from "./ArticleMain.module.scss";
 import hljs from "highlight.js";
 import Link from "next/link";
-// console.log(hljs);
 
 export default function ArticleMain({ children }) {
   useEffect(() => {

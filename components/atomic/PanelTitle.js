@@ -10,9 +10,7 @@ export default function PanelTitle({ viewMode, setViewMode, children }) {
       ? setViewMode("minimize")
       : "";
   };
-  useEffect(() => {
-    console.log(viewMode);
-  });
+
   return (
     <div className={styles["panel-title--wrap"]}>
       <span>{children}</span>

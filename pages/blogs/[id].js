@@ -20,7 +20,6 @@ import SidePanelProfile from "@/components/atomic/SidePanelProfile";
 import { css } from "@emotion/react";
 
 export default function BlogId({ data }) {
-  console.log(data);
   return (
     <>
       <Header></Header>

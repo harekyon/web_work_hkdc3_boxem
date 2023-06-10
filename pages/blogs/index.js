@@ -19,6 +19,9 @@ import { css } from "@emotion/react";
 import Breadcrumb from "@/components/atomic/Breadcrumb";
 import FieldMain from "@/components/atomic/FieldMain";
 import { useRouter } from "next/router";
+import TagList from "@/components/atomic/TagList";
+import TagUnit from "@/components/atomic/TagUnit";
+import { useEffect, useRef, useState } from "react";
 
 const breadcrumb = [
   { name: "HOME", href: "https://www.harekyon.com/" },
@@ -26,10 +29,20 @@ const breadcrumb = [
 ];
 
 export default function Blogs({ blogs }) {
-  console.log(blogs);
   const router = useRouter();
   const { post_id } = router.query;
-  console.log(router);
+  const [tag, setTag] = useState("all");
+  const blogList = useRef(blogs);
+  const sortBlogList = () => {
+    console.log(
+      blogList.current.map((b) => {
+        return b.category.name;
+      })
+    );
+  };
+  useEffect(() => {
+    sortBlogList();
+  }, [tag]);
   return (
     <>
       <Header></Header>
@@ -39,10 +52,23 @@ export default function Blogs({ blogs }) {
           <SectionTitle>BLOG LIST</SectionTitle>
           <div className={styles["main--wrap"]}>
             <Breadcrumb breadcrumb={breadcrumb}></Breadcrumb>
+            <TagList tag={tag}>
+              <TagUnit tag={tag} setTag={setTag}>
+                All
+              </TagUnit>
+              <TagUnit tag={tag} setTag={setTag}>
+                WEB
+              </TagUnit>
+              <TagUnit tag={tag} setTag={setTag}>
+                CG
+              </TagUnit>
+              <TagUnit tag={tag} setTag={setTag}>
+                DESIGN
+              </TagUnit>
+            </TagList>
             <div className={styles["main--card-list"]}>
               <CardList>
-                {blogs.map((b, idx) => {
-                  console.log(b.thumbnail);
+                {blogList.current.map((b, idx) => {
                   return (
                     <CardUnit
                       key={idx}
@@ -52,7 +78,7 @@ export default function Blogs({ blogs }) {
                       publishedAt={formatDateDot(
                         convertDateStringToDate(b.createdAt)
                       )}
-                      category={b.category.name}
+                      category={b.category?.name}
                     />
                   );
                 })}
@@ -62,14 +88,19 @@ export default function Blogs({ blogs }) {
           </div>
         </FieldMain>
         <FieldSide>
-          <SectionTitle>PROFILE</SectionTitle>
+          <SectionTitle>SIDE</SectionTitle>
           <div
             css={css`
               width: 100%;
               height: 100%;
               padding: 0 10px 10px;
+              display: flex;
+              flex-direction: column;
+              row-gap: 10px;
             `}
           >
+            <SidePanelProfile></SidePanelProfile>
+            <SidePanelProfile></SidePanelProfile>
             <SidePanelProfile></SidePanelProfile>
           </div>
         </FieldSide>
