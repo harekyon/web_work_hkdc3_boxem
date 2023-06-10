@@ -3,7 +3,8 @@
 .section-title {
   &--wrap {
     width: 100%;
-    background-color: #ffffff33;
+    background-color: #1f2434;
+    // background: rgb(10, 10, 20);
     @include font(10, 1, 0.05, 400);
     padding: 4px;
   }
