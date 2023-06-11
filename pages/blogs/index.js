@@ -22,21 +22,42 @@ import { useRouter } from "next/router";
 import TagList from "@/components/atomic/TagList";
 import TagUnit from "@/components/atomic/TagUnit";
 import { useEffect, useRef, useState } from "react";
+import Pagination from "@/components/atomic/Pagination";
 
 const breadcrumb = [
   { name: "HOME", href: "https://www.harekyon.com/" },
   { name: "TECHBLOGS", href: "/blogs" },
 ];
 
-const cardunitTransitionDelayDiff = 20;
+const cardunitTransitionDelayDiff = 30;
+const paginationPerPage = 3;
 
 export default function Blogs({ blogs, categories }) {
   const router = useRouter();
   const { post_id } = router.query;
 
+  const [page, setPage] = useState(0);
+  const [delayApplyPage, setDelayApplyPage] = useState(0);
+
   const [tag, setTag] = useState(formatTag(null, "All"));
   const blogList = useRef(blogs);
-  const [sortedBlogList, setSortedBlogList] = useState(blogs);
+
+  useEffect(() => {
+    setDelayApplyPage(0);
+  }, [tag]);
+
+  const sliceByNumber = (array, number) => {
+    const length = Math.ceil(array.length / number);
+    console.log(length);
+    return new Array(length)
+      .fill()
+      .map((_, i) => array.slice(i * number, (i + 1) * number));
+  };
+
+  const [sortedArticleList, setSortedArticleList] = useState(blogs);
+  const [resultArticleList, setResultArticleList] = useState(
+    sliceByNumber(blogs, paginationPerPage)
+  );
   const categoryList = useRef(
     categories.map((c) => {
       return { id: c.id, name: c.name };
@@ -46,21 +67,25 @@ export default function Blogs({ blogs, categories }) {
   const beforeCardUnitValue = useRef(0);
   //TODO:カテゴリでソートするようにする
   const sortBlogList = () => {
-    let sortedArticleList = [];
+    let sortedArticleListResult = [];
     switch (tag.id) {
       case "all":
-        sortedArticleList = blogList.current;
+        sortedArticleListResult = blogList.current;
       default:
         blogList.current.map((b) => {
           // console.log(b.category.id);
           // console.log(`b.id:${b.category.id}, tag.id:${tag.id} `);
           if (b.category.id.includes(tag.id)) {
-            sortedArticleList.push(b);
+            sortedArticleListResult.push(b);
           }
         });
     }
-    setSortedBlogList(sortedArticleList);
+    setSortedArticleList(sortedArticleListResult);
+    setResultArticleList(
+      sliceByNumber(sortedArticleListResult, paginationPerPage)
+    );
   };
+
   //opacity:0初期値を1にするアニメーション。
   useEffect(() => {
     Array.from(document.getElementsByClassName("cardunit")).forEach((d) => {
@@ -69,6 +94,7 @@ export default function Blogs({ blogs, categories }) {
   }, []);
   //タグ変更時の再描画
   useEffect(() => {
+    setDelayApplyPage(0);
     //DOM情報を更新する
     cardunitDom.current = Array.from(
       document.getElementsByClassName("cardunit")
@@ -85,14 +111,15 @@ export default function Blogs({ blogs, categories }) {
         resolveCompleteAnim();
       }).then(() => {
         setTimeout(() => {
+          setDelayApplyPage(page);
           sortBlogList();
           resolve();
         }, cardunitTransitionDelayDiff * cardunitDom.current.length + 100);
       });
     }).then(() => {
-      console.log("done");
+      // setDelayApplyPage(page);
     });
-  }, [tag]);
+  }, [tag, page]);
   //cardunitのDOM情報を更新し見える状態にするクラスを付与
   useEffect(() => {
     cardunitDom.current = Array.from(
@@ -106,7 +133,7 @@ export default function Blogs({ blogs, categories }) {
       );
     }, cardunitTransitionDelayDiff * beforeCardUnitValue.current);
     beforeCardUnitValue.current = cardunitDom.current.length;
-  }, [sortedBlogList]);
+  }, [sortedArticleList, resultArticleList]);
   return (
     <>
       <Header></Header>
@@ -117,7 +144,12 @@ export default function Blogs({ blogs, categories }) {
           <div className={styles["main--wrap"]}>
             <Breadcrumb breadcrumb={breadcrumb}></Breadcrumb>
             <TagList tag={tag}>
-              <TagUnit tag={tag} setTag={setTag}>
+              <TagUnit
+                tag={tag}
+                setTag={setTag}
+                setPage={setPage}
+                setDelayApplyPage={setDelayApplyPage}
+              >
                 All
               </TagUnit>
               {categoryList.current.map((c, idx) => {
@@ -127,6 +159,9 @@ export default function Blogs({ blogs, categories }) {
                     key={idx}
                     tag={tag}
                     setTag={setTag}
+                    setPage={setTag}
+                    setDelayApplyPage={setDelayApplyPage}
+                    cardunitTransitionDelayDiff={cardunitTransitionDelayDiff}
                   >
                     {c.name}
                   </TagUnit>
@@ -135,7 +170,9 @@ export default function Blogs({ blogs, categories }) {
             </TagList>
             <div className={`${styles["main--card-list"]} `}>
               <CardList>
-                {sortedBlogList.map((b, idx) => {
+                {console.log(resultArticleList)}
+                {console.log(resultArticleList[delayApplyPage])}
+                {resultArticleList[0].map((b, idx) => {
                   return (
                     <CardUnit
                       key={idx}
@@ -153,6 +190,11 @@ export default function Blogs({ blogs, categories }) {
                 })}
               </CardList>
             </div>
+            <Pagination
+              resultArticleList={resultArticleList}
+              paginationPerPage={paginationPerPage}
+              setPage={setPage}
+            ></Pagination>
             <div className={styles["main--side"]}></div>
           </div>
         </FieldMain>
