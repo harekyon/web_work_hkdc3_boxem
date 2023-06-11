@@ -1,5 +1,13 @@
 @import "../../styles/_var";
-
+//data操作するためのstyle
+.tagunit__wrap {
+  &[data-isactive="true"] {
+    pointer-events: none;
+    background: rgba(55, 99, 165, 0.567);
+    .tagunit__stroke--tl {
+    }
+  }
+}
 .tagunit {
   &--wrap {
     @include font(10, 1, 0.05, 400);
@@ -9,11 +17,11 @@
     border-radius: 2px;
     position: relative;
     border: solid 1px rgba(255, 255, 255, 0.474);
+
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    transition: 0.4s;
     &:hover {
       background: rgb(122, 122, 122);
       cursor: pointer;

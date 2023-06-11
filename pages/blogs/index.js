@@ -28,29 +28,32 @@ const breadcrumb = [
   { name: "TECHBLOGS", href: "/blogs" },
 ];
 
+const cardunitTransitionDelayDiff = 20;
+
 export default function Blogs({ blogs, categories }) {
   const router = useRouter();
   const { post_id } = router.query;
+
   const [tag, setTag] = useState(formatTag(null, "All"));
   const blogList = useRef(blogs);
-  const sortedblogList = useRef(blogs);
   const [sortedBlogList, setSortedBlogList] = useState(blogs);
   const categoryList = useRef(
     categories.map((c) => {
       return { id: c.id, name: c.name };
     })
   );
+  const cardunitDom = useRef();
+  const beforeCardUnitValue = useRef(0);
   //TODO:カテゴリでソートするようにする
   const sortBlogList = () => {
-    sortedblogList.current = [];
     let sortedArticleList = [];
     switch (tag.id) {
       case "all":
         sortedArticleList = blogList.current;
       default:
         blogList.current.map((b) => {
-          console.log(b.category.id);
-          console.log(`b.id:${b.category.id}, tag.id:${tag.id} `);
+          // console.log(b.category.id);
+          // console.log(`b.id:${b.category.id}, tag.id:${tag.id} `);
           if (b.category.id.includes(tag.id)) {
             sortedArticleList.push(b);
           }
@@ -58,9 +61,52 @@ export default function Blogs({ blogs, categories }) {
     }
     setSortedBlogList(sortedArticleList);
   };
+  //opacity:0初期値を1にするアニメーション。
   useEffect(() => {
-    sortBlogList();
+    Array.from(document.getElementsByClassName("cardunit")).forEach((d) => {
+      d.classList.add("articleAppearAnimation");
+    });
+  }, []);
+  //タグ変更時の再描画
+  useEffect(() => {
+    //DOM情報を更新する
+    cardunitDom.current = Array.from(
+      document.getElementsByClassName("cardunit")
+    );
+
+    new Promise((resolve) => {
+      //cardunitを消してからソートを開始する
+      new Promise((resolveCompleteAnim) => {
+        Array.from(document.getElementsByClassName("cardunit")).forEach(
+          (c, idx) => {
+            c.classList.remove("articleAppearAnimation");
+          }
+        );
+        resolveCompleteAnim();
+      }).then(() => {
+        setTimeout(() => {
+          sortBlogList();
+          resolve();
+        }, cardunitTransitionDelayDiff * cardunitDom.current.length + 100);
+      });
+    }).then(() => {
+      console.log("done");
+    });
   }, [tag]);
+  //cardunitのDOM情報を更新し見える状態にするクラスを付与
+  useEffect(() => {
+    cardunitDom.current = Array.from(
+      document.getElementsByClassName("cardunit")
+    );
+    setTimeout(() => {
+      Array.from(document.getElementsByClassName("cardunit")).forEach(
+        (c, idx) => {
+          c.classList.add("articleAppearAnimation");
+        }
+      );
+    }, cardunitTransitionDelayDiff * beforeCardUnitValue.current);
+    beforeCardUnitValue.current = cardunitDom.current.length;
+  }, [sortedBlogList]);
   return (
     <>
       <Header></Header>
@@ -87,7 +133,7 @@ export default function Blogs({ blogs, categories }) {
                 );
               })}
             </TagList>
-            <div className={styles["main--card-list"]}>
+            <div className={`${styles["main--card-list"]} `}>
               <CardList>
                 {sortedBlogList.map((b, idx) => {
                   return (
@@ -100,6 +146,8 @@ export default function Blogs({ blogs, categories }) {
                         convertDateStringToDate(b.createdAt)
                       )}
                       category={b.category?.name}
+                      cardunitTransitionDelayDiff={cardunitTransitionDelayDiff}
+                      delayAnimValue={idx}
                     />
                   );
                 })}

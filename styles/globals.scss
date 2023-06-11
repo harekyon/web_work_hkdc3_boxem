@@ -34,6 +34,14 @@ a {
   pointer-events: none;
 }
 
+//js制御用
+.cardunit {
+}
+
+.articleAppearAnimation {
+  opacity: 1 !important;
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;

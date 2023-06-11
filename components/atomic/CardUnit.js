@@ -1,6 +1,7 @@
 import Image from "next/image";
 import styles from "./CardUnit.module.scss";
 import { formatDateDot } from "@/libs/core";
+import { css } from "@emotion/react";
 
 export default function CardUnit({
   id,
@@ -8,9 +9,16 @@ export default function CardUnit({
   thumbnail,
   publishedAt,
   category,
+  delayAnimValue,
+  cardunitTransitionDelayDiff,
 }) {
   return (
-    <article className={styles["card-unit--wrap"]}>
+    <article
+      className={`${styles["card-unit--wrap"]} cardunit`}
+      css={css`
+        transition-delay: ${cardunitTransitionDelayDiff * delayAnimValue}ms;
+      `}
+    >
       <a href={`./blogs/${id}`} className={styles["card-unit--flex-container"]}>
         <date className={styles["card-unit__date"]}>
           <span>{publishedAt}</span>
