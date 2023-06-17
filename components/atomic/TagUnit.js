@@ -6,14 +6,13 @@ export default function TagUnit({
   tag,
   setTag,
   setPage,
-  setDelayApplyPage,
   children,
 }) {
   return (
     <div
       className={`${styles["tagunit--wrap"]} ${styles["tagunit__wrap"]}`}
       onClick={() => {
-        setDelayApplyPage(0);
+        // setDelayApplyPage(0);
         setPage(0);
         setTag(formatTag(categoryList, children));
       }}

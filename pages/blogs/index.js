@@ -37,18 +37,15 @@ export default function Blogs({ blogs, categories }) {
   const { post_id } = router.query;
 
   const [page, setPage] = useState(0);
-  const [delayApplyPage, setDelayApplyPage] = useState(0);
-
   const [tag, setTag] = useState(formatTag(null, "All"));
+  const [listAdmin, setListAdmin] = useState({
+    tag: formatTag(null, "All"),
+    page: 0,
+  });
   const blogList = useRef(blogs);
-
-  useEffect(() => {
-    setDelayApplyPage(0);
-  }, [tag]);
 
   const sliceByNumber = (array, number) => {
     const length = Math.ceil(array.length / number);
-    console.log(length);
     return new Array(length)
       .fill()
       .map((_, i) => array.slice(i * number, (i + 1) * number));
@@ -94,32 +91,31 @@ export default function Blogs({ blogs, categories }) {
   }, []);
   //タグ変更時の再描画
   useEffect(() => {
-    setDelayApplyPage(0);
+    setPage(0);
+    setListAdmin({ page: 0, tag: tag });
+  }, [tag]);
+  useEffect(() => {
+    console.log(listAdmin);
     //DOM情報を更新する
     cardunitDom.current = Array.from(
       document.getElementsByClassName("cardunit")
     );
 
-    new Promise((resolve) => {
-      //cardunitを消してからソートを開始する
-      new Promise((resolveCompleteAnim) => {
-        Array.from(document.getElementsByClassName("cardunit")).forEach(
-          (c, idx) => {
-            c.classList.remove("articleAppearAnimation");
-          }
-        );
+    //cardunitを消してからソートを開始する
+    new Promise((resolveCompleteAnim) => {
+      Array.from(document.getElementsByClassName("cardunit")).forEach(
+        (c, idx) => {
+          c.classList.remove("articleAppearAnimation");
+        }
+      );
+      setTimeout(() => {
+        sortBlogList();
         resolveCompleteAnim();
-      }).then(() => {
-        setTimeout(() => {
-          setDelayApplyPage(page);
-          sortBlogList();
-          resolve();
-        }, cardunitTransitionDelayDiff * cardunitDom.current.length + 100);
-      });
+      }, cardunitTransitionDelayDiff * cardunitDom.current.length + 100);
     }).then(() => {
-      // setDelayApplyPage(page);
+      setListAdmin({ page: page, tag: tag });
     });
-  }, [tag, page]);
+  }, [page, tag]);
   //cardunitのDOM情報を更新し見える状態にするクラスを付与
   useEffect(() => {
     cardunitDom.current = Array.from(
@@ -131,7 +127,7 @@ export default function Blogs({ blogs, categories }) {
           c.classList.add("articleAppearAnimation");
         }
       );
-    }, cardunitTransitionDelayDiff * beforeCardUnitValue.current);
+    }, cardunitTransitionDelayDiff * beforeCardUnitValue.current + 200);
     beforeCardUnitValue.current = cardunitDom.current.length;
   }, [sortedArticleList, resultArticleList]);
   return (
@@ -143,13 +139,8 @@ export default function Blogs({ blogs, categories }) {
           <SectionTitle>BLOG LIST</SectionTitle>
           <div className={styles["main--wrap"]}>
             <Breadcrumb breadcrumb={breadcrumb}></Breadcrumb>
-            <TagList tag={tag}>
-              <TagUnit
-                tag={tag}
-                setTag={setTag}
-                setPage={setPage}
-                setDelayApplyPage={setDelayApplyPage}
-              >
+            <TagList tag={listAdmin.tag}>
+              <TagUnit tag={listAdmin.tag} setTag={setTag} setPage={setPage}>
                 All
               </TagUnit>
               {categoryList.current.map((c, idx) => {
@@ -157,10 +148,9 @@ export default function Blogs({ blogs, categories }) {
                   <TagUnit
                     categoryList={categoryList}
                     key={idx}
-                    tag={tag}
+                    tag={listAdmin.tag}
                     setTag={setTag}
                     setPage={setTag}
-                    setDelayApplyPage={setDelayApplyPage}
                     cardunitTransitionDelayDiff={cardunitTransitionDelayDiff}
                   >
                     {c.name}
@@ -171,8 +161,9 @@ export default function Blogs({ blogs, categories }) {
             <div className={`${styles["main--card-list"]} `}>
               <CardList>
                 {console.log(resultArticleList)}
-                {console.log(resultArticleList[delayApplyPage])}
-                {resultArticleList[0].map((b, idx) => {
+                {console.log(resultArticleList[0])}
+                {console.log(page)}
+                {resultArticleList[listAdmin.page]?.map((b, idx) => {
                   return (
                     <CardUnit
                       key={idx}
