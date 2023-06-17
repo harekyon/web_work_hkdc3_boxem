@@ -1,14 +1,25 @@
-import { convertDateStringToDate, formatDateDot } from "@/libs/core";
+import { convertDateStringToDate, formatDateDot, formatTag } from "@/libs/core";
 import styles from "./TagUnit.module.scss";
-export default function TagUnit({ tag, setTag, children }) {
-  console.log(tag.toLowerCase());
+import { css } from "@emotion/react";
+export default function TagUnit({
+  categoryList = null,
+  tag,
+  setTag,
+  setPage,
+  children,
+}) {
   return (
     <div
-      className={styles["tagunit--wrap"]}
+      className={`${styles["tagunit--wrap"]} ${styles["tagunit__wrap"]}`}
       onClick={() => {
-        setTag(children);
+        // setDelayApplyPage(0);
+        setPage(0);
+        setTag(formatTag(categoryList, children));
       }}
       data-tag={children}
+      data-isactive={
+        tag.name.toLowerCase() === children.toLowerCase() ? "true" : "false"
+      }
     >
       {children}
       <div className={styles["tagunit__stroke--tl"]}></div>

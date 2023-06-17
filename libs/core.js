@@ -173,3 +173,23 @@ export const shuffleArray = (array) => {
  */
 export const sleep = (msec) =>
   new Promise((resolve) => setTimeout(resolve, msec));
+
+/**
+ * formatTag
+ * タグのidと名前を整形してオブジェクトで返す。
+ * MicroCMSと齟齬が発生しないように。
+ * @param {object} categoryListRef microCMSから得たカテゴリ情報(一件)
+ * @param {string} children カテゴリ名
+ */
+export const formatTag = (categoryListRef = null, children = null) => {
+  let result = {};
+  categoryListRef !== null
+    ? categoryListRef.current.map((c) => {
+        if (children.toUpperCase() === c.name.toUpperCase()) {
+          console.log(`children:${children}, c.name:${c.name}, c.id:${c.id}`);
+          result = { name: c.name, id: c.id };
+        }
+      })
+    : (result = { name: children, id: children.toLowerCase() });
+  return result;
+};

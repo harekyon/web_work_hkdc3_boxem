@@ -4,7 +4,7 @@ const viewMode = "production";
 const prefixPath = viewMode === "production" ? "/hktech" : "";
 
 const nextConfig = {
-  reactStrictMode: true,
+  reactStrictMode: false,
   compiler: {
     emotion: true,
   },
