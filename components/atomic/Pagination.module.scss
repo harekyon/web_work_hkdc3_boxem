@@ -1,5 +1,13 @@
 @import "../../styles/_var";
 
+.pagination__rect {
+  &[data-isactive="true"] {
+    pointer-events: none;
+    background: rgba(55, 99, 165, 0.567);
+    .tagunit__stroke--tl {
+    }
+  }
+}
 .pagination {
   &--wrap {
     width: 100%;
@@ -19,6 +27,22 @@
   }
 }
 @include mq("pc") {
+  .pagination {
+    &--wrap {
+      width: 100%;
+      height: 50px;
+      @include flexCenter();
+      column-gap: 6px;
+    }
+    &__rect {
+      &:hover {
+        cursor: pointer;
+        background: rgb(122, 122, 122);
+      }
+    }
+  }
+}
+@include mq("sp") {
   .pagination {
     &--wrap {
       width: 100%;

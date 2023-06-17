@@ -26,11 +26,11 @@ import Pagination from "@/components/atomic/Pagination";
 
 const breadcrumb = [
   { name: "HOME", href: "https://www.harekyon.com/" },
-  { name: "TECHBLOGS", href: "/blogs" },
+  { name: "BLOG", href: "/blogs" },
 ];
 
-const cardunitTransitionDelayDiff = 30;
-const paginationPerPage = 3;
+const cardunitTransitionDelayDiff = 50;
+const paginationPerPage = 15;
 
 export default function Blogs({ blogs, categories }) {
   const router = useRouter();
@@ -42,6 +42,13 @@ export default function Blogs({ blogs, categories }) {
     tag: formatTag(null, "All"),
     page: 0,
   });
+
+  // accurateArticleList
+  // ページやタグ変更時に一瞬だけundefindになる場合があり
+  // その時何も表示されなくなってレイアウトが一瞬崩れるため
+  // undefined以外の正しい記事情報のみ格納し表示させる
+  const accurateArticleList = useRef();
+
   const blogList = useRef(blogs);
 
   const sliceByNumber = (array, number) => {
@@ -92,7 +99,6 @@ export default function Blogs({ blogs, categories }) {
   //タグ変更時の再描画
   useEffect(() => {
     setPage(0);
-    setListAdmin({ page: 0, tag: tag });
   }, [tag]);
   useEffect(() => {
     console.log(listAdmin);
@@ -100,7 +106,6 @@ export default function Blogs({ blogs, categories }) {
     cardunitDom.current = Array.from(
       document.getElementsByClassName("cardunit")
     );
-
     //cardunitを消してからソートを開始する
     new Promise((resolveCompleteAnim) => {
       Array.from(document.getElementsByClassName("cardunit")).forEach(
@@ -110,9 +115,11 @@ export default function Blogs({ blogs, categories }) {
       );
       setTimeout(() => {
         sortBlogList();
+        console.log(tag);
         resolveCompleteAnim();
-      }, cardunitTransitionDelayDiff * cardunitDom.current.length + 100);
+      }, cardunitTransitionDelayDiff * cardunitDom.current.length);
     }).then(() => {
+      console.log(`page:${page}, tag:${tag.name}`);
       setListAdmin({ page: page, tag: tag });
     });
   }, [page, tag]);
@@ -127,9 +134,37 @@ export default function Blogs({ blogs, categories }) {
           c.classList.add("articleAppearAnimation");
         }
       );
-    }, cardunitTransitionDelayDiff * beforeCardUnitValue.current + 200);
+    }, cardunitTransitionDelayDiff * (beforeCardUnitValue.current - 1));
     beforeCardUnitValue.current = cardunitDom.current.length;
   }, [sortedArticleList, resultArticleList]);
+
+  // useEffect(() => {
+  //   {
+  //     resultArticleList[listAdmin.page] !== undefined ? (
+  //       (accurateArticleList.current = resultArticleList[listAdmin.page].map(
+  //         (b, idx) => {
+  //           return (
+  //             <CardUnit
+  //               key={idx}
+  //               id={b.id}
+  //               title={b.title}
+  //               thumbnail={b.thumbnail.url}
+  //               publishedAt={formatDateDot(
+  //                 convertDateStringToDate(b.createdAt)
+  //               )}
+  //               category={b.category?.name}
+  //               cardunitTransitionDelayDiff={cardunitTransitionDelayDiff}
+  //               delayAnimValue={idx}
+  //             />
+  //           );
+  //         }
+  //       ))
+  //     ) : (
+  //       <></>
+  //     );
+  //   }
+  // }, [page, tag]);
+
   return (
     <>
       <Header></Header>
@@ -160,30 +195,48 @@ export default function Blogs({ blogs, categories }) {
             </TagList>
             <div className={`${styles["main--card-list"]} `}>
               <CardList>
-                {console.log(resultArticleList)}
+                {/* {console.log(resultArticleList)}
                 {console.log(resultArticleList[0])}
-                {console.log(page)}
-                {resultArticleList[listAdmin.page]?.map((b, idx) => {
-                  return (
-                    <CardUnit
-                      key={idx}
-                      id={b.id}
-                      title={b.title}
-                      thumbnail={b.thumbnail.url}
-                      publishedAt={formatDateDot(
-                        convertDateStringToDate(b.createdAt)
-                      )}
-                      category={b.category?.name}
-                      cardunitTransitionDelayDiff={cardunitTransitionDelayDiff}
-                      delayAnimValue={idx}
-                    />
-                  );
-                })}
+                {console.log(page)} */}
+                {/* {console.log(resultArticleList[listAdmin.page])} */}
+                <div
+                  css={css`
+                    display: none;
+                  `}
+                >
+                  {resultArticleList[listAdmin.page] !== undefined ? (
+                    (accurateArticleList.current = resultArticleList[
+                      listAdmin.page
+                    ].map((b, idx) => {
+                      return (
+                        <CardUnit
+                          key={idx}
+                          id={b.id}
+                          title={b.title}
+                          thumbnail={b.thumbnail.url}
+                          publishedAt={formatDateDot(
+                            convertDateStringToDate(b.createdAt)
+                          )}
+                          category={b.category?.name}
+                          cardunitTransitionDelayDiff={
+                            cardunitTransitionDelayDiff
+                          }
+                          delayAnimValue={idx}
+                        />
+                      );
+                    }))
+                  ) : (
+                    <></>
+                  )}
+                  {console.log(accurateArticleList.current)}
+                </div>
+                {accurateArticleList.current}
               </CardList>
             </div>
             <Pagination
               resultArticleList={resultArticleList}
               paginationPerPage={paginationPerPage}
+              page={page}
               setPage={setPage}
             ></Pagination>
             <div className={styles["main--side"]}></div>
