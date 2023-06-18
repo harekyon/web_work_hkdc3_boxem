@@ -21,7 +21,7 @@ import FieldMain from "@/components/atomic/FieldMain";
 import { useRouter } from "next/router";
 import TagList from "@/components/atomic/TagList";
 import TagUnit from "@/components/atomic/TagUnit";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Pagination from "@/components/atomic/Pagination";
 
 const breadcrumb = [
@@ -34,7 +34,8 @@ const paginationPerPage = 15;
 
 export default function Blogs({ blogs, categories }) {
   const router = useRouter();
-  const { post_id } = router.query;
+  const { urlParam } = router.query;
+  // console.log(router.query);
 
   const [page, setPage] = useState(0);
   const [tag, setTag] = useState(formatTag(null, "All"));
@@ -43,6 +44,20 @@ export default function Blogs({ blogs, categories }) {
     page: 0,
   });
 
+  const firstRouter = useRef(true);
+
+  useLayoutEffect(() => {
+    console.log(router.query);
+    // firstRouter.current = false
+    console.log(firstRouter.current);
+    if (
+      router.query.tag !== undefined &&
+      router.query.page !== undefined &&
+      firstRouter.current
+    ) {
+      console.log("aaaa");
+    }
+  });
   // accurateArticleList
   // ページやタグ変更時に一瞬だけundefindになる場合があり
   // その時何も表示されなくなってレイアウトが一瞬崩れるため
@@ -67,6 +82,42 @@ export default function Blogs({ blogs, categories }) {
       return { id: c.id, name: c.name };
     })
   );
+
+  const BufferTagName = useRef("");
+  const BufferPageNumber = useRef(0);
+  // console.log(`querytag:${router.query.tag}, querypage:${router.query.page}`);
+  // console.log(`tag:${tag.name}, page:${page}`);
+
+  if (
+    router.query.tag !== undefined &&
+    router.query.page !== undefined &&
+    firstRouter.current
+  ) {
+    firstRouter.current = false;
+    console.log(`querytag:${router.query.tag}, querypage:${router.query.page}`);
+    console.log(router.query.tag);
+    setTag(formatTag(null, router.query.tag));
+  }
+
+  // useEffect(() => {
+  //   if (router.query.tag !== undefined && router.query.page !== undefined) {
+  //     if (
+  //       BufferTagName.current !== router.query.tag
+  //       // BufferPageNumber.current !== router.query.page
+  //     ) {
+  //       console.log(router.query.tag);
+  //       if (router.query.tag.length !== 0) {
+  //         setTag(formatTag(categoryList, router.query.tag));
+  //       }
+  //       console.log(tag);
+  //       console.log(`querytag:${router.query.tag}, tag:${tag.name}`);
+  //       console.log(`querypage:${router.query.page}, page:${page}`);
+  //       // console.log(`tag:${tag.name}, page:${page}`);
+  //       console.log("run");
+  //     }
+  //   }
+  // }, []);
+
   const cardunitDom = useRef();
   const beforeCardUnitValue = useRef(0);
   //TODO:カテゴリでソートするようにする
@@ -101,7 +152,16 @@ export default function Blogs({ blogs, categories }) {
     setPage(0);
   }, [tag]);
   useEffect(() => {
-    console.log(listAdmin);
+    router.push({
+      query: { tag: tag.name, page: page },
+    });
+    // setTag({ name: router.query.tag, id: router.query.tag });
+    // setTag(router.query.tag);
+    // setTag(page);
+    // console.log(router.query);
+    // console.log(`querytag:${router.query.tag}, querypage:${router.query.page}`);
+    // console.log(`tag:${tag.name}, page:${page}`);
+    // if()
     //DOM情報を更新する
     cardunitDom.current = Array.from(
       document.getElementsByClassName("cardunit")
@@ -115,11 +175,11 @@ export default function Blogs({ blogs, categories }) {
       );
       setTimeout(() => {
         sortBlogList();
-        console.log(tag);
+        // console.log(tag);
         resolveCompleteAnim();
       }, cardunitTransitionDelayDiff * cardunitDom.current.length);
     }).then(() => {
-      console.log(`page:${page}, tag:${tag.name}`);
+      // console.log(`page:${page}, tag:${tag.name}`);
       setListAdmin({ page: page, tag: tag });
     });
   }, [page, tag]);
@@ -228,7 +288,7 @@ export default function Blogs({ blogs, categories }) {
                   ) : (
                     <></>
                   )}
-                  {console.log(accurateArticleList.current)}
+                  {/* {console.log(accurateArticleList.current)} */}
                 </div>
                 {accurateArticleList.current}
               </CardList>

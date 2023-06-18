@@ -8,6 +8,8 @@ export default function TagUnit({
   setPage,
   children,
 }) {
+  // if()
+  // console.log(tag.name);
   return (
     <div
       className={`${styles["tagunit--wrap"]} ${styles["tagunit__wrap"]}`}

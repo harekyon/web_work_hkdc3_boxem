@@ -18,30 +18,30 @@ export default function Header() {
   useEffect(() => {
     //ボタンをマウスオーバーした時の追従エレメント
     menuWebRef.addEventListener("mouseover", () => {
-      console.log("web");
+      // console.log("web");
       menuRect.style.cssText =
         "transform:translateX(10px)scaleX(1.06)scaleY(1.2);opacity:1;";
     });
     menuCgRef.addEventListener("mouseover", () => {
-      console.log("cg");
+      // console.log("cg");
       menuRect.style.cssText =
         "transform:translateX(154.5px)scaleX(1.06)scaleY(1.2);opacity:1;";
     });
     menuDesignRef.addEventListener("mouseover", () => {
-      console.log("design");
+      // console.log("design");
       menuRect.style.cssText =
         "transform:translateX(298px)scaleX(1.06)scaleY(1.2);opacity:1;";
     });
     menuWebRef.addEventListener("mouseout", () => {
-      console.log("web");
+      // console.log("web");
       menuRect.style.cssText = "transform:translateX(3px);opacity:0;";
     });
     menuCgRef.addEventListener("mouseout", () => {
-      console.log("cg");
+      // console.log("cg");
       menuRect.style.cssText = "transform:translateX(146px);opacity:0;";
     });
     menuDesignRef.addEventListener("mouseout", () => {
-      console.log("design");
+      // console.log("design");
       menuRect.style.cssText = "transform:translateX(290px);opacity:0;";
     });
   }, []);

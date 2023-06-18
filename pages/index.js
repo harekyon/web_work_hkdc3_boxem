@@ -23,13 +23,16 @@ let value = 0;
 export default function Home({ blogs }) {
   useEffect(() => {
     const wheelFunc = (e) => {
-      e.preventDefault();
-      value += e.deltaY * 2;
-      value = Math.min(
-        Math.max(0, value),
-        document.getElementById("main--wrap").scrollWidth
-      );
-      document.getElementById("main--wrap").scrollLeft = value;
+      // console.log(document.getElementById("main--wrap"));
+      // e.preventDefault();
+      if (document.getElementById("main--wrap") != null) {
+        value += e.deltaY * 2;
+        value = Math.min(
+          Math.max(0, value),
+          document.getElementById("main--wrap").scrollWidth
+        );
+        document.getElementById("main--wrap").scrollLeft = value;
+      }
     };
     document.body.addEventListener("wheel", wheelFunc);
   }, []);
