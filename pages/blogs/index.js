@@ -24,6 +24,10 @@ import TagUnit from "@/components/atomic/TagUnit";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Pagination from "@/components/atomic/Pagination";
 
+import { atom, useAtom } from "jotai";
+import { atomWithHash } from "jotai-location";
+import { getJotai } from "@/state/jotai/getJotai";
+
 const breadcrumb = [
   { name: "HOME", href: "https://www.harekyon.com/" },
   { name: "BLOG", href: "/blogs" },
@@ -32,11 +36,10 @@ const breadcrumb = [
 const cardunitTransitionDelayDiff = 50;
 const paginationPerPage = 3;
 
-export default function Blogs({ blogs, categories }) {
-  const router = useRouter();
-  const { urlParam } = router.query;
-  // console.log(router.query);
+const initJotaiTag = atomWithHash(`tag`);
+const initJotaiPage = atomWithHash(`page`);
 
+export default function Blogs({ blogs, categories }) {
   const [page, setPage] = useState(0);
   const [tag, setTag] = useState(formatTag(null, "All"));
   const [listAdmin, setListAdmin] = useState({
@@ -44,20 +47,22 @@ export default function Blogs({ blogs, categories }) {
     page: 0,
   });
 
-  const firstRouter = useRef(true);
-
-  useLayoutEffect(() => {
-    console.log(router.query);
-    // firstRouter.current = false
-    console.log(firstRouter.current);
-    if (
-      router.query.tag !== undefined &&
-      router.query.page !== undefined &&
-      firstRouter.current
-    ) {
-      console.log("aaaa");
+  const [jotaiTag, setJotaiTag] = useAtom(initJotaiTag);
+  const [jotaiPage, setJotaiPage] = useAtom(initJotaiPage);
+  useEffect(() => {
+    setJotaiTag(`all`);
+    setJotaiPage(1);
+  }, []);
+  useEffect(() => {
+    console.log(`jotaiTag:${jotaiTag}, jotaiPage:${jotaiPage}`);
+    if (jotaiTag !== undefined || jotaiPage !== undefined) {
+      // setTag({ name: jotaiTag, id: jotaiTag });
+      // setTag(formatTag(null, jotaiTag));
+      setPage(jotaiPage);
+      // setListAdmin({ tag: formatTag(null, jotaiTag), page: jotaiPage });
     }
-  });
+  }, [jotaiTag, jotaiPage]);
+
   // accurateArticleList
   // ページやタグ変更時に一瞬だけundefindになる場合があり
   // その時何も表示されなくなってレイアウトが一瞬崩れるため
@@ -85,40 +90,6 @@ export default function Blogs({ blogs, categories }) {
       return { id: c.id, name: c.name };
     })
   );
-  const BufferTagName = useRef("");
-  const BufferPageNumber = useRef(0);
-  // console.log(`querytag:${router.query.tag}, querypage:${router.query.page}`);
-  // console.log(`tag:${tag.name}, page:${page}`);
-
-  if (
-    router.query.tag !== undefined &&
-    router.query.page !== undefined &&
-    firstRouter.current
-  ) {
-    firstRouter.current = false;
-    console.log(`querytag:${router.query.tag}, querypage:${router.query.page}`);
-    console.log(router.query.tag);
-    setTag(formatTag(null, router.query.tag));
-  }
-
-  // useEffect(() => {
-  //   if (router.query.tag !== undefined && router.query.page !== undefined) {
-  //     if (
-  //       BufferTagName.current !== router.query.tag
-  //       // BufferPageNumber.current !== router.query.page
-  //     ) {
-  //       console.log(router.query.tag);
-  //       if (router.query.tag.length !== 0) {
-  //         setTag(formatTag(categoryList, router.query.tag));
-  //       }
-  //       console.log(tag);
-  //       console.log(`querytag:${router.query.tag}, tag:${tag.name}`);
-  //       console.log(`querypage:${router.query.page}, page:${page}`);
-  //       // console.log(`tag:${tag.name}, page:${page}`);
-  //       console.log("run");
-  //     }
-  //   }
-  // }, []);
 
   const cardunitDom = useRef();
   const beforeCardUnitValue = useRef(0);
@@ -130,8 +101,6 @@ export default function Blogs({ blogs, categories }) {
         sortedArticleListResult = blogList.current;
       default:
         blogList.current.map((b) => {
-          // console.log(b.category.id);
-          // console.log(`b.id:${b.category.id}, tag.id:${tag.id} `);
           if (b.category.id.includes(tag.id)) {
             sortedArticleListResult.push(b);
           }
@@ -154,16 +123,6 @@ export default function Blogs({ blogs, categories }) {
     setPage(0);
   }, [tag]);
   useEffect(() => {
-    router.push({
-      query: { tag: tag.name, page: page },
-    });
-    // setTag({ name: router.query.tag, id: router.query.tag });
-    // setTag(router.query.tag);
-    // setTag(page);
-    // console.log(router.query);
-    // console.log(`querytag:${router.query.tag}, querypage:${router.query.page}`);
-    // console.log(`tag:${tag.name}, page:${page}`);
-    // if()
     //DOM情報を更新する
     cardunitDom.current = Array.from(
       document.getElementsByClassName("cardunit")
@@ -177,12 +136,12 @@ export default function Blogs({ blogs, categories }) {
       );
       setTimeout(() => {
         sortBlogList();
-        // console.log(tag);
         resolveCompleteAnim();
       }, cardunitTransitionDelayDiff * cardunitDom.current.length);
     }).then(() => {
-      // console.log(`page:${page}, tag:${tag.name}`);
+      console.log({ page: page, tag: tag });
       setListAdmin({ page: page, tag: tag });
+      // setListAdmin({ page: 0, tag: { name: "All", id: "all" } });
     });
   }, [page, tag]);
   //cardunitのDOM情報を更新し見える状態にするクラスを付与
@@ -200,33 +159,6 @@ export default function Blogs({ blogs, categories }) {
     beforeCardUnitValue.current = cardunitDom.current.length;
   }, [sortedArticleList, resultArticleList]);
 
-  // useEffect(() => {
-  //   {
-  //     resultArticleList[listAdmin.page] !== undefined ? (
-  //       (accurateArticleList.current = resultArticleList[listAdmin.page].map(
-  //         (b, idx) => {
-  //           return (
-  //             <CardUnit
-  //               key={idx}
-  //               id={b.id}
-  //               title={b.title}
-  //               thumbnail={b.thumbnail.url}
-  //               publishedAt={formatDateDot(
-  //                 convertDateStringToDate(b.createdAt)
-  //               )}
-  //               category={b.category?.name}
-  //               cardunitTransitionDelayDiff={cardunitTransitionDelayDiff}
-  //               delayAnimValue={idx}
-  //             />
-  //           );
-  //         }
-  //       ))
-  //     ) : (
-  //       <></>
-  //     );
-  //   }
-  // }, [page, tag]);
-
   return (
     <>
       <Header></Header>
@@ -241,6 +173,8 @@ export default function Blogs({ blogs, categories }) {
                 tag={listAdmin.tag}
                 setTag={setTag}
                 setPage={setPage}
+                setJotaiTag={setJotaiTag}
+                setJotaiPage={setJotaiPage}
                 inputId="All"
               >
                 All
@@ -253,6 +187,8 @@ export default function Blogs({ blogs, categories }) {
                     tag={listAdmin.tag}
                     setTag={setTag}
                     setPage={setTag}
+                    setJotaiTag={setJotaiTag}
+                    setJotaiPage={setJotaiPage}
                     inputId={c.name}
                   >
                     {c.name}

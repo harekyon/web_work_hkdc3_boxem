@@ -16,6 +16,7 @@ export default function Pagination({ page, setPage, resultArticleList }) {
               setPage(idx);
             }}
             data-isactive={page === idx ? "true" : "false"}
+            key={idx}
           >
             <span>{idx + 1}</span>
           </div>

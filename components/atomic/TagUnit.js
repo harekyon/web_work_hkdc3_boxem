@@ -6,6 +6,8 @@ export default function TagUnit({
   tag,
   setTag,
   setPage,
+  setJotaiTag,
+  setJotaiPage,
   inputId = null,
   children,
 }) {
@@ -15,7 +17,10 @@ export default function TagUnit({
     <div
       className={`${styles["tagunit--wrap"]} ${styles["tagunit__wrap"]}`}
       onClick={() => {
+        console.log(formatTag(null, inputId).id);
         setTag(formatTag(categoryList, inputId));
+        setJotaiPage(0);
+        setJotaiTag(formatTag(null, inputId).id);
       }}
       data-tag={children}
       data-isactive={
