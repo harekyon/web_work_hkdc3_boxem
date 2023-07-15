@@ -6,6 +6,7 @@ export default function TagUnit({
   tag,
   setTag,
   setPage,
+  inputId = null,
   children,
 }) {
   // if()
@@ -14,7 +15,7 @@ export default function TagUnit({
     <div
       className={`${styles["tagunit--wrap"]} ${styles["tagunit__wrap"]}`}
       onClick={() => {
-        setTag(formatTag(categoryList, children));
+        setTag(formatTag(categoryList, inputId));
       }}
       data-tag={children}
       data-isactive={

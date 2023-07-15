@@ -30,7 +30,7 @@ const breadcrumb = [
 ];
 
 const cardunitTransitionDelayDiff = 50;
-const paginationPerPage = 15;
+const paginationPerPage = 3;
 
 export default function Blogs({ blogs, categories }) {
   const router = useRouter();
@@ -77,12 +77,14 @@ export default function Blogs({ blogs, categories }) {
   const [resultArticleList, setResultArticleList] = useState(
     sliceByNumber(blogs, paginationPerPage)
   );
+
+  // {id:'f8yknsryw',name:"WEB"}のような形。
+  // カテゴリを全て取得し
   const categoryList = useRef(
     categories.map((c) => {
       return { id: c.id, name: c.name };
     })
   );
-
   const BufferTagName = useRef("");
   const BufferPageNumber = useRef(0);
   // console.log(`querytag:${router.query.tag}, querypage:${router.query.page}`);
@@ -235,7 +237,12 @@ export default function Blogs({ blogs, categories }) {
           <div className={styles["main--wrap"]}>
             <Breadcrumb breadcrumb={breadcrumb}></Breadcrumb>
             <TagList tag={listAdmin.tag}>
-              <TagUnit tag={listAdmin.tag} setTag={setTag} setPage={setPage}>
+              <TagUnit
+                tag={listAdmin.tag}
+                setTag={setTag}
+                setPage={setPage}
+                inputId="All"
+              >
                 All
               </TagUnit>
               {categoryList.current.map((c, idx) => {
@@ -246,7 +253,7 @@ export default function Blogs({ blogs, categories }) {
                     tag={listAdmin.tag}
                     setTag={setTag}
                     setPage={setTag}
-                    cardunitTransitionDelayDiff={cardunitTransitionDelayDiff}
+                    inputId={c.name}
                   >
                     {c.name}
                   </TagUnit>
