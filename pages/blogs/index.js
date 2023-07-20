@@ -44,7 +44,7 @@ export default function Blogs({ blogs, categories }) {
   const [tag, setTag] = useState(formatTag(null, "All"));
   const [listAdmin, setListAdmin] = useState({
     tag: formatTag(null, "All"),
-    page: 0,
+    page: 1,
   });
 
   const [jotaiTag, setJotaiTag] = useAtom(initJotaiTag);
@@ -53,15 +53,38 @@ export default function Blogs({ blogs, categories }) {
     setJotaiTag(`all`);
     setJotaiPage(1);
   }, []);
+
+  // {id:'f8yknsryw',name:"WEB"}のような形。
+  // カテゴリを全て取得し
+  const categoryList = useRef(
+    categories.map((c) => {
+      return { id: c.id, name: c.name };
+    })
+  );
+
   useEffect(() => {
     console.log(`jotaiTag:${jotaiTag}, jotaiPage:${jotaiPage}`);
     if (jotaiTag !== undefined || jotaiPage !== undefined) {
+      // setTag(formatTag(categoryList, jotaiTag));
+      // console.log(jotaiTag);
+      // console.log(formatTag(categoryList, jotaiTag));
+      categories.map((c) => {
+        if (c.name.toLowerCase() === jotaiTag) {
+          setTag(formatTag(categoryList, jotaiTag));
+        } else {
+          setTag(formatTag(null, jotaiTag));
+        }
+      });
+      setTag(formatTag(categoryList, jotaiTag));
       // setTag({ name: jotaiTag, id: jotaiTag });
       // setTag(formatTag(null, jotaiTag));
-      setPage(jotaiPage);
+      setPage(jotaiPage - 1);
       // setListAdmin({ tag: formatTag(null, jotaiTag), page: jotaiPage });
     }
   }, [jotaiTag, jotaiPage]);
+  useEffect(() => {
+    console.log(page);
+  }, [page]);
 
   // accurateArticleList
   // ページやタグ変更時に一瞬だけundefindになる場合があり
@@ -81,14 +104,6 @@ export default function Blogs({ blogs, categories }) {
   const [sortedArticleList, setSortedArticleList] = useState(blogs);
   const [resultArticleList, setResultArticleList] = useState(
     sliceByNumber(blogs, paginationPerPage)
-  );
-
-  // {id:'f8yknsryw',name:"WEB"}のような形。
-  // カテゴリを全て取得し
-  const categoryList = useRef(
-    categories.map((c) => {
-      return { id: c.id, name: c.name };
-    })
   );
 
   const cardunitDom = useRef();
@@ -121,7 +136,7 @@ export default function Blogs({ blogs, categories }) {
   //タグ変更時の再描画
   useEffect(() => {
     setPage(0);
-  }, [tag]);
+  }, [jotaiTag]);
   useEffect(() => {
     //DOM情報を更新する
     cardunitDom.current = Array.from(
@@ -139,7 +154,7 @@ export default function Blogs({ blogs, categories }) {
         resolveCompleteAnim();
       }, cardunitTransitionDelayDiff * cardunitDom.current.length);
     }).then(() => {
-      console.log({ page: page, tag: tag });
+      // console.log(tag);
       setListAdmin({ page: page, tag: tag });
       // setListAdmin({ page: 0, tag: { name: "All", id: "all" } });
     });
@@ -241,6 +256,7 @@ export default function Blogs({ blogs, categories }) {
               paginationPerPage={paginationPerPage}
               page={page}
               setPage={setPage}
+              setJotaiPage={setJotaiPage}
             ></Pagination>
             <div className={styles["main--side"]}></div>
           </div>

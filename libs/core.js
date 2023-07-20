@@ -192,6 +192,8 @@ export const formatTag = (categoryListRef = null, inputId = null) => {
           // console.log(`inputId:${inputId}, c.name:${c.name}, c.id:${c.id}`);
 
           result = { name: c.name, id: c.id.toLowerCase() };
+        } else if (inputId.toLowerCase() === "all") {
+          result = { name: "All", id: "all" };
         }
       })
     : (() => {
