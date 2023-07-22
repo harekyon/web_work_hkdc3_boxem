@@ -5,7 +5,7 @@ export default function Footer() {
     <footer className={styles["footer-bg"]}>
       <div className={styles["footer--wrap"]}>
         <div className={styles["footer__logo"]}></div>
-        <div className={styles["footer__menu"]}></div>
+        <div className={styles["footer__copy"]}>©2023 harekyon</div>
       </div>
     </footer>
   );

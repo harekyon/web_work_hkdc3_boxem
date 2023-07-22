@@ -17,8 +17,6 @@ export default function TagUnit({
     <div
       className={`${styles["tagunit--wrap"]} ${styles["tagunit__wrap"]}`}
       onClick={() => {
-        // console.log(formatTag(null, inputId).id);
-        // setTag(formatTag(categoryList, inputId));
         setJotaiPage(1);
         setJotaiTag(formatTag(null, inputId).id);
       }}

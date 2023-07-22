@@ -2,7 +2,7 @@ import useEvent from "@react-hook/event";
 import styles from "./Header.module.scss";
 import Menu from "./atomic/Menu";
 import MenuButton from "./atomic/MenuButton";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect } from "react";
 
 let menuWebRef = null;
 let menuCgRef = null;
@@ -45,24 +45,23 @@ export default function Header() {
       menuRect.style.cssText = "transform:translateX(290px);opacity:0;";
     });
   }, []);
-
-  // .addEventListener("mouseover", function () {
-  //   console.log("web");
-  // });
-  const hoverMenu = () => {
-    console.log("aaaaa");
-  };
-  // useEvent(globalThis, "mouseover", hoverMenu);
   return (
     <header className={styles["header-bg"]}>
       <div className={styles["header--wrap"]}>
-        <div className={styles["header__logo"]}>HKTB</div>
+        <div className={styles["header__logo"]}>
+          <a href="">HKTB</a>
+        </div>
         <div className={styles["header__menu"]}>
           <Menu>
-            <MenuButton id="menu-web">WEB</MenuButton>
-            <MenuButton id="menu-cg">CG</MenuButton>
-            <MenuButton id="menu-design">DESIGN</MenuButton>
-            <MenuButton id="menu-design">DESIGN</MenuButton>
+            <MenuButton href="/blogs#tag=%22web%22&page=1" id="menu-web">
+              WEB
+            </MenuButton>
+            <MenuButton href="/blogs#tag=%22cg%22&page=1" id="menu-cg">
+              CG
+            </MenuButton>
+            <MenuButton href="/blogs#tag=%22design%22&page=1" id="menu-design">
+              DESIGN
+            </MenuButton>
           </Menu>
         </div>
       </div>

@@ -10,7 +10,6 @@ import CardList from "@/components/atomic/CardList";
 import CardUnit from "@/components/atomic/CardUnit";
 import { convertDateStringToDate, formatDateDot, formatTag } from "@/libs/core";
 import Footer from "@/components/Footer";
-import { Main } from "next/document";
 import MainWrap from "@/components/atomic/MainWrap";
 import FieldSide from "@/components/atomic/FieldSide";
 import SectionTitle from "@/components/atomic/SectionTitle";
@@ -18,15 +17,13 @@ import SidePanelProfile from "@/components/atomic/SidePanelProfile";
 import { css } from "@emotion/react";
 import Breadcrumb from "@/components/atomic/Breadcrumb";
 import FieldMain from "@/components/atomic/FieldMain";
-import { useRouter } from "next/router";
 import TagList from "@/components/atomic/TagList";
 import TagUnit from "@/components/atomic/TagUnit";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Pagination from "@/components/atomic/Pagination";
 
-import { atom, useAtom } from "jotai";
+import { useAtom } from "jotai";
 import { atomWithHash } from "jotai-location";
-import { getJotai } from "@/state/jotai/getJotai";
 
 const breadcrumb = [
   { name: "HOME", href: "https://www.harekyon.com/" },
@@ -42,18 +39,8 @@ const initJotaiPage = atomWithHash(`page`);
 export default function Blogs({ blogs, categories }) {
   const [page, setPage] = useState(0);
   const [tag, setTag] = useState(formatTag(null, "All"));
-  const [listAdmin, setListAdmin] = useState({
-    tag: formatTag(null, "All"),
-    page: 1,
-  });
-
   const [jotaiTag, setJotaiTag] = useAtom(initJotaiTag);
   const [jotaiPage, setJotaiPage] = useAtom(initJotaiPage);
-  useEffect(() => {
-    setJotaiTag(`all`);
-    setJotaiPage(1);
-  }, []);
-
   // {id:'f8yknsryw',name:"WEB"}のような形。
   // カテゴリを全て取得し
   const categoryList = useRef(
@@ -61,13 +48,26 @@ export default function Blogs({ blogs, categories }) {
       return { id: c.id, name: c.name };
     })
   );
+  console.log(jotaiTag);
+  const [listAdmin, setListAdmin] = useState(
+    jotaiTag === undefined
+      ? {
+          tag: formatTag(null, "All"),
+          page: 1,
+        }
+      : { tag: formatTag(categoryList, jotaiTag), page: jotaiPage }
+  );
+  useEffect(() => {
+    if (jotaiTag === undefined || jotaiPage === undefined) {
+      console.log("run");
+      // setJotaiTag(`all`);
+      // setJotaiPage(1);
+    }
+  }, []);
 
   useEffect(() => {
     console.log(`jotaiTag:${jotaiTag}, jotaiPage:${jotaiPage}`);
     if (jotaiTag !== undefined || jotaiPage !== undefined) {
-      // setTag(formatTag(categoryList, jotaiTag));
-      // console.log(jotaiTag);
-      // console.log(formatTag(categoryList, jotaiTag));
       categories.map((c) => {
         if (c.name.toLowerCase() === jotaiTag) {
           setTag(formatTag(categoryList, jotaiTag));
@@ -76,10 +76,7 @@ export default function Blogs({ blogs, categories }) {
         }
       });
       setTag(formatTag(categoryList, jotaiTag));
-      // setTag({ name: jotaiTag, id: jotaiTag });
-      // setTag(formatTag(null, jotaiTag));
       setPage(jotaiPage - 1);
-      // setListAdmin({ tag: formatTag(null, jotaiTag), page: jotaiPage });
     }
   }, [jotaiTag, jotaiPage]);
   useEffect(() => {
@@ -154,9 +151,7 @@ export default function Blogs({ blogs, categories }) {
         resolveCompleteAnim();
       }, cardunitTransitionDelayDiff * cardunitDom.current.length);
     }).then(() => {
-      // console.log(tag);
       setListAdmin({ page: page, tag: tag });
-      // setListAdmin({ page: 0, tag: { name: "All", id: "all" } });
     });
   }, [page, tag]);
   //cardunitのDOM情報を更新し見える状態にするクラスを付与
@@ -165,11 +160,9 @@ export default function Blogs({ blogs, categories }) {
       document.getElementsByClassName("cardunit")
     );
     setTimeout(() => {
-      Array.from(document.getElementsByClassName("cardunit")).forEach(
-        (c, idx) => {
-          c.classList.add("articleAppearAnimation");
-        }
-      );
+      Array.from(document.getElementsByClassName("cardunit")).forEach((c) => {
+        c.classList.add("articleAppearAnimation");
+      });
     }, cardunitTransitionDelayDiff * (beforeCardUnitValue.current - 1));
     beforeCardUnitValue.current = cardunitDom.current.length;
   }, [sortedArticleList, resultArticleList]);
@@ -178,7 +171,6 @@ export default function Blogs({ blogs, categories }) {
     <>
       <Header></Header>
       <MainWrap>
-        {/* <main className={styles.main}> */}
         <FieldMain>
           <SectionTitle>BLOG LIST</SectionTitle>
           <div className={styles["main--wrap"]}>
@@ -213,10 +205,6 @@ export default function Blogs({ blogs, categories }) {
             </TagList>
             <div className={`${styles["main--card-list"]} `}>
               <CardList>
-                {/* {console.log(resultArticleList)}
-                {console.log(resultArticleList[0])}
-                {console.log(page)} */}
-                {/* {console.log(resultArticleList[listAdmin.page])} */}
                 <div
                   css={css`
                     display: none;
@@ -246,7 +234,6 @@ export default function Blogs({ blogs, categories }) {
                   ) : (
                     <></>
                   )}
-                  {/* {console.log(accurateArticleList.current)} */}
                 </div>
                 {accurateArticleList.current}
               </CardList>
@@ -273,8 +260,6 @@ export default function Blogs({ blogs, categories }) {
               row-gap: 10px;
             `}
           >
-            <SidePanelProfile></SidePanelProfile>
-            <SidePanelProfile></SidePanelProfile>
             <SidePanelProfile></SidePanelProfile>
           </div>
         </FieldSide>
