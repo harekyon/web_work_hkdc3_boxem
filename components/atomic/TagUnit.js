@@ -6,15 +6,19 @@ export default function TagUnit({
   tag,
   setTag,
   setPage,
+  setJotaiTag,
+  setJotaiPage,
+  inputId = null,
   children,
 }) {
+  // if()
+  // console.log(tag.name);
   return (
     <div
       className={`${styles["tagunit--wrap"]} ${styles["tagunit__wrap"]}`}
       onClick={() => {
-        // setDelayApplyPage(0);
-        setPage(0);
-        setTag(formatTag(categoryList, children));
+        setJotaiPage(1);
+        setJotaiTag(formatTag(null, inputId).id);
       }}
       data-tag={children}
       data-isactive={

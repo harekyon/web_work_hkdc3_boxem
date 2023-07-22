@@ -178,18 +178,26 @@ export const sleep = (msec) =>
  * formatTag
  * タグのidと名前を整形してオブジェクトで返す。
  * MicroCMSと齟齬が発生しないように。
+ * inputIdに入力した値を小文字変換し
+ * idの正当性を保つ
  * @param {object} categoryListRef microCMSから得たカテゴリ情報(一件)
- * @param {string} children カテゴリ名
+ * @param {string} inputId カテゴリ名
+ *
  */
-export const formatTag = (categoryListRef = null, children = null) => {
+export const formatTag = (categoryListRef = null, inputId = null) => {
   let result = {};
   categoryListRef !== null
     ? categoryListRef.current.map((c) => {
-        if (children.toUpperCase() === c.name.toUpperCase()) {
-          console.log(`children:${children}, c.name:${c.name}, c.id:${c.id}`);
-          result = { name: c.name, id: c.id };
+        if (inputId.toUpperCase() === c.name.toUpperCase()) {
+          // console.log(`inputId:${inputId}, c.name:${c.name}, c.id:${c.id}`);
+
+          result = { name: c.name, id: c.id.toLowerCase() };
+        } else if (inputId.toLowerCase() === "all") {
+          result = { name: "All", id: "all" };
         }
       })
-    : (result = { name: children, id: children.toLowerCase() });
+    : (() => {
+        result = { name: inputId, id: inputId.toLowerCase() };
+      })();
   return result;
 };

@@ -20,19 +20,19 @@ export default function CardUnit({
       `}
     >
       <a href={`./blogs/${id}`} className={styles["card-unit--flex-container"]}>
-        <date className={styles["card-unit__date"]}>
+        <date className={`${styles["card-unit__date"]} carddate`}>
           <span>{publishedAt}</span>
         </date>
-        <div className={styles["card-unit__category"]}>
+        <div className={`${styles["card-unit__category"]} cardcategory`}>
           <span>{category}</span>
         </div>
         <img
           width="675"
           height="393"
           src={thumbnail}
-          className={styles["card-unit__thumbnail"]}
+          className={`${styles["card-unit__thumbnail"]} cardimage`}
         ></img>
-        <div className={styles["card-unit__title"]}>{title}</div>
+        <div className={`${styles["card-unit__title"]} cardtitle`}>{title}</div>
       </a>
     </article>
   );
