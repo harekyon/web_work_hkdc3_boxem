@@ -20,7 +20,7 @@ export default function Header() {
     menuWebRef.addEventListener("mouseover", () => {
       // console.log("web");
       menuRect.style.cssText =
-        "transform:translateX(10px)scaleX(1.06)scaleY(1.2);opacity:1;";
+        "margin-right:5px;transform:translateX(10px)scaleX(1.06)scaleY(1.2);opacity:1;";
     });
     menuCgRef.addEventListener("mouseover", () => {
       // console.log("cg");

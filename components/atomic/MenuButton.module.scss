@@ -11,13 +11,31 @@
     transition: margin 0.3s ease-in-out, background 0.2s ease-in-out;
   }
   &__barcode {
+    width: 140px;
+    height: 40px;
+    @include flexCenter();
+    justify-content: flex-start;
     font-family: "Libre Barcode 39", cursive;
-    transform: translateY(1px) rotate(90deg) scaleY(0.5);
+    // transform: translateY(1px) rotate(90deg) scaleY(0.5);
     position: absolute;
     transition: transform 0.3s;
     left: -8px;
     @include font(20, 1, 0.05, 400);
     color: $c-font-barcode;
+    img {
+      width: 40px;
+      height: 100%;
+    }
+    svg {
+      width: 40px;
+      height: 80%;
+      transform: translateX(-2px);
+      path {
+        fill: #ffffff;
+        transform: scaleX(1);
+        transition: 0.3s;
+      }
+    }
   }
   &__text {
     width: 100%;
@@ -31,12 +49,17 @@
   .menu-button--wrap {
     &:hover {
       .menu-button__barcode {
-        transform: translateY(1px) rotate(90deg) scaleY(1);
-        color: $c-pre1;
+        transform: translateX(0px);
+        svg {
+          path {
+            fill: $c-font-barcode;
+            transform: scaleX(0.8);
+          }
+        }
       }
       margin-right: 10px;
       margin-left: 10px;
-      background: #ffffffcc;
+      background: #ffffffdd;
 
       .menu-button__text {
         color: $c-pre1;
