@@ -60,8 +60,8 @@ export default function Blogs({ blogs, categories }) {
   useEffect(() => {
     if (jotaiTag === undefined || jotaiPage === undefined) {
       console.log("run");
-      // setJotaiTag(`all`);
-      // setJotaiPage(1);
+      setJotaiTag(`all`);
+      setJotaiPage(1);
     }
   }, []);
 
