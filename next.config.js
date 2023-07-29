@@ -5,6 +5,7 @@ const prefixPath = viewMode === "production" ? "/hktech" : "";
 
 const nextConfig = {
   reactStrictMode: false,
+  trailingSlash: true,
   compiler: {
     emotion: true,
   },
