@@ -33,7 +33,7 @@ export default function BlogId({ data }) {
             <ArticleMain>{data.content}</ArticleMain>
           </SectionMain>
         </FieldMain>
-        <FieldSide>
+        {/* <FieldSide>
           <SectionTitle>PROFILE</SectionTitle>
           <div
             css={css`
@@ -44,7 +44,7 @@ export default function BlogId({ data }) {
           >
             <SidePanelProfile></SidePanelProfile>
           </div>
-        </FieldSide>
+        </FieldSide> */}
       </MainWrap>
     </>
   );
