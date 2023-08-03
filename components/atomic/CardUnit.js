@@ -19,7 +19,7 @@ export default function CardUnit({
         transition-delay: ${cardunitTransitionDelayDiff * delayAnimValue}ms;
       `}
     >
-      <a href={`./blogs/${id}`} className={styles["card-unit--flex-container"]}>
+      <a href={`./${id}`} className={styles["card-unit--flex-container"]}>
         <date className={`${styles["card-unit__date"]} carddate`}>
           <span>{publishedAt}</span>
         </date>

@@ -18,6 +18,7 @@ import ArticleTitle from "@/components/atomic/ArticleTitle";
 import ArticleThumbnail from "@/components/atomic/ArticleThumbnail";
 import SidePanelProfile from "@/components/atomic/SidePanelProfile";
 import { css } from "@emotion/react";
+import Footer from "@/components/Footer";
 
 export default function BlogId({ data }) {
   return (
@@ -33,7 +34,7 @@ export default function BlogId({ data }) {
             <ArticleMain>{data.content}</ArticleMain>
           </SectionMain>
         </FieldMain>
-        <FieldSide>
+        {/* <FieldSide>
           <SectionTitle>PROFILE</SectionTitle>
           <div
             css={css`
@@ -44,8 +45,9 @@ export default function BlogId({ data }) {
           >
             <SidePanelProfile></SidePanelProfile>
           </div>
-        </FieldSide>
+        </FieldSide> */}
       </MainWrap>
+      <Footer />
     </>
   );
 }

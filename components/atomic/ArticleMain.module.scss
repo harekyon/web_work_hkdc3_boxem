@@ -2,9 +2,15 @@
 
 .article-main {
   &--wrap {
-    width: 100%;
+    display: flex;
+    flex-direction: row;
+    column-gap: 20px;
+  }
+  &--contents {
+    width: calc(100% - 30%);
     @include font(10, 1, 0.05, 400);
-    padding: 10px 0px;
+    // padding: 10px 0px;
+    padding-bottom: 10px;
     // background: red;
     p {
       @include font(14, 1.8, 0.05, 300);
@@ -73,6 +79,9 @@
       margin-bottom: 12px;
     }
   }
+  &--side {
+    width: calc(100% - 70%);
+  }
 }
 @media screen and (min-width:#{$breakpoint}px) {
   .article-main {
@@ -92,6 +101,12 @@
 }
 @include mq(sp) {
   .article-main {
+    &--contents {
+      width: 100%;
+    }
+    &--side {
+      display: none;
+    }
     grid-template-columns: repeat(2, 1fr);
     &--wrap {
       // h2 {
