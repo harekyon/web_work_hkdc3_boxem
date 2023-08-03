@@ -9,10 +9,10 @@ export default function IndexModule() {
   return (
     <div className={styles["index-module"]}>
       <div className={styles["index-module__mokuji"]}>目次</div>
-      <div className={styles["index-module__h2"]}>h2の要素</div>
-      <div className={styles["index-module__h3"]}>h3の要素</div>
-      <div className={styles["index-module__h4"]}>h4の要素</div>
-      <div className={styles["index-module__h3"]}>h3の要素</div>
+      <div className={styles["index-module__h2"]}>もくじは</div>
+      <div className={styles["index-module__h3"]}>いま</div>
+      <div className={styles["index-module__h4"]}>かいはつちゅう</div>
+      <div className={styles["index-module__h3"]}>だよ</div>
     </div>
   );
 }

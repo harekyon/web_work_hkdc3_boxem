@@ -101,6 +101,12 @@
 }
 @include mq(sp) {
   .article-main {
+    &--contents {
+      width: 100%;
+    }
+    &--side {
+      display: none;
+    }
     grid-template-columns: repeat(2, 1fr);
     &--wrap {
       // h2 {

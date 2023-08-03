@@ -49,7 +49,7 @@ export default function Header() {
     <header className={styles["header-bg"]}>
       <div className={styles["header--wrap"]}>
         <div className={styles["header__logo"]}>
-          <a href="">HKTB</a>
+          <a href="/blogs">HKTB</a>
         </div>
         <div className={styles["header__menu"]}>
           <Menu>
