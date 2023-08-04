@@ -3,6 +3,7 @@ import styles from "./Header.module.scss";
 import Menu from "./atomic/Menu";
 import MenuButton from "./atomic/MenuButton";
 import { useEffect, useLayoutEffect } from "react";
+import Link from "next/link";
 
 let menuWebRef = null;
 let menuCgRef = null;
@@ -49,7 +50,7 @@ export default function Header() {
     <header className={styles["header-bg"]}>
       <div className={styles["header--wrap"]}>
         <div className={styles["header__logo"]}>
-          <a href="/blogs">HKTB</a>
+          <Link href="/blogs">HKTB</Link>
         </div>
         <div className={styles["header__menu"]}>
           <Menu>
