@@ -48,7 +48,8 @@ export default function Blogs({ blogs, categories }) {
       return { id: c.id, name: c.name };
     })
   );
-  console.log(jotaiTag);
+  // console.log(jotaiTag);
+  //
   const [listAdmin, setListAdmin] = useState(
     jotaiTag === undefined
       ? {
@@ -66,16 +67,18 @@ export default function Blogs({ blogs, categories }) {
   }, []);
 
   useEffect(() => {
-    console.log(`jotaiTag:${jotaiTag}, jotaiPage:${jotaiPage}`);
+    let categoriesCache = [];
     if (jotaiTag !== undefined || jotaiPage !== undefined) {
       categories.map((c) => {
-        if (c.name.toLowerCase() === jotaiTag) {
-          setTag(formatTag(categoryList, jotaiTag));
-        } else {
-          setTag(formatTag(null, jotaiTag));
-        }
+        categoriesCache.push(c.name.toLowerCase());
       });
-      setTag(formatTag(categoryList, jotaiTag));
+      console.log(categoriesCache);
+      categoriesCache.includes(jotaiTag)
+        ? setTag(formatTag(categoryList, jotaiTag))
+        : (() => {
+            setTag(formatTag(null, "All"));
+            setJotaiTag(formatTag(null, "All").id);
+          })();
       setPage(jotaiPage - 1);
     }
   }, [jotaiTag, jotaiPage]);
@@ -165,7 +168,14 @@ export default function Blogs({ blogs, categories }) {
       });
     }, cardunitTransitionDelayDiff * (beforeCardUnitValue.current - 1));
     beforeCardUnitValue.current = cardunitDom.current.length;
+    // console.log(sortedArticleList);
   }, [sortedArticleList, resultArticleList]);
+  useEffect(() => {
+    // console.log(listAdmin);
+  }, [listAdmin]);
+  useEffect(() => {
+    // console.log(resultArticleList[0]);
+  }, [resultArticleList]);
 
   return (
     <>
@@ -186,6 +196,7 @@ export default function Blogs({ blogs, categories }) {
               >
                 All
               </TagUnit>
+
               {categoryList.current.map((c, idx) => {
                 return (
                   <TagUnit
@@ -205,6 +216,7 @@ export default function Blogs({ blogs, categories }) {
             </TagList>
             <div className={`${styles["main--card-list"]} `}>
               <CardList>
+                {/* divで隠しているこの仕様はソート中の不自然な描画を見せないようにするため */}
                 <div
                   css={css`
                     display: none;
@@ -232,10 +244,14 @@ export default function Blogs({ blogs, categories }) {
                       );
                     }))
                   ) : (
-                    <></>
+                    <>run</>
                   )}
                 </div>
-                {accurateArticleList.current}
+                {resultArticleList.length > 0 ? (
+                  accurateArticleList.current
+                ) : (
+                  <>NOT FOUND m(__)m</>
+                )}
               </CardList>
             </div>
             <Pagination
