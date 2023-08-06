@@ -14,7 +14,7 @@ on:
   push:
     branches: [develop]
   repository_dispatch:
-    types: [update-posts]
+    types: [upDateArticles]
 
 jobs:
   build:
