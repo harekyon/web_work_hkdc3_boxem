@@ -174,7 +174,7 @@ export default function Blogs({ blogs, categories }) {
     // console.log(listAdmin);
   }, [listAdmin]);
   useEffect(() => {
-    // console.log(resultArticleList[0]);
+    console.log(resultArticleList[0]);
   }, [resultArticleList]);
 
   return (
