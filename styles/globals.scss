@@ -125,3 +125,22 @@ a {
     color-scheme: dark;
   }
 }
+
+.errorPopWrap {
+  width: 350px;
+  height: auto;
+  max-width: 350px;
+  min-width: 350px;
+  position: absolute;
+  top: 10vh;
+  right: -350px;
+  background: rgba(67, 5, 5, 0.911);
+  transition: 0.3s;
+  padding: 10px 20px;
+  p {
+    @include font(12, 1.5, 0.05, 400);
+  }
+}
+.errorPopAnim {
+  right: 0;
+}

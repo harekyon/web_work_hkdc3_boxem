@@ -24,6 +24,9 @@ import Pagination from "@/components/atomic/Pagination";
 
 import { useAtom } from "jotai";
 import { atomWithHash } from "jotai-location";
+import { errorPop } from "@/libs/hp_assets";
+
+// import { errorPop } from "@/libs/hp_assets";
 
 const breadcrumb = [
   { name: "HOME", href: "https://www.harekyon.com/" },
@@ -60,7 +63,6 @@ export default function Blogs({ blogs, categories }) {
   );
   useEffect(() => {
     if (jotaiTag === undefined || jotaiPage === undefined) {
-      console.log("run");
       setJotaiTag(`all`);
       setJotaiPage(1);
     }
@@ -80,6 +82,14 @@ export default function Blogs({ blogs, categories }) {
             setJotaiTag(formatTag(null, "All").id);
           })();
       setPage(jotaiPage - 1);
+      //errorPop
+      console.log(jotaiTag.toLowerCase());
+      if (
+        !categoriesCache.includes(jotaiTag) &&
+        jotaiTag.toLowerCase() !== "all"
+      ) {
+        errorPop();
+      }
     }
   }, [jotaiTag, jotaiPage]);
   useEffect(() => {
@@ -281,6 +291,7 @@ export default function Blogs({ blogs, categories }) {
         </FieldSide>
       </MainWrap>
       <Footer />
+      <div id="jsErrorPop" class="errorPopWrap"></div>
     </>
   );
 }
