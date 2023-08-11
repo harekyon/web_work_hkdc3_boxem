@@ -45,6 +45,8 @@ export default function Blogs({ blogs, categories }) {
   const [tag, setTag] = useState(formatTag(null, "All"));
   const [jotaiTag, setJotaiTag] = useAtom(initJotaiTag);
   const [jotaiPage, setJotaiPage] = useAtom(initJotaiPage);
+  // const [articleNoneError, setArticleNoneError] = useState(false);
+  const articleNoneError = useRef(false);
 
   const sliceByNumber = (array, number) => {
     const length = Math.ceil(array.length / number);
@@ -57,10 +59,10 @@ export default function Blogs({ blogs, categories }) {
     sliceByNumber(blogs, paginationPerPage)
   );
   //記事が存在しない場合のエラー
-  // useEffect(() => {
-  //   !(resultArticleList.length > 0) &&
-  //     errorPop("<span>記事は見つかりませんでした</span>");
-  // }, []);
+  useEffect(() => {
+    !(resultArticleList.length > 0) &&
+      errorPop("<span>記事は見つかりませんでした</span>");
+  }, []);
 
   // {id:'f8yknsryw',name:"WEB"}のような形。
   // カテゴリを全て取得し
@@ -96,7 +98,6 @@ export default function Blogs({ blogs, categories }) {
       categories.map((c) => {
         categoriesCache.push(c.name.toLowerCase());
       });
-      console.log(categoriesCache);
       categoriesCache.includes(jotaiTag)
         ? setTag(formatTag(categoryList, jotaiTag))
         : (() => {
@@ -106,20 +107,21 @@ export default function Blogs({ blogs, categories }) {
 
       setPage(/^([1-9]\d*|0)$/.test(jotaiPage) ? jotaiPage - 1 : 1);
       //errorPop
-      console.log(jotaiTag.toLowerCase());
+
       if (
         !categoriesCache.includes(jotaiTag) &&
         jotaiTag.toLowerCase() !== "all"
       ) {
-        errorPop(
-          "<span>記事は見つかりませんでした<br/>タグの名称を確認するのだ</span>"
-        );
+        errorPop("<span>パラメータの値が正しくありません。</span>");
+      }
+
+      if (!(resultArticleList.length > 0)) {
+        articleNoneError.current = true;
+      } else {
+        articleNoneError.current = false;
       }
     }
   }, [jotaiTag, jotaiPage]);
-  useEffect(() => {
-    console.log(page);
-  }, [page]);
 
   // accurateArticleList
   // ページやタグ変更時に一瞬だけundefindになる場合があり
@@ -191,6 +193,15 @@ export default function Blogs({ blogs, categories }) {
       });
     }, cardunitTransitionDelayDiff * (beforeCardUnitValue.current - 1));
     beforeCardUnitValue.current = cardunitDom.current.length;
+    if (!(resultArticleList.length > 0)) {
+      articleNoneError.current = true;
+    } else {
+      articleNoneError.current = false;
+    }
+    // console.log(articleNoneError.current);
+    if (articleNoneError.current) {
+      errorPop("<span>記事は見つかりませんでした。タグ名を確認するのだ</span>");
+    }
     // console.log(sortedArticleList);
   }, [sortedArticleList, resultArticleList]);
   useEffect(() => {
@@ -270,7 +281,7 @@ export default function Blogs({ blogs, categories }) {
                 {resultArticleList.length > 0
                   ? accurateArticleList.current
                   : (() => {
-                      errorPop("<span>記事は見つかりませんでした</span>");
+                      // errorPop("<span>記事は見つかりませんでした</span>");
                       return <>NOT FOUND m(__)m</>;
                     })()}
               </CardList>
