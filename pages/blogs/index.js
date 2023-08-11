@@ -59,10 +59,10 @@ export default function Blogs({ blogs, categories }) {
     sliceByNumber(blogs, paginationPerPage)
   );
   //記事が存在しない場合のエラー
-  // useEffect(() => {
-  //   !(resultArticleList.length > 0) &&
-  //     errorPop("<span>記事は見つかりませんでした</span>");
-  // }, []);
+  useEffect(() => {
+    !(resultArticleList.length > 0) &&
+      errorPop("<span>記事は見つかりませんでした</span>");
+  }, []);
 
   // {id:'f8yknsryw',name:"WEB"}のような形。
   // カテゴリを全て取得し
@@ -98,7 +98,6 @@ export default function Blogs({ blogs, categories }) {
       categories.map((c) => {
         categoriesCache.push(c.name.toLowerCase());
       });
-      console.log(categoriesCache);
       categoriesCache.includes(jotaiTag)
         ? setTag(formatTag(categoryList, jotaiTag))
         : (() => {
@@ -109,6 +108,13 @@ export default function Blogs({ blogs, categories }) {
       setPage(/^([1-9]\d*|0)$/.test(jotaiPage) ? jotaiPage - 1 : 1);
       //errorPop
 
+      if (
+        !categoriesCache.includes(jotaiTag) &&
+        jotaiTag.toLowerCase() !== "all"
+      ) {
+        errorPop("<span>パラメータの値が正しくありません。</span>");
+      }
+
       if (!(resultArticleList.length > 0)) {
         articleNoneError.current = true;
       } else {
@@ -116,23 +122,6 @@ export default function Blogs({ blogs, categories }) {
       }
     }
   }, [jotaiTag, jotaiPage]);
-  useEffect(() => {
-    let categoriesCache = [];
-    if (jotaiTag !== undefined || jotaiPage !== undefined) {
-      categories.map((c) => {
-        categoriesCache.push(c.name.toLowerCase());
-      });
-      // console.log(articleNoneError.current);
-      // if (articleNoneError.current) {
-      //   errorPop(
-      //     "<span>記事は見つかりませんでした<br/>タグの名称を確認するのだ</span>"
-      //   );
-      // }
-    }
-  }, [articleNoneError.current]);
-  useEffect(() => {
-    console.log(page);
-  }, [page]);
 
   // accurateArticleList
   // ページやタグ変更時に一瞬だけundefindになる場合があり

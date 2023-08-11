@@ -1,6 +1,5 @@
 export function errorPop(errorText) {
   const errorPopWrap = document.getElementById("jsErrorPopWrap");
-  console.log(errorPopWrap.offsetHeight);
   const calcLength = errorPopWrap.children.length + 1;
   errorPopWrap.insertAdjacentHTML(
     "beforeend",
@@ -21,5 +20,4 @@ export function errorPop(errorText) {
   setTimeout(() => {
     document.getElementById("jsErrorPopWrap").children[0].remove();
   }, 5000);
-  console.log("runrunruuuuu");
 }
