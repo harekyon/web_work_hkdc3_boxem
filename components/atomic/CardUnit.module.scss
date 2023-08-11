@@ -5,7 +5,17 @@
     background: #ffffff55;
     opacity: 0;
     transition-duration: 0.2s;
-    // overflow: hidden;
+    @include mq(pc) {
+      &:hover {
+        background: #fffbd355;
+        .card-unit__date {
+          background: #fffbd355;
+        }
+        .card-unit__category {
+          background: #fffbd355;
+        }
+      }
+    }
   }
   &--flex-container {
     width: 100%;

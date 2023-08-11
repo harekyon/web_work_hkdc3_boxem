@@ -45,6 +45,8 @@ export default function Blogs({ blogs, categories }) {
   const [tag, setTag] = useState(formatTag(null, "All"));
   const [jotaiTag, setJotaiTag] = useAtom(initJotaiTag);
   const [jotaiPage, setJotaiPage] = useAtom(initJotaiPage);
+  // const [articleNoneError, setArticleNoneError] = useState(false);
+  const articleNoneError = useRef(false);
 
   const sliceByNumber = (array, number) => {
     const length = Math.ceil(array.length / number);
@@ -106,17 +108,28 @@ export default function Blogs({ blogs, categories }) {
 
       setPage(/^([1-9]\d*|0)$/.test(jotaiPage) ? jotaiPage - 1 : 1);
       //errorPop
-      console.log(jotaiTag.toLowerCase());
-      if (
-        !categoriesCache.includes(jotaiTag) &&
-        jotaiTag.toLowerCase() !== "all"
-      ) {
-        errorPop(
-          "<span>記事は見つかりませんでした<br/>タグの名称を確認するのだ</span>"
-        );
+
+      if (!(resultArticleList.length > 0)) {
+        articleNoneError.current = true;
+      } else {
+        articleNoneError.current = false;
       }
     }
   }, [jotaiTag, jotaiPage]);
+  useEffect(() => {
+    let categoriesCache = [];
+    if (jotaiTag !== undefined || jotaiPage !== undefined) {
+      categories.map((c) => {
+        categoriesCache.push(c.name.toLowerCase());
+      });
+      // console.log(articleNoneError.current);
+      // if (articleNoneError.current) {
+      //   errorPop(
+      //     "<span>記事は見つかりませんでした<br/>タグの名称を確認するのだ</span>"
+      //   );
+      // }
+    }
+  }, [articleNoneError.current]);
   useEffect(() => {
     console.log(page);
   }, [page]);
@@ -191,6 +204,15 @@ export default function Blogs({ blogs, categories }) {
       });
     }, cardunitTransitionDelayDiff * (beforeCardUnitValue.current - 1));
     beforeCardUnitValue.current = cardunitDom.current.length;
+    if (!(resultArticleList.length > 0)) {
+      articleNoneError.current = true;
+    } else {
+      articleNoneError.current = false;
+    }
+    // console.log(articleNoneError.current);
+    if (articleNoneError.current) {
+      errorPop("<span>記事は見つかりませんでした。タグ名を確認するのだ</span>");
+    }
     // console.log(sortedArticleList);
   }, [sortedArticleList, resultArticleList]);
   useEffect(() => {
@@ -270,7 +292,7 @@ export default function Blogs({ blogs, categories }) {
                 {resultArticleList.length > 0
                   ? accurateArticleList.current
                   : (() => {
-                      errorPop("<span>記事は見つかりませんでした</span>");
+                      // errorPop("<span>記事は見つかりませんでした</span>");
                       return <>NOT FOUND m(__)m</>;
                     })()}
               </CardList>
