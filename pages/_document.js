@@ -40,7 +40,7 @@ export default function Document() {
             `,
         }}
       />
-      <body>
+      <body id="body">
         <Main />
         <NextScript />
       </body>
