@@ -1,16 +1,25 @@
-export function errorPop() {
-  const errorPop = document.getElementById("jsErrorPop");
-  console.log(errorPop);
-  errorPop.insertAdjacentHTML(
+export function errorPop(errorText) {
+  const errorPopWrap = document.getElementById("jsErrorPopWrap");
+  console.log(errorPopWrap.offsetHeight);
+  const calcLength = errorPopWrap.children.length + 1;
+  errorPopWrap.insertAdjacentHTML(
     "beforeend",
     `
-        <p>ERROR: 記事は見つかりませんでした</p>
+        <p class="errorUnit" id="error${calcLength}" style="transform:translateY(20px);"><span style="font-weight:700;padding-bottom:4px;">ERROR</span><br/>${errorText}</p>
     `
   );
-  errorPop.classList.add("errorPopAnim");
+  // errorPopWrap.classList.add("errorPopAnim");
+  const errorUnit = document.getElementById(`error${calcLength}`);
+  // errorUnit.classList.add("errorPopAnim");
   setTimeout(() => {
-    errorPop.classList.remove("errorPopAnim");
-    errorPop.removeChild(errorPop.lastChild);
-  }, 4000);
+    errorUnit.classList.add("errorPopAnim");
+  }, 200);
+  setTimeout(() => {
+    errorUnit.classList.remove("errorPopAnim");
+    document.getElementById("jsErrorPopWrap").children[0].offsetHeight;
+  }, 4500);
+  setTimeout(() => {
+    document.getElementById("jsErrorPopWrap").children[0].remove();
+  }, 5000);
   console.log("runrunruuuuu");
 }

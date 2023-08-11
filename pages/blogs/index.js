@@ -38,12 +38,30 @@ const paginationPerPage = 3;
 
 const initJotaiTag = atomWithHash(`tag`);
 const initJotaiPage = atomWithHash(`page`);
+console.log(initJotaiPage);
 
 export default function Blogs({ blogs, categories }) {
   const [page, setPage] = useState(0);
   const [tag, setTag] = useState(formatTag(null, "All"));
   const [jotaiTag, setJotaiTag] = useAtom(initJotaiTag);
   const [jotaiPage, setJotaiPage] = useAtom(initJotaiPage);
+
+  const sliceByNumber = (array, number) => {
+    const length = Math.ceil(array.length / number);
+    return new Array(length)
+      .fill()
+      .map((_, i) => array.slice(i * number, (i + 1) * number));
+  };
+  const [sortedArticleList, setSortedArticleList] = useState(blogs);
+  const [resultArticleList, setResultArticleList] = useState(
+    sliceByNumber(blogs, paginationPerPage)
+  );
+  //記事が存在しない場合のエラー
+  // useEffect(() => {
+  //   !(resultArticleList.length > 0) &&
+  //     errorPop("<span>記事は見つかりませんでした</span>");
+  // }, []);
+
   // {id:'f8yknsryw',name:"WEB"}のような形。
   // カテゴリを全て取得し
   const categoryList = useRef(
@@ -59,7 +77,10 @@ export default function Blogs({ blogs, categories }) {
           tag: formatTag(null, "All"),
           page: 1,
         }
-      : { tag: formatTag(categoryList, jotaiTag), page: jotaiPage }
+      : {
+          tag: formatTag(categoryList, jotaiTag),
+          page: /^([1-9]\d*|0)$/.test(jotaiPage) ? jotaiPage : 1,
+        }
   );
   useEffect(() => {
     if (jotaiTag === undefined || jotaiPage === undefined) {
@@ -69,6 +90,7 @@ export default function Blogs({ blogs, categories }) {
   }, []);
 
   useEffect(() => {
+    // console.log();
     let categoriesCache = [];
     if (jotaiTag !== undefined || jotaiPage !== undefined) {
       categories.map((c) => {
@@ -81,14 +103,17 @@ export default function Blogs({ blogs, categories }) {
             setTag(formatTag(null, "All"));
             setJotaiTag(formatTag(null, "All").id);
           })();
-      setPage(jotaiPage - 1);
+
+      setPage(/^([1-9]\d*|0)$/.test(jotaiPage) ? jotaiPage - 1 : 1);
       //errorPop
       console.log(jotaiTag.toLowerCase());
       if (
         !categoriesCache.includes(jotaiTag) &&
         jotaiTag.toLowerCase() !== "all"
       ) {
-        errorPop();
+        errorPop(
+          "<span>記事は見つかりませんでした<br/>タグの名称を確認するのだ</span>"
+        );
       }
     }
   }, [jotaiTag, jotaiPage]);
@@ -103,18 +128,6 @@ export default function Blogs({ blogs, categories }) {
   const accurateArticleList = useRef();
 
   const blogList = useRef(blogs);
-
-  const sliceByNumber = (array, number) => {
-    const length = Math.ceil(array.length / number);
-    return new Array(length)
-      .fill()
-      .map((_, i) => array.slice(i * number, (i + 1) * number));
-  };
-
-  const [sortedArticleList, setSortedArticleList] = useState(blogs);
-  const [resultArticleList, setResultArticleList] = useState(
-    sliceByNumber(blogs, paginationPerPage)
-  );
 
   const cardunitDom = useRef();
   const beforeCardUnitValue = useRef(0);
@@ -183,9 +196,6 @@ export default function Blogs({ blogs, categories }) {
   useEffect(() => {
     // console.log(listAdmin);
   }, [listAdmin]);
-  useEffect(() => {
-    console.log(resultArticleList[0]);
-  }, [resultArticleList]);
 
   return (
     <>
@@ -257,11 +267,12 @@ export default function Blogs({ blogs, categories }) {
                     <>run</>
                   )}
                 </div>
-                {resultArticleList.length > 0 ? (
-                  accurateArticleList.current
-                ) : (
-                  <>NOT FOUND m(__)m</>
-                )}
+                {resultArticleList.length > 0
+                  ? accurateArticleList.current
+                  : (() => {
+                      errorPop("<span>記事は見つかりませんでした</span>");
+                      return <>NOT FOUND m(__)m</>;
+                    })()}
               </CardList>
             </div>
             <Pagination
@@ -291,7 +302,7 @@ export default function Blogs({ blogs, categories }) {
         </FieldSide>
       </MainWrap>
       <Footer />
-      <div id="jsErrorPop" class="errorPopWrap"></div>
+      <div id="jsErrorPopWrap" class="errorPopWrap"></div>
     </>
   );
 }
