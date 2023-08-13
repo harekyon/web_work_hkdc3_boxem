@@ -25,6 +25,7 @@ import Pagination from "@/components/atomic/Pagination";
 import { useAtom } from "jotai";
 import { atomWithHash } from "jotai-location";
 import { errorPop } from "@/libs/hp_assets";
+import BlogMainContent from "@/components/atomic/BlogMainContent";
 
 // import { errorPop } from "@/libs/hp_assets";
 
@@ -38,14 +39,12 @@ const paginationPerPage = 3;
 
 const initJotaiTag = atomWithHash(`tag`);
 const initJotaiPage = atomWithHash(`page`);
-console.log(initJotaiPage);
 
 export default function Blogs({ blogs, categories }) {
   const [page, setPage] = useState(0);
   const [tag, setTag] = useState(formatTag(null, "All"));
   const [jotaiTag, setJotaiTag] = useAtom(initJotaiTag);
   const [jotaiPage, setJotaiPage] = useAtom(initJotaiPage);
-  // const [articleNoneError, setArticleNoneError] = useState(false);
   const articleNoneError = useRef(false);
 
   const sliceByNumber = (array, number) => {
@@ -214,7 +213,7 @@ export default function Blogs({ blogs, categories }) {
       <MainWrap>
         <FieldMain>
           <SectionTitle>BLOG LIST</SectionTitle>
-          <div className={styles["main--wrap"]}>
+          <BlogMainContent>
             <Breadcrumb breadcrumb={breadcrumb}></Breadcrumb>
             <TagList tag={listAdmin.tag}>
               <TagUnit
@@ -294,7 +293,7 @@ export default function Blogs({ blogs, categories }) {
               setJotaiPage={setJotaiPage}
             ></Pagination>
             <div className={styles["main--side"]}></div>
-          </div>
+          </BlogMainContent>
         </FieldMain>
         <FieldSide>
           <SectionTitle>SIDE</SectionTitle>

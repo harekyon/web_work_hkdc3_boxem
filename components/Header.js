@@ -23,28 +23,28 @@ export default function Header() {
       menuRect.style.cssText =
         "margin-right:5px;transform:translateX(10px)scaleX(1.06)scaleY(1.2);opacity:1;";
     });
-    menuCgRef.addEventListener("mouseover", () => {
-      // console.log("cg");
-      menuRect.style.cssText =
-        "transform:translateX(154.5px)scaleX(1.06)scaleY(1.2);opacity:1;";
-    });
-    menuDesignRef.addEventListener("mouseover", () => {
-      // console.log("design");
-      menuRect.style.cssText =
-        "transform:translateX(298px)scaleX(1.06)scaleY(1.2);opacity:1;";
-    });
+    // menuCgRef.addEventListener("mouseover", () => {
+    //   // console.log("cg");
+    //   menuRect.style.cssText =
+    //     "transform:translateX(154.5px)scaleX(1.06)scaleY(1.2);opacity:1;";
+    // });
+    // menuDesignRef.addEventListener("mouseover", () => {
+    //   // console.log("design");
+    //   menuRect.style.cssText =
+    //     "transform:translateX(298px)scaleX(1.06)scaleY(1.2);opacity:1;";
+    // });
     menuWebRef.addEventListener("mouseout", () => {
       // console.log("web");
       menuRect.style.cssText = "transform:translateX(3px);opacity:0;";
     });
-    menuCgRef.addEventListener("mouseout", () => {
-      // console.log("cg");
-      menuRect.style.cssText = "transform:translateX(146px);opacity:0;";
-    });
-    menuDesignRef.addEventListener("mouseout", () => {
-      // console.log("design");
-      menuRect.style.cssText = "transform:translateX(290px);opacity:0;";
-    });
+    // menuCgRef.addEventListener("mouseout", () => {
+    //   // console.log("cg");
+    //   menuRect.style.cssText = "transform:translateX(146px);opacity:0;";
+    // });
+    // menuDesignRef.addEventListener("mouseout", () => {
+    //   // console.log("design");
+    //   menuRect.style.cssText = "transform:translateX(290px);opacity:0;";
+    // });
   }, []);
   return (
     <header className={styles["header-bg"]}>
@@ -54,15 +54,15 @@ export default function Header() {
         </div>
         <div className={styles["header__menu"]}>
           <Menu>
-            <MenuButton href="/blogs#tag=%22web%22&page=1" id="menu-web">
-              WEB
+            <MenuButton href="/blogs/about" id="menu-web">
+              ABOUT
             </MenuButton>
-            <MenuButton href="/blogs#tag=%22cg%22&page=1" id="menu-cg">
+            {/* <MenuButton href="/blogs#tag=%22cg%22&page=1" id="menu-cg">
               CG
             </MenuButton>
             <MenuButton href="/blogs#tag=%22design%22&page=1" id="menu-design">
               DESIGN
-            </MenuButton>
+            </MenuButton> */}
           </Menu>
         </div>
       </div>
