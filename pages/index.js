@@ -189,7 +189,6 @@ export default function Home({ blogs }) {
               row-gap: 10px;
             `}
           >
-            {console.log(blogs[0])}
             <CubeArticle
               boxWidth="400px"
               boxHeight="100%"

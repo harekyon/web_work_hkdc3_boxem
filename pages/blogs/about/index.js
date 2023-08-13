@@ -23,14 +23,6 @@ const breadcrumb = [
 // };
 // useEvent(globalThis, "scroll", scrollFunc);
 export default function Blogs() {
-  useEffect(() => {
-    const aaa = (e) => {
-      console.log(e);
-    };
-    window.addEventListener("scroll", (e) => {
-      aaa(e);
-    });
-  });
   return (
     <>
       <Header></Header>
