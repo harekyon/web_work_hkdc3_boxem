@@ -8,7 +8,6 @@ export default function ArticleMain({ children }) {
   useEffect(() => {
     hljs.initHighlightingOnLoad();
   });
-  console.log(typeof children);
   return (
     <div className={styles["article-main--wrap"]}>
       {/* <Link
