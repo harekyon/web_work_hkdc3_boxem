@@ -18,7 +18,6 @@ export default function Pagination({
               ${page === idx ? "pointer-events:none;background:red;" : ""}
             `}
             onClick={() => {
-              console.log(idx);
               setJotaiPage(idx + 1);
             }}
             data-isactive={page === idx ? "true" : "false"}

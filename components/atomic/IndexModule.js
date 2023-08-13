@@ -6,7 +6,6 @@ export default function IndexModule() {
   useEffect(() => {
     let tableOfContents = document.getElementById("tableOfContents");
     const articleMainSide = document.getElementById("article-main--side");
-    console.log(articleMainSide.clientWidth);
     window.addEventListener(
       "scroll",
       () => {
