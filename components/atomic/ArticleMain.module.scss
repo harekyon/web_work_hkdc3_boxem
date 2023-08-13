@@ -30,7 +30,7 @@
       margin: 40px 0 10px;
       // padding: 0 10px;
       color: #ffffffec;
-      border-bottom: solid 2px $c-pre1;
+      border-bottom: solid 2px #2f3c4f;
     }
     h3 {
       // background: #1a7f8e1b;
@@ -81,6 +81,7 @@
   }
   &--side {
     width: calc(100% - 70%);
+    position: relative;
   }
 }
 @media screen and (min-width:#{$breakpoint}px) {
