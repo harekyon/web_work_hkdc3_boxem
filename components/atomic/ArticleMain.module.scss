@@ -15,6 +15,9 @@
     p {
       @include font(14, 1.8, 0.05, 300);
       margin: 6px 0;
+      @include mq(sp) {
+        @include font(12, 1.8, 0.05, 300);
+      }
     }
     a {
       // display:inline-block;
@@ -31,6 +34,10 @@
       // padding: 0 10px;
       color: #ffffffec;
       border-bottom: solid 2px #2f3c4f;
+      @include mq(sp) {
+        margin: 20px 0 10px;
+        @include font(20, 1.8, 0.05, 700);
+      }
     }
     h3 {
       // background: #1a7f8e1b;
