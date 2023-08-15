@@ -20,6 +20,9 @@ body {
     linear-gradient(90deg, transparent 19px, #ffffff11 20px);
   background-size: 20px 20px;
   scroll-behavior: smooth;
+  @include mq(sp) {
+    height: 100svh;
+  }
 }
 
 html {
