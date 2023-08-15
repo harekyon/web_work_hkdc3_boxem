@@ -135,7 +135,9 @@ a {
   top: 10vh;
   right: 0;
   // background: rgba(67, 5, 5, 0.911);
+  overflow-x: hidden;
   transition: 0.3s;
+  z-index: 10000000000000000000;
   p {
     @include font(12, 1.5, 0.05, 400);
   }
