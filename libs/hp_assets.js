@@ -4,7 +4,7 @@ export function errorPop(errorText) {
   errorPopWrap.insertAdjacentHTML(
     "beforeend",
     `
-        <p class="errorUnit" id="error${calcLength}" style="transform:translateY(20px);"><span style="font-weight:700;padding-bottom:4px;">ERROR</span><br/>${errorText}</p>
+        <p class="errorUnit" id="error${calcLength}" style=""><span style="font-weight:700;padding-bottom:4px;">ERROR</span><br/>${errorText}</p>
     `
   );
   // errorPopWrap.classList.add("errorPopAnim");
