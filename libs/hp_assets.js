@@ -15,7 +15,7 @@ export function errorPop(errorText) {
   }, 200);
   setTimeout(() => {
     errorUnit.classList.remove("errorPopAnim");
-    document.getElementById("jsErrorPopWrap").children[0].offsetHeight;
+    // document.getElementById("jsErrorPopWrap").children[0].offsetHeight;
   }, 4500);
   setTimeout(() => {
     document.getElementById("jsErrorPopWrap").children[0].remove();
