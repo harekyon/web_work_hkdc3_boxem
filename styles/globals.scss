@@ -161,3 +161,50 @@ a {
 .errorPopAnim {
   right: 0;
 }
+.hover-pop {
+  &--wrap {
+    // background: red;
+    position: relative;
+    &:hover {
+      .hover-pop__unit {
+        opacity: 1;
+        transition: 0.2s;
+      }
+      .hover-pop__target {
+        background: #f4ee3d6f;
+        transition: 0.1s;
+        cursor: help;
+      }
+    }
+  }
+  &__target {
+    background: #e0dc6b2f;
+    padding-left: 2px;
+    padding-right: 2px;
+    margin-left: 2px;
+    margin-right: 2px;
+    transition: 0.3s;
+  }
+  &__unit {
+    width: 300px;
+    height: auto;
+    display: flex;
+    flex-wrap: nowrap;
+    background: #edededcc;
+    padding: 20px 10px;
+    opacity: 0;
+    position: absolute;
+    top: -100px;
+    right: -20px;
+    transition: 0.4s;
+    color: #060612;
+    @include font(14, 1.5, 0.05, 700);
+    pointer-events: none;
+    // &:hover {
+    //   opacity: 1;
+    //   transition: 0.2s;
+    // }
+  }
+}
+.textBgRed {
+}

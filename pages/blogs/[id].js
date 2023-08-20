@@ -21,8 +21,60 @@ import { css } from "@emotion/react";
 import Footer from "@/components/Footer";
 import Meta from "@/components/Meta";
 
+const popPreset = {
+  useEffect:
+    "<span class='hover-pop--wrap'>useEffect<span class='hover-pop__unit'>useEffectはコンポーネントが読み込み終了すると実行されるReactのhooks(関数群)です</span></span>",
+  useState:
+    "<span class='hover-pop--wrap'><span class='hover-pop__unit'>useStateはReactのhooks(関数群)です</span><span class='hover-pop__target'>useState</span></span>",
+  useRef: "<span>useRef</span>",
+  // errorUnit:
+  //   "<span class='hover-pop--wrap'><span class='hover-pop__unit'>useStateはReactのhooks(関数群)です</span><span class='hover-pop__target'>useState</span></span>",
+};
+const getPresetKeyArray = (preset) => {
+  return Object.keys(preset);
+};
+const popPresetKeyArray = getPresetKeyArray(popPreset);
+
 export default function BlogId({ data }) {
-  console.log(data.id);
+  let originalString = data.content;
+  popPresetKeyArray.map((p, idx) => {
+    // console.log(p);
+    // console.log(popPreset[p]);
+    let searchString = p;
+    let insertString = popPreset[p];
+    let positions = [];
+    let position = originalString.indexOf(searchString);
+    while (position !== -1) {
+      //１：削除をする文字列の全ての位置をpositionsに格納する
+      positions.push(position - searchString.length * positions.length);
+      position = originalString.indexOf(searchString, position + 1);
+    }
+    if (positions.length > 0) {
+      // 見つかった位置に挿入を行う
+      var modifiedString = originalString;
+      var offset = 0;
+
+      //２：文字列を削除する
+      for (var i = 0; i < positions.length; i++) {
+        modifiedString = modifiedString.replace(searchString, "");
+      }
+      //
+      for (var i = 0; i < positions.length; i++) {
+        var index = positions[i] + offset;
+        modifiedString =
+          modifiedString.slice(0, index) +
+          insertString +
+          modifiedString.slice(index);
+        offset += insertString.length;
+      }
+      // console.log(modifiedString);
+      originalString = modifiedString;
+    } else {
+      console.log("検索文字列が見つかりませんでした。");
+    }
+  });
+
+  console.log(originalString);
   return (
     <>
       <Meta
@@ -41,7 +93,7 @@ export default function BlogId({ data }) {
             <ArticleProperty data={data}></ArticleProperty>
             <ArticleTitle>{data.title}</ArticleTitle>
             <ArticleThumbnail thumbnail={data.thumbnail}></ArticleThumbnail>
-            <ArticleMain>{data.content}</ArticleMain>
+            <ArticleMain>{originalString}</ArticleMain>
           </SectionMain>
         </FieldMain>
         {/* <FieldSide>
