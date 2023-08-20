@@ -19,10 +19,20 @@ import ArticleThumbnail from "@/components/atomic/ArticleThumbnail";
 import SidePanelProfile from "@/components/atomic/SidePanelProfile";
 import { css } from "@emotion/react";
 import Footer from "@/components/Footer";
+import Meta from "@/components/Meta";
 
 export default function BlogId({ data }) {
+  console.log(data.id);
   return (
     <>
+      <Meta
+        ogTitleHead="HKTL"
+        ogTitle={data.title}
+        ogDescription={data.description}
+        ogKeywords="null"
+        ogUrl={`https://harekyon.com/blogs/${data.id}`}
+      ></Meta>
+      <title>{`HKTL - ${data.title}`}</title>
       <Header></Header>
       <MainWrap>
         <FieldMain data={data}>
