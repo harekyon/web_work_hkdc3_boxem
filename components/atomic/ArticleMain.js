@@ -16,6 +16,7 @@ export default function ArticleMain({ children }) {
       /> */}
       {typeof children === "string" ? (
         <div
+          id="articleMainContents"
           dangerouslySetInnerHTML={{ __html: children }}
           className={styles["article-main--contents"]}
         ></div>
