@@ -12,7 +12,7 @@ export default function Document() {
         // background: black;
       `}
     >
-      {/* <HeadGroup /> */}
+      <HeadGroup />
       <Link
         rel="stylesheet"
         href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/grayscale.min.css"
