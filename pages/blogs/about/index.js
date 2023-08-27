@@ -18,13 +18,10 @@ const breadcrumb = [
   { name: "ABOUT", href: "/blogs/about" },
 ];
 
-// const scrollFunc = () => {
-//   console.log("sssss");
-// };
-// useEvent(globalThis, "scroll", scrollFunc);
 export default function Blogs() {
   return (
     <>
+      <title>Hはれぽこてっくろぐについて</title>
       <Header></Header>
       <MainWrap>
         <FieldMain>

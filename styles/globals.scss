@@ -161,3 +161,70 @@ a {
 .errorPopAnim {
   right: 0;
 }
+.hover-pop {
+  &--wrap {
+    // background: red;
+    display: inline-block;
+    position: relative;
+    line-break: strict;
+    @media screen and (min-width: 500px) {
+      &:hover {
+        .hover-pop__unit {
+          opacity: 1;
+          transition: 0.2s;
+        }
+        .hover-pop__target {
+          background: #f4ee3d6f;
+          transition: 0.1s;
+          cursor: help;
+        }
+      }
+    }
+  }
+  &__target {
+    background: #e0dc6b2f;
+    @media screen and (max-width: 500px) {
+      background: #7b7b7b2f;
+    }
+    padding-left: 4px;
+    padding-right: 4px;
+    margin-left: 2px;
+    margin-right: 2px;
+    transition: 0.3s;
+  }
+  &__unit {
+    width: 300px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    background: #edededf0;
+    background: rgb(6 9 22 / 94%);
+    border: solid 1px rgba(166, 166, 166, 0.197);
+    // border-radius: 5px;
+    padding: 15px;
+    opacity: 0;
+    position: absolute;
+    // top: -100px;
+    left: 2px;
+    transition: 0.4s;
+    color: #060612;
+    color: rgb(228, 228, 228);
+    @include font(12, 1.5, 0.05, 500);
+    pointer-events: none;
+    img {
+      width: 100%;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+    // &:hover {
+    //   opacity: 1;
+    //   transition: 0.2s;
+    // }
+    &::before {
+      width: 100%;
+    }
+  }
+}
+.textBgRed {
+}

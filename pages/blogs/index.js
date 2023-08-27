@@ -26,6 +26,7 @@ import { useAtom } from "jotai";
 import { atomWithHash } from "jotai-location";
 import { errorPop } from "@/libs/hp_assets";
 import BlogMainContent from "@/components/atomic/BlogMainContent";
+import Meta from "@/components/Meta";
 
 // import { errorPop } from "@/libs/hp_assets";
 
@@ -209,6 +210,12 @@ export default function Blogs({ blogs, categories }) {
 
   return (
     <>
+      <Meta
+        ogTitleHead="HKTL"
+        ogTitle="BLOG"
+        ogDescription="WEBなどの技術ブログです"
+        ogUrl={`https://harekyon.com/blogs/`}
+      ></Meta>
       <Header></Header>
       <MainWrap>
         <FieldMain>

@@ -23,7 +23,7 @@ $c-articleBorderBottom: rgba(255, 255, 255, 0.1333333333);
 $c-breadcrumbAlpha: #d3d3d3;
 
 /*=======================*/
-// Value
+// breakpoints
 /*=======================*/
 $maxWidth: 1440;
 $SPDesignWidth: 375;
@@ -43,9 +43,14 @@ $breakpoints: (
     @content;
   }
 }
+/*=======================*/
+// margin
+/*=======================*/
+$paddingArticleVertical: 20;
+$paddingArticleHorizontal: 30;
 
 /*=======================*/
-// Value
+// easing
 /*=======================*/
 $easeOutCubic: cubic-bezier(0.33, 1, 0.68, 1);
 $easeOutCirc: cubic-bezier(0, 0.55, 0.45, 1);
