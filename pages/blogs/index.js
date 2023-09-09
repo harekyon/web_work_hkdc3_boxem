@@ -41,7 +41,7 @@ const paginationPerPage = 3;
 const initJotaiTag = atomWithHash(`tag`);
 const initJotaiPage = atomWithHash(`page`);
 
-export default function Blogs({ blogs, categories }) {
+export default function Blogs({ blogs, categories, poppreset }) {
   const [page, setPage] = useState(0);
   const [tag, setTag] = useState(formatTag(null, "All"));
   const [jotaiTag, setJotaiTag] = useAtom(initJotaiTag);
@@ -327,10 +327,12 @@ export default function Blogs({ blogs, categories }) {
 export const getStaticProps = async () => {
   const data = await client.get({ endpoint: "blogs" });
   const categories = await client.get({ endpoint: "categories" });
+  const poppreset = await client.get({ endpoint: "poppreset" });
   return {
     props: {
       blogs: data.contents,
       categories: categories.contents,
+      poppreset: poppreset.contents,
     },
   };
 };

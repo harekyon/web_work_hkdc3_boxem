@@ -39,11 +39,12 @@ const getPresetKeyArray = (preset) => {
 const popPresetKeyArray = getPresetKeyArray(popPreset);
 // let stringData = "";
 // let preChildArray = [];
-export default function BlogId({ data }) {
+export default function BlogId({ data, poppreset }) {
   const [originalString, setOriginalString] = useState(data.content);
   const stringData = useRef("");
   const preChildArray = useRef([]);
   const transformedArray = useRef([]);
+  console.log(poppreset);
   useLayoutEffect(() => {
     function removeAndStackPreTag() {
       const preArray = document.getElementsByTagName("pre");
@@ -221,10 +222,12 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async (context) => {
   const id = context.params.id;
   const data = await client.get({ endpoint: "blogs", contentId: id });
+  const poppreset = await client.get({ endpoint: "poppreset" });
 
   return {
     props: {
       data: data,
+      poppreset: poppreset.contents,
     },
   };
 };
