@@ -45,6 +45,7 @@ export default function Home({ blogs }) {
         ogKeywords="web,3d,js,react,next,threejs,blender,デジタルファブリケーション,fab"
         ogUrl={`https://harekyon.com/`}
       ></Meta>
+      <title>{`HKDC`}</title>
       <main className={styles["main"]}>
         <div id="main--wrap" className={styles["main--wrap"]}>
           <nav className={styles["nav--wrap"]}>
