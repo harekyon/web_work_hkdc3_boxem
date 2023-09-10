@@ -1,4 +1,3 @@
-import Head from "next/head";
 // import { prodHost } from "../features/core";
 
 export default function Meta({
@@ -7,22 +6,22 @@ export default function Meta({
   isUseSiteName = false,
   ogSiteName = "はれぽこてっくろぐ",
   ogDescription = "WEBとか3Dとか",
-  ogKeywords = "web,3d,js,react,next,threejs,blender,デジタルファブリケーション,もの作り,fab",
+  ogKeywords = "web,3d,js,react,next,threejs,blender,デジタルファブリケーション,fab",
   ogImgPath = "/example_thumbnail2.png",
   ogType = "website",
   ogUrl = "/",
 }) {
   return (
-    <Head>
+    <>
       <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0"
       ></meta>
       <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
       <meta charset="utf-8"></meta>
-      <title>
+      {/* <title>
         {ogTitleHead} - {ogTitle}
-      </title>
+      </title> */}
       {isUseSiteName ? (
         <meta property="og:site_name" content={"HKTL - " + { ogTitle }}></meta>
       ) : (
@@ -34,6 +33,6 @@ export default function Meta({
       <meta property="og:url" content={ogUrl}></meta>
       <meta property="og:image" content={ogImgPath}></meta>
       <link rel="icon" href={`/favicon.ico`}></link>
-    </Head>
+    </>
   );
 }

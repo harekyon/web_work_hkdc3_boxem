@@ -173,13 +173,13 @@ export default function BlogId({ data, poppreset }) {
   // console.log(originalString);
   return (
     <>
-      {/* <Meta
+      <Meta
         ogTitleHead="HKTL"
         ogTitle={data.title}
         ogDescription={data.description}
         ogKeywords="null"
         ogUrl={`https://harekyon.com/blogs/${data.id}`}
-      ></Meta> */}
+      ></Meta>
       <title>{`HKTL - ${data.title}`}</title>
       <Header></Header>
       <MainWrap>

@@ -39,12 +39,12 @@ export default function Home({ blogs }) {
   }, []);
   return (
     <>
-      {/* <Meta
+      <Meta
         ogTitle={`TOP`}
         ogDescription="くりえいしょん"
-        ogKeywords="web,3d,js,react,next,threejs,blender,デジタルファブリケーション,もの作り,fab"
+        ogKeywords="web,3d,js,react,next,threejs,blender,デジタルファブリケーション,fab"
         ogUrl={`https://harekyon.com/`}
-      ></Meta> */}
+      ></Meta>
       <main className={styles["main"]}>
         <div id="main--wrap" className={styles["main--wrap"]}>
           <nav className={styles["nav--wrap"]}>

@@ -210,12 +210,12 @@ export default function Blogs({ blogs, categories, poppreset }) {
 
   return (
     <>
-      {/* <Meta
+      <Meta
         ogTitleHead="HKTL"
         ogTitle="BLOG"
-        ogDescription="WEBなどの技術ブログです"
+        ogDescription="ゆったりてっくぶろぐ"
         ogUrl={`https://harekyon.com/blogs/`}
-      ></Meta> */}
+      ></Meta>
       <Header></Header>
       <MainWrap>
         <FieldMain>
