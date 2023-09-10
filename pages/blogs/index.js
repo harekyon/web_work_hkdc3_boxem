@@ -36,7 +36,7 @@ const breadcrumb = [
 ];
 
 const cardunitTransitionDelayDiff = 50;
-const paginationPerPage = 3;
+const paginationPerPage = 12;
 
 const initJotaiTag = atomWithHash(`tag`);
 const initJotaiPage = atomWithHash(`page`);
