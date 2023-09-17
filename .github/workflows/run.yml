@@ -35,6 +35,8 @@ jobs:
           API_KEY: ${{ secrets.API_KEY }}
           SERVICE_DOMAIN: ${{ secrets.SERVICE_DOMAIN }}
           NEXT_PUBLIC_GA_ID: ${{secrets.NEXT_PUBLIC_GA_ID}}
+          UNIT_API_KEY: ${{secrets.UNIT_API_KEY}}
+          UNIT_SERVICE_DOMAIN: ${{secrets.UNIT_SERVICE_DOMAIN}}
         run: npm run build
 
       # - name: Export Next.js app
