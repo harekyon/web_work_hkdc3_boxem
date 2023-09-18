@@ -165,7 +165,6 @@ export default function BlogId({ data, poppreset }) {
     //   });
     // }
   }, []);
-  useEffect(() => {}, []);
 
   // console.log(preChildArray.current);]
 

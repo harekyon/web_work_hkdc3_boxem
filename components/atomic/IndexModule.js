@@ -1,4 +1,3 @@
-import useEvent from "@react-hook/event";
 import styles from "./IndexModule.module.scss";
 import { useEffect, useState } from "react";
 export default function IndexModule() {
@@ -26,6 +25,11 @@ export default function IndexModule() {
     setHeads(Array.from(document.querySelectorAll("h1,h2,h3")));
   }, []);
 
+  function autoScroll(id) {
+    const ele = document.getElementById(id);
+    ele.scrollIntoView({ behavior: "smooth" });
+  }
+
   return (
     <div id="tableOfContents" className={styles["index-module"]}>
       <div className={styles["index-module__mokuji"]}>目次</div>
@@ -34,14 +38,14 @@ export default function IndexModule() {
           return <></>;
         } else if (h.tagName === "H2") {
           return (
-            <div key={idx} className={styles["index-module__h2"]}>
-              <span
-                onClick={() => {
-                  heads[idx].scrollIntoView();
-                }}
-              >
-                {h.innerText}
-              </span>
+            <div
+              onClick={() => {
+                autoScroll(heads[idx].getAttribute("id"));
+              }}
+              key={idx}
+              className={styles["index-module__h2"]}
+            >
+              <span>{h.innerText}</span>
             </div>
           );
         } else if (h.tagName === "H3") {
@@ -49,7 +53,7 @@ export default function IndexModule() {
             <span
               key={idx}
               onClick={() => {
-                heads[idx].scrollIntoView();
+                autoScroll(heads[idx].getAttribute("id"));
               }}
             >
               <div className={styles["index-module__h3"]}>{h.innerText}</div>
@@ -60,7 +64,7 @@ export default function IndexModule() {
             <span
               key={idx}
               onClick={() => {
-                heads[idx].scrollIntoView();
+                autoScroll(heads[idx].getAttribute("id"));
               }}
             >
               <div className={styles["index-module__h4"]}>{h.innerText}</div>
