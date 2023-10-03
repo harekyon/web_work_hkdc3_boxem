@@ -1,6 +1,6 @@
-import HeadGroup from "@/components/HeadGroup";
+import HeadGroup from "@/components/Seo";
 import Image from "next/image";
-import styles from "@/styles/Blogs.module.scss";
+import styles from "@/styles/Chokoz.module.scss";
 
 // import { client } from "../libs/client";
 import { client_unit } from "../../libs/client";
@@ -90,7 +90,9 @@ export default function Blogs({ blogs, categories, poppreset }) {
     // document.documentElement.style.backgroundImage =
     //   "linear-gradient(90deg, rgba(145, 175, 175, 1), rgba(188, 146, 166, 1));";
     document.documentElement.style.background =
-      "linear-gradient(90deg, rgba(58, 79, 79, 1), rgba(137, 81, 108, 1))";
+      "linear-gradient(90deg, rgba(255, 198, 130, 1), rgba(255, 226, 95, 1))";
+
+    document.body.style.background = "none";
   }, []);
 
   useEffect(() => {
@@ -219,109 +221,87 @@ export default function Blogs({ blogs, categories, poppreset }) {
         ogUrl={`https://harekyon.com/blogs/`}
       ></Meta>
       <title>{`HKTL - BLOG`}</title>
-      <Header title="UNIT" url="/unit"></Header>
-      <MainWrap>
-        <FieldMain>
-          <SectionTitle>BLOG LIST</SectionTitle>
-          <BlogMainContent>
-            <Breadcrumb breadcrumb={breadcrumb}></Breadcrumb>
-            <TagList tag={listAdmin.tag}>
+      {/* <Header title="UNIT" url="/unit"></Header> */}
+      <main className={styles["main--wrap"]}>
+        <div className={styles["main__bg"]}></div>
+        <Breadcrumb breadcrumb={breadcrumb}></Breadcrumb>
+        <TagList tag={listAdmin.tag}>
+          <TagUnit
+            tag={listAdmin.tag}
+            setTag={setTag}
+            setPage={setPage}
+            setJotaiTag={setJotaiTag}
+            setJotaiPage={setJotaiPage}
+            inputId="All"
+          >
+            All
+          </TagUnit>
+
+          {categoryList.current.map((c, idx) => {
+            return (
               <TagUnit
+                categoryList={categoryList}
+                key={idx}
                 tag={listAdmin.tag}
                 setTag={setTag}
-                setPage={setPage}
+                setPage={setTag}
                 setJotaiTag={setJotaiTag}
                 setJotaiPage={setJotaiPage}
-                inputId="All"
+                inputId={c.name}
               >
-                All
+                {c.name}
               </TagUnit>
-
-              {categoryList.current.map((c, idx) => {
-                return (
-                  <TagUnit
-                    categoryList={categoryList}
-                    key={idx}
-                    tag={listAdmin.tag}
-                    setTag={setTag}
-                    setPage={setTag}
-                    setJotaiTag={setJotaiTag}
-                    setJotaiPage={setJotaiPage}
-                    inputId={c.name}
-                  >
-                    {c.name}
-                  </TagUnit>
-                );
-              })}
-            </TagList>
-            <div className={`${styles["main--card-list"]} `}>
-              <CardList>
-                {/* divで隠しているこの仕様はソート中の不自然な描画を見せないようにするため */}
-                <div
-                  css={css`
-                    display: none;
-                  `}
-                >
-                  {resultArticleList[listAdmin.page] !== undefined ? (
-                    (accurateArticleList.current = resultArticleList[
-                      listAdmin.page
-                    ].map((b, idx) => {
-                      return (
-                        <CardUnit
-                          key={idx}
-                          id={b.id}
-                          title={b.title}
-                          thumbnail={b.thumbnail.url}
-                          publishedAt={formatDateDot(
-                            convertDateStringToDate(b.createdAt)
-                          )}
-                          category={b.category?.name}
-                          cardunitTransitionDelayDiff={
-                            cardunitTransitionDelayDiff
-                          }
-                          delayAnimValue={idx}
-                        />
-                      );
-                    }))
-                  ) : (
-                    <>run</>
-                  )}
-                </div>
-                {resultArticleList.length > 0
-                  ? accurateArticleList.current
-                  : (() => {
-                      // errorPop("<span>記事は見つかりませんでした</span>");
-                      return <>NOT FOUND m(__)m</>;
-                    })()}
-              </CardList>
+            );
+          })}
+        </TagList>
+        <div className={`${styles["main--card-list"]} `}>
+          <CardList>
+            {/* divで隠しているこの仕様はソート中の不自然な描画を見せないようにするため */}
+            <div
+              css={css`
+                display: none;
+              `}
+            >
+              {resultArticleList[listAdmin.page] !== undefined ? (
+                (accurateArticleList.current = resultArticleList[
+                  listAdmin.page
+                ].map((b, idx) => {
+                  return (
+                    <CardUnit
+                      key={idx}
+                      id={b.id}
+                      title={b.title}
+                      thumbnail={b.thumbnail.url}
+                      publishedAt={formatDateDot(
+                        convertDateStringToDate(b.createdAt)
+                      )}
+                      category={b.category?.name}
+                      cardunitTransitionDelayDiff={cardunitTransitionDelayDiff}
+                      delayAnimValue={idx}
+                    />
+                  );
+                }))
+              ) : (
+                <>run</>
+              )}
             </div>
-            <Pagination
-              resultArticleList={resultArticleList}
-              paginationPerPage={paginationPerPage}
-              page={page}
-              setPage={setPage}
-              setJotaiPage={setJotaiPage}
-            ></Pagination>
-            <div className={styles["main--side"]}></div>
-          </BlogMainContent>
-        </FieldMain>
-        {/* <FieldSide>
-          <SectionTitle>SIDE</SectionTitle>
-          <div
-            css={css`
-              width: 100%;
-              height: 100%;
-              padding: 0 10px 10px;
-              display: flex;
-              flex-direction: column;
-              row-gap: 10px;
-            `}
-          >
-            <SidePanelProfile></SidePanelProfile>
-          </div>
-        </FieldSide> */}
-      </MainWrap>
-      <Footer />
+            {resultArticleList.length > 0
+              ? accurateArticleList.current
+              : (() => {
+                  // errorPop("<span>記事は見つかりませんでした</span>");
+                  return <>NOT FOUND m(__)m</>;
+                })()}
+          </CardList>
+        </div>
+        <Pagination
+          resultArticleList={resultArticleList}
+          paginationPerPage={paginationPerPage}
+          page={page}
+          setPage={setPage}
+          setJotaiPage={setJotaiPage}
+        ></Pagination>
+        <div className={styles["main--side"]}></div>
+      </main>
       <div id="jsErrorPopWrap" class="errorPopWrap"></div>
     </>
   );

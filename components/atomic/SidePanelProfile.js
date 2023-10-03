@@ -15,7 +15,7 @@ export default function SidePanelProfile() {
       <span className={styles["panel-profile__job"]}>作り屋</span>
       <span className={styles["panel-profile__name"]}>harekyon</span>
       <span className={styles["panel-profile__prof"]}>
-        好きなアクリルはカナセライト
+        フロントエンジニア(22年～)
       </span>
       <span className={styles["panel-profile__prof"]}></span>
     </div>
