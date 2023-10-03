@@ -21,21 +21,21 @@ const breadcrumb = [
 export default function Blogs() {
   return (
     <>
-      <title>Hはれぽこてっくろぐについて</title>
+      <title>POKO TECH について</title>
       <Header></Header>
       <MainWrap>
         <FieldMain>
           <SectionTitle>BLOG LIST</SectionTitle>
           <BlogMainContent>
             <Breadcrumb breadcrumb={breadcrumb}></Breadcrumb>
-            <SectionMain>
-              <ArticleMain>
+            <SectionMain info={false}>
+              <ArticleMain info={false}>
                 <h2
                   css={css`
                     margin-top: 0px !important;
                   `}
                 >
-                  はれぽこてっくぶろぐについて
+                  POKO TECHについて
                 </h2>
                 <p>
                   このサイトは筆者harepokoが日々の制作から得た知識を脳死でも分かるようにかみ砕いて説明するテックブログです。

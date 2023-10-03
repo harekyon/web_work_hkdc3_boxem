@@ -1,4 +1,4 @@
-import HeadGroup from "@/components/HeadGroup";
+import HeadGroup from "@/components/Seo";
 import { css } from "@emotion/react";
 import { Html, Main, NextScript } from "next/document";
 import Link from "next/link";
@@ -12,7 +12,6 @@ export default function Document() {
         // background: black;
       `}
     >
-      <HeadGroup />
       <Link
         rel="stylesheet"
         href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/grayscale.min.css"

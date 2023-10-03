@@ -4,7 +4,7 @@ import hljs from "highlight.js";
 import Link from "next/link";
 import IndexModule from "./IndexModule";
 
-export default function ArticleMain({ children }) {
+export default function ArticleMain({ info = true, children }) {
   useEffect(() => {
     hljs.initHighlightingOnLoad();
   });
@@ -24,9 +24,13 @@ export default function ArticleMain({ children }) {
         <div className={styles["article-main--contents"]}>{children}</div>
       )}
 
-      <div id="article-main--side" className={styles["article-main--side"]}>
-        <IndexModule></IndexModule>
-      </div>
+      {info ? (
+        <div id="article-main--side" className={styles["article-main--side"]}>
+          <IndexModule></IndexModule>
+        </div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 }

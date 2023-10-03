@@ -1,4 +1,4 @@
-import HeadGroup from "@/components/HeadGroup";
+import HeadGroup from "@/components/Seo";
 import Image from "next/image";
 import styles from "@/styles/Blogs.module.scss";
 
@@ -27,6 +27,7 @@ import { atomWithHash } from "jotai-location";
 import { errorPop } from "@/libs/hp_assets";
 import BlogMainContent from "@/components/atomic/BlogMainContent";
 import Meta from "@/components/Meta";
+import Seo from "@/components/Seo";
 
 // import { errorPop } from "@/libs/hp_assets";
 
@@ -210,13 +211,12 @@ export default function Blogs({ blogs, categories, poppreset }) {
 
   return (
     <>
-      <Meta
-        ogTitleHead="HKTL"
-        ogTitle="BLOG"
-        ogDescription="ゆったりてっくぶろぐ"
-        ogUrl={`https://harekyon.com/blogs/`}
-      ></Meta>
-      <title>{`HKTL - BLOG`}</title>
+      <Seo
+        title="HKTL - BLOG"
+        description="ゆったりてっくぶろぐ"
+        keywords="web,3d,js,react,next,threejs,blender,デジタルファブリケーション,fab"
+        url="https://harekyon.com/blogs/"
+      />
       <Header></Header>
       <MainWrap>
         <FieldMain>

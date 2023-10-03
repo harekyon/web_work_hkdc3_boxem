@@ -23,6 +23,7 @@ import Meta from "@/components/Meta";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 import hljs from "highlight.js";
+import Seo from "@/components/Seo";
 
 const popPreset = {
   useEffect:
@@ -172,14 +173,13 @@ export default function BlogId({ data, poppreset }) {
   // console.log(originalString);
   return (
     <>
-      <Meta
-        ogTitleHead="HKTL"
-        ogTitle={data.title}
-        ogDescription={data.description}
-        ogKeywords="null"
-        ogUrl={`https://harekyon.com/blogs/${data.id}`}
-      ></Meta>
-      <title>{`HKTL - ${data.title}`}</title>
+      <Seo
+        title={data.title}
+        description={data.description}
+        keywords="web,3d,js,react,next,threejs,blender,デジタルファブリケーション,fab"
+        url={`https://harekyon.com/blogs/${data.id}`}
+      />
+
       <Header></Header>
       <MainWrap>
         <FieldMain data={data}>
