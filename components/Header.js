@@ -4,12 +4,13 @@ import Menu from "./atomic/Menu";
 import MenuButton from "./atomic/MenuButton";
 import { useEffect, useLayoutEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 let menuWebRef = null;
 let menuCgRef = null;
 let menuDesignRef = null;
 let menuRect = null;
-export default function Header({ title = "HKTB", url = "/blogs" }) {
+export default function Header({ title = "POKO", url = "/blogs" }) {
   useLayoutEffect(() => {
     menuWebRef = document.getElementById("menu-web");
     menuCgRef = document.getElementById("menu-cg");
@@ -51,6 +52,7 @@ export default function Header({ title = "HKTB", url = "/blogs" }) {
       <div className={styles["header--wrap"]}>
         <div className={styles["header__logo"]}>
           <Link href={url}>{title}</Link>
+          {/* <Image src="/blogs/pokologo.svg" width="50" height="50"></Image> */}
         </div>
         <div className={styles["header__menu"]}>
           <Menu>

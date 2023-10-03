@@ -13,6 +13,8 @@ import CubeArticle from "@/components/atomic/CubeArticle";
 import { convertDateStringToDate } from "@/libs/core";
 import { formatDateDot } from "@/libs/core";
 import Meta from "@/components/Meta";
+import HeadGroup from "@/components/Seo";
+import Seo from "@/components/Seo";
 
 const article = [
   { title: "aaaaa", link: "harekyon.com", thumbnail: "/example_thumbnail.png" },
@@ -39,12 +41,12 @@ export default function Home({ blogs }) {
   }, []);
   return (
     <>
-      <Meta
-        ogTitle={`TOP`}
-        ogDescription="くりえいしょん"
-        ogKeywords="web,3d,js,react,next,threejs,blender,デジタルファブリケーション,fab"
-        ogUrl={`https://harekyon.com/`}
-      ></Meta>
+      <Seo
+        title="TOP"
+        description="くりえいしょん"
+        keywords="web,3d,js,react,next,threejs,blender,デジタルファブリケーション,fab"
+        url="https://harekyon.com/"
+      />
       <title>{`HKDC`}</title>
       <main className={styles["main"]}>
         <div id="main--wrap" className={styles["main--wrap"]}>
