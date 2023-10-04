@@ -12,21 +12,7 @@ export default function Document() {
         // background: black;
       `}
     >
-      <Link
-        rel="stylesheet"
-        href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/grayscale.min.css"
-      />
-      <link rel="stylesheet" href="https://use.typekit.net/ewv3fqu.css" />
-      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-      <link
-        href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;200;300;400;500;600;700;800;900&display=swap"
-        rel="stylesheet"
-      />
-
-      <Head />
-      <script
+      <Script
         dangerouslySetInnerHTML={{
           __html: `
             (function(d) {
@@ -40,6 +26,20 @@ export default function Document() {
             `,
         }}
       />
+      <Head>
+        <link
+          rel="stylesheet"
+          href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/grayscale.min.css"
+        />
+        <link rel="stylesheet" href="https://use.typekit.net/ewv3fqu.css" />
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;200;300;400;500;600;700;800;900&display=swap"
+          rel="stylesheet"
+        />
+      </Head>
       <body id="body">
         <Main />
         <NextScript />
