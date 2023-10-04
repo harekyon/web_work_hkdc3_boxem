@@ -1,6 +1,6 @@
 import HeadGroup from "@/components/Seo";
 import { css } from "@emotion/react";
-import { Html, Main, NextScript } from "next/document";
+import { Html, Head, Main, NextScript } from "next/document";
 import Link from "next/link";
 import Script from "next/script";
 
@@ -25,6 +25,7 @@ export default function Document() {
         rel="stylesheet"
       />
 
+      <Head />
       <script
         dangerouslySetInnerHTML={{
           __html: `
