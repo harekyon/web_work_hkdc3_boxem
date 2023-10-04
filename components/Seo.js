@@ -20,7 +20,7 @@ export default function Seo({
         rel="stylesheet"
       ></link>
 
-      <title key="title">{title}</title>
+      {/* <title key="title">{title}</title> */}
       <meta name="description" content={description} />
       <meta property="og:site_name" content={title} />
       <meta property="og:title" content={title} />
