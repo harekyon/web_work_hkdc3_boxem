@@ -12,7 +12,7 @@ export default function Document() {
         // background: black;
       `}
     >
-      <Script
+      <script
         dangerouslySetInnerHTML={{
           __html: `
             (function(d) {
@@ -39,6 +39,10 @@ export default function Document() {
           href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;200;300;400;500;600;700;800;900&display=swap"
           rel="stylesheet"
         />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Libre+Barcode+39&display=swap"
+          rel="stylesheet"
+        ></link>
       </Head>
       <body id="body">
         <Main />
