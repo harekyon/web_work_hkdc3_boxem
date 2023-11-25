@@ -28,7 +28,6 @@ import { errorPop } from "@/libs/hp_assets";
 import BlogMainContent from "@/components/atomic/BlogMainContent";
 import Meta from "@/components/Meta";
 import Seo from "@/components/Seo";
-import { useRouter } from "next/router";
 
 // import { errorPop } from "@/libs/hp_assets";
 
@@ -43,12 +42,11 @@ const paginationPerPage = 12;
 const initJotaiTag = atomWithHash(`tag`);
 const initJotaiPage = atomWithHash(`page`);
 
-export default function Blogs({ blogs, categories }) {
+export default function Blogs({ blogs, categories, poppreset }) {
   const [page, setPage] = useState(0);
   const [tag, setTag] = useState(formatTag(null, "All"));
   const [jotaiTag, setJotaiTag] = useAtom(initJotaiTag);
   const [jotaiPage, setJotaiPage] = useAtom(initJotaiPage);
-  const router = useRouter();
   const articleNoneError = useRef(false);
 
   const sliceByNumber = (array, number) => {
@@ -61,6 +59,11 @@ export default function Blogs({ blogs, categories }) {
   const [resultArticleList, setResultArticleList] = useState(
     sliceByNumber(blogs, paginationPerPage)
   );
+  //記事が存在しない場合のエラー
+  useEffect(() => {
+    !(resultArticleList.length > 0) &&
+      errorPop("<span>記事は見つかりませんでした</span>");
+  }, []);
 
   // {id:'f8yknsryw',name:"WEB"}のような形。
   // カテゴリを全て取得し
@@ -69,6 +72,8 @@ export default function Blogs({ blogs, categories }) {
       return { id: c.id, name: c.name };
     })
   );
+  // console.log(jotaiTag);
+  //
   const [listAdmin, setListAdmin] = useState(
     jotaiTag === undefined
       ? {
@@ -81,18 +86,10 @@ export default function Blogs({ blogs, categories }) {
         }
   );
   useEffect(() => {
-    //記事がみつからない場合のエラー
-    !(resultArticleList.length > 0) &&
-      errorPop("<span>記事は見つかりませんでした</span>");
-    //jotaiの初期値設定
     if (jotaiTag === undefined || jotaiPage === undefined) {
       setJotaiTag(`all`);
       setJotaiPage(1);
     }
-    //opacity:0初期値を1にするアニメーション。
-    Array.from(document.getElementsByClassName("cardunit")).forEach((d) => {
-      d.classList.add("articleAppearAnimation");
-    });
   }, []);
 
   useEffect(() => {
@@ -124,11 +121,7 @@ export default function Blogs({ blogs, categories }) {
         articleNoneError.current = false;
       }
     }
-  }, [jotaiPage, jotaiTag]);
-
-  useEffect(() => {
-    console.log(router.query.tag);
-  }, [router.query.tag]);
+  }, [jotaiTag, jotaiPage]);
 
   // accurateArticleList
   // ページやタグ変更時に一瞬だけundefindになる場合があり
@@ -159,6 +152,12 @@ export default function Blogs({ blogs, categories }) {
     );
   };
 
+  //opacity:0初期値を1にするアニメーション。
+  useEffect(() => {
+    Array.from(document.getElementsByClassName("cardunit")).forEach((d) => {
+      d.classList.add("articleAppearAnimation");
+    });
+  }, []);
   //タグ変更時の再描画
   useEffect(() => {
     setPage(0);
@@ -203,6 +202,7 @@ export default function Blogs({ blogs, categories }) {
     if (articleNoneError.current) {
       errorPop("<span>記事は見つかりませんでした。タグ名を確認するのだ</span>");
     }
+    // console.log(sortedArticleList);
   }, [sortedArticleList, resultArticleList]);
 
   return (
