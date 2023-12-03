@@ -25,7 +25,6 @@ export default function Pagination({
           <div
             onClick={() => {
               new Promise((resolve, reject) => {
-                console.log("tagUnit fase0");
                 new Promise((cardAnimResolve) => {
                   props.cardDisappearAnimation(cardAnimResolve);
                 }).then(() => {
@@ -33,7 +32,6 @@ export default function Pagination({
                 });
               }).then(() => {
                 queryFormatter(idx);
-                console.log("tagUnit fase2");
               });
             }}
             data-isactive={page === idx ? "true" : "false"}

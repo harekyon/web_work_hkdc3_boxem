@@ -19,16 +19,15 @@ export default function TagUnit({
     <div
       className={`${styles["tagunit--wrap"]} ${styles["tagunit__wrap"]}`}
       onClick={() => {
-        new Promise((resolve, reject) => {
-          console.log("tagUnit fase0");
+        new Promise((resolve) => {
           new Promise((cardAnimResolve) => {
             props.cardDisappearAnimation(cardAnimResolve);
+            // cardAnimResolve();
           }).then(() => {
             resolve();
           });
         }).then(() => {
           queryFormatter();
-          console.log("tagUnit fase2");
         });
       }}
       data-tag={children}

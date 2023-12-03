@@ -61,7 +61,8 @@ export default function Blogs({ blogs, categories }) {
     tag: "all",
     page: 1,
   });
-  //記事の状態をまとめる
+  const readyArticleList = useRef(blogs);
+  //出力される記事の状態をまとめる
   const [resultArticleList, setResultArticleList] = useState(
     sliceByNumber(blogs, paginationPerPage)
   );
@@ -79,21 +80,6 @@ export default function Blogs({ blogs, categories }) {
       );
     }
   }, []);
-  useEffect(() => {
-    // console.log(Array.from(document.getElementsByClassName("cardunit")));
-    console.log("fase1");
-    new Promise((resolve) => {
-      cardDisappearAnimation(resolve, sortBlogList);
-      console.log("fase2");
-    })
-      .then((sortBlogList) => {
-        sortBlogList();
-      })
-      .then(() => {
-        cardAppearAnimation();
-        console.log("fase3");
-      });
-  }, [router.query.tag, router.query.page]);
   function sortBlogList() {
     let sortedArticleListResult = [];
     switch (router.query.tag) {
@@ -102,19 +88,32 @@ export default function Blogs({ blogs, categories }) {
         break;
       default:
         blogs.map((b) => {
-          if (b.category.id.includes(router.query.tag)) {
+          if (b.category.name.includes(router.query.tag)) {
             sortedArticleListResult.push(b);
           }
         });
         break;
     }
     // setSortedArticleList(sortedArticleListResult);
+    // console.log(`sortedArticleListResult categoryList:${categoryList}`);
+    // console.log(sortedArticleListResult);
+    // console.log(sliceByNumber(sortedArticleListResult, paginationPerPage));
+
     setResultArticleList(
       sliceByNumber(sortedArticleListResult, paginationPerPage)
     );
-    console.log("ringo");
   }
-  function cardDisappearAnimation(resolve, sortBlogList) {
+  useEffect(() => {
+    // console.log(Array.from(document.getElementsByClassName("cardunit")));
+    new Promise((resolve) => {
+      cardDisappearAnimation(resolve);
+    }).then(() => {
+      cardAppearAnimation();
+    });
+  }, [router.query.tag, router.query.page]);
+
+  function cardDisappearAnimation(resolve, reject) {
+    // console.log(Array.from(document.getElementsByClassName("cardunit")).length);
     Array.from(document.getElementsByClassName("cardunit")).forEach(
       (d, idx) => {
         setTimeout(() => {
@@ -123,11 +122,16 @@ export default function Blogs({ blogs, categories }) {
             idx + 1 ===
             Array.from(document.getElementsByClassName("cardunit")).length
           ) {
-            resolve(sortBlogList);
+            sortBlogList();
+            resolve();
           }
         }, 30 * idx);
       }
     );
+    if (Array.from(document.getElementsByClassName("cardunit")).length === 0) {
+      sortBlogList();
+      resolve();
+    }
   }
   function cardAppearAnimation() {
     cardunitDom.current = Array.from(
@@ -137,11 +141,18 @@ export default function Blogs({ blogs, categories }) {
       (c, idx) => {
         setTimeout(() => {
           c.classList.add("articleAppearAnimation");
-        }, 100 * idx);
+        }, 150 * idx);
       }
     );
     beforeCardUnitValue.current = cardunitDom.current.length;
-    if (!(resultArticleList.length > 0)) {
+    console.log(resultArticleList.length);
+    let counter = 0;
+    blogs.map((b) => {
+      if (b.category.name.includes(router.query.tag)) {
+        ++counter;
+      }
+    });
+    if (!(counter > 0)) {
       articleNoneError.current = true;
     } else {
       articleNoneError.current = false;
