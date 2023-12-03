@@ -37,162 +37,109 @@ const breadcrumb = [
   { name: "BLOG", href: "/blogs" },
 ];
 
-const cardunitTransitionDelayDiff = 50;
-const paginationPerPage = 12;
-
-const initJotaiTag = atomWithHash(`tag`);
-const initJotaiPage = atomWithHash(`page`);
-
 export default function Blogs({ blogs, categories }) {
-  const [page, setPage] = useState(0);
-  const [tag, setTag] = useState(formatTag(null, "All"));
-  const [jotaiTag, setJotaiTag] = useAtom(initJotaiTag);
-  const [jotaiPage, setJotaiPage] = useAtom(initJotaiPage);
-  const router = useRouter();
-  const articleNoneError = useRef(false);
-
+  const paginationPerPage = 4;
   const sliceByNumber = (array, number) => {
     const length = Math.ceil(array.length / number);
     return new Array(length)
       .fill()
       .map((_, i) => array.slice(i * number, (i + 1) * number));
   };
-  const [sortedArticleList, setSortedArticleList] = useState(blogs);
-  const [resultArticleList, setResultArticleList] = useState(
-    sliceByNumber(blogs, paginationPerPage)
-  );
-
-  // {id:'f8yknsryw',name:"WEB"}のような形。
-  // カテゴリを全て取得し
+  const router = useRouter();
+  //ページ専用のステート
+  const [page, setPage] = useState(0);
+  //タグ専用のステート
+  const [tag, setTag] = useState("all");
+  //カテゴリーのリストを呼び出しておく
   const categoryList = useRef(
     categories.map((c) => {
       return { id: c.id, name: c.name };
     })
   );
-  const [listAdmin, setListAdmin] = useState(
-    jotaiTag === undefined
-      ? {
-          tag: formatTag(null, "All"),
-          page: 1,
-        }
-      : {
-          tag: formatTag(categoryList, jotaiTag),
-          page: /^([1-9]\d*|0)$/.test(jotaiPage) ? jotaiPage : 1,
-        }
+  //タグの状態をまとめる
+  const [paramState, setParamState] = useState({
+    tag: "all",
+    page: 1,
+  });
+  //記事の状態をまとめる
+  const [resultArticleList, setResultArticleList] = useState(
+    sliceByNumber(blogs, paginationPerPage)
   );
-  useEffect(() => {
-    //記事がみつからない場合のエラー
-    !(resultArticleList.length > 0) &&
-      errorPop("<span>記事は見つかりませんでした</span>");
-    //jotaiの初期値設定
-    if (jotaiTag === undefined || jotaiPage === undefined) {
-      setJotaiTag(`all`);
-      setJotaiPage(1);
-    }
-    //opacity:0初期値を1にするアニメーション。
-    Array.from(document.getElementsByClassName("cardunit")).forEach((d) => {
-      d.classList.add("articleAppearAnimation");
-    });
-  }, []);
-
-  useEffect(() => {
-    let categoriesCache = [];
-    if (jotaiTag !== undefined || jotaiPage !== undefined) {
-      categories.map((c) => {
-        categoriesCache.push(c.name.toLowerCase());
-      });
-      categoriesCache.includes(jotaiTag)
-        ? setTag(formatTag(categoryList, jotaiTag))
-        : (() => {
-            setTag(formatTag(null, "All"));
-            setJotaiTag(formatTag(null, "All").id);
-          })();
-
-      setPage(/^([1-9]\d*|0)$/.test(jotaiPage) ? jotaiPage - 1 : 1);
-      //errorPop
-
-      if (
-        !categoriesCache.includes(jotaiTag) &&
-        jotaiTag.toLowerCase() !== "all"
-      ) {
-        errorPop("<span>パラメータの値が正しくありません。</span>");
-      }
-
-      if (!(resultArticleList.length > 0)) {
-        articleNoneError.current = true;
-      } else {
-        articleNoneError.current = false;
-      }
-    }
-  }, [jotaiPage, jotaiTag]);
-
-  useEffect(() => {
-    console.log(router.query.tag);
-  }, [router.query.tag]);
-
-  // accurateArticleList
-  // ページやタグ変更時に一瞬だけundefindになる場合があり
-  // その時何も表示されなくなってレイアウトが一瞬崩れるため
-  // undefined以外の正しい記事情報のみ格納し表示させる
-  const accurateArticleList = useRef();
-
-  const blogList = useRef(blogs);
-
   const cardunitDom = useRef();
   const beforeCardUnitValue = useRef(0);
-  //TODO:カテゴリでソートするようにする
-  const sortBlogList = () => {
+  const articleNoneError = useRef(false);
+  useEffect(() => {
+    // console.log(
+    //   `router.query.tag:${router.query.tag} router.query.page:${router.query.page}`
+    // );
+    if (router.query.tag === undefined || router.query.page === undefined) {
+      router.push({ query: { tag: "All", page: 1 } });
+      console.log(
+        `router.query.tag:${router.query.tag} router.query.page:${router.query.page}`
+      );
+    }
+  }, []);
+  useEffect(() => {
+    // console.log(Array.from(document.getElementsByClassName("cardunit")));
+    console.log("fase1");
+    new Promise((resolve) => {
+      cardDisappearAnimation(resolve, sortBlogList);
+      console.log("fase2");
+    })
+      .then((sortBlogList) => {
+        sortBlogList();
+      })
+      .then(() => {
+        cardAppearAnimation();
+        console.log("fase3");
+      });
+  }, [router.query.tag, router.query.page]);
+  function sortBlogList() {
     let sortedArticleListResult = [];
-    switch (tag.id) {
-      case "all":
-        sortedArticleListResult = blogList.current;
+    switch (router.query.tag) {
+      case "All":
+        sortedArticleListResult = blogs;
+        break;
       default:
-        blogList.current.map((b) => {
-          if (b.category.id.includes(tag.id)) {
+        blogs.map((b) => {
+          if (b.category.id.includes(router.query.tag)) {
             sortedArticleListResult.push(b);
           }
         });
+        break;
     }
-    setSortedArticleList(sortedArticleListResult);
+    // setSortedArticleList(sortedArticleListResult);
     setResultArticleList(
       sliceByNumber(sortedArticleListResult, paginationPerPage)
     );
-  };
-
-  //タグ変更時の再描画
-  useEffect(() => {
-    setPage(0);
-  }, [jotaiTag]);
-  useEffect(() => {
-    //DOM情報を更新する
+    console.log("ringo");
+  }
+  function cardDisappearAnimation(resolve, sortBlogList) {
+    Array.from(document.getElementsByClassName("cardunit")).forEach(
+      (d, idx) => {
+        setTimeout(() => {
+          d.classList.remove("articleAppearAnimation");
+          if (
+            idx + 1 ===
+            Array.from(document.getElementsByClassName("cardunit")).length
+          ) {
+            resolve(sortBlogList);
+          }
+        }, 30 * idx);
+      }
+    );
+  }
+  function cardAppearAnimation() {
     cardunitDom.current = Array.from(
       document.getElementsByClassName("cardunit")
     );
-    //cardunitを消してからソートを開始する
-    new Promise((resolveCompleteAnim) => {
-      Array.from(document.getElementsByClassName("cardunit")).forEach(
-        (c, idx) => {
-          c.classList.remove("articleAppearAnimation");
-        }
-      );
-      setTimeout(() => {
-        sortBlogList();
-        resolveCompleteAnim();
-      }, cardunitTransitionDelayDiff * cardunitDom.current.length);
-    }).then(() => {
-      setListAdmin({ page: page, tag: tag });
-    });
-  }, [page, tag]);
-  //cardunitのDOM情報を更新し見える状態にするクラスを付与
-  useEffect(() => {
-    cardunitDom.current = Array.from(
-      document.getElementsByClassName("cardunit")
+    Array.from(document.getElementsByClassName("cardunit")).forEach(
+      (c, idx) => {
+        setTimeout(() => {
+          c.classList.add("articleAppearAnimation");
+        }, 100 * idx);
+      }
     );
-    setTimeout(() => {
-      Array.from(document.getElementsByClassName("cardunit")).forEach((c) => {
-        c.classList.add("articleAppearAnimation");
-      });
-    }, cardunitTransitionDelayDiff * (beforeCardUnitValue.current - 1));
     beforeCardUnitValue.current = cardunitDom.current.length;
     if (!(resultArticleList.length > 0)) {
       articleNoneError.current = true;
@@ -203,8 +150,7 @@ export default function Blogs({ blogs, categories }) {
     if (articleNoneError.current) {
       errorPop("<span>記事は見つかりませんでした。タグ名を確認するのだ</span>");
     }
-  }, [sortedArticleList, resultArticleList]);
-
+  }
   return (
     <>
       <Seo
@@ -219,74 +165,83 @@ export default function Blogs({ blogs, categories }) {
           <SectionTitle>BLOG LIST</SectionTitle>
           <BlogMainContent>
             <Breadcrumb breadcrumb={breadcrumb}></Breadcrumb>
-            <TagList tag={listAdmin.tag}>
+            <TagList>
               <TagUnit
-                tag={listAdmin.tag}
-                setTag={setTag}
-                setPage={setPage}
-                setJotaiTag={setJotaiTag}
-                setJotaiPage={setJotaiPage}
-                inputId="All"
+                cardDisappearAnimation={cardDisappearAnimation}
+                cardAppearAnimation={cardAppearAnimation}
+                tag={paramState.tag}
+                name="All"
               >
                 All
               </TagUnit>
 
               {categoryList.current.map((c, idx) => {
+                // console.log(paramState.tag);
                 return (
                   <TagUnit
+                    cardDisappearAnimation={cardDisappearAnimation}
                     categoryList={categoryList}
                     key={idx}
-                    tag={listAdmin.tag}
-                    setTag={setTag}
-                    setPage={setTag}
-                    setJotaiTag={setJotaiTag}
-                    setJotaiPage={setJotaiPage}
-                    inputId={c.name}
+                    tag={paramState.tag}
+                    router={router}
+                    name={c.name}
                   >
                     {c.name}
                   </TagUnit>
                 );
               })}
             </TagList>
+            <button
+              onClick={() => {
+                router.push({ query: { page: 1 } });
+              }}
+            >
+              aaa
+            </button>
             <div className={`${styles["main--card-list"]} `}>
               <CardList>
                 {/* divで隠しているこの仕様はソート中の不自然な描画を見せないようにするため */}
-                <div
-                  css={css`
-                    display: none;
-                  `}
-                >
-                  {resultArticleList[listAdmin.page] !== undefined ? (
-                    (accurateArticleList.current = resultArticleList[
-                      listAdmin.page
-                    ].map((b, idx) => {
-                      return (
-                        <CardUnit
-                          key={idx}
-                          id={b.id}
-                          title={b.title}
-                          thumbnail={b.thumbnail.url}
-                          publishedAt={formatDateDot(
-                            convertDateStringToDate(b.createdAt)
-                          )}
-                          category={b.category?.name}
-                          cardunitTransitionDelayDiff={
-                            cardunitTransitionDelayDiff
-                          }
-                          delayAnimValue={idx}
-                        />
-                      );
-                    }))
-                  ) : (
-                    <>run</>
-                  )}
-                </div>
-                {resultArticleList.length > 0
-                  ? accurateArticleList.current
-                  : (() => {
-                      // errorPop("<span>記事は見つかりませんでした</span>");
-                      return <>NOT FOUND m(__)m</>;
-                    })()}
+                {/* <div
+                // css={css`
+                //   display: none;
+                // `}
+                > */}
+                {resultArticleList[router?.query?.page - 1]?.map((b, idx) => {
+                  if (b.thumbnail?.url) {
+                    return (
+                      <CardUnit
+                        key={idx}
+                        id={b.id}
+                        title={b.title}
+                        thumbnail={b.thumbnail.url}
+                        publishedAt={formatDateDot(
+                          convertDateStringToDate(b.createdAt)
+                        )}
+                        category={b.category?.name}
+                        delayAnimValue={idx}
+                      />
+                    );
+                  } else {
+                    console.log("else");
+                    return (
+                      <CardUnit
+                        key={idx}
+                        id={b.id}
+                        title={b.title}
+                        thumbnail={b.thumbnail?.url}
+                        publishedAt={formatDateDot(
+                          convertDateStringToDate(b.createdAt)
+                        )}
+                        category={b.category?.name}
+                        // cardunitTransitionDelayDiff={
+                        //   cardunitTransitionDelayDiff
+                        // }
+                        delayAnimValue={idx}
+                      />
+                    );
+                  }
+                })}
+                {/* </div> */}
               </CardList>
             </div>
             <Pagination
@@ -294,7 +249,8 @@ export default function Blogs({ blogs, categories }) {
               paginationPerPage={paginationPerPage}
               page={page}
               setPage={setPage}
-              setJotaiPage={setJotaiPage}
+              cardDisappearAnimation={cardDisappearAnimation}
+              cardAppearAnimation={cardAppearAnimation}
             ></Pagination>
             <div className={styles["main--side"]}></div>
           </BlogMainContent>

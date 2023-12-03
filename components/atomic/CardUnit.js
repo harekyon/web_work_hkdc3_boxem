@@ -16,7 +16,7 @@ export default function CardUnit({
     <article
       className={`${styles["card-unit--wrap"]} cardunit`}
       css={css`
-        transition-delay: ${cardunitTransitionDelayDiff * delayAnimValue}ms;
+        transition-delay: ${delayAnimValue}ms;
       `}
     >
       <a href={`./${id}`} className={styles["card-unit--flex-container"]}>
