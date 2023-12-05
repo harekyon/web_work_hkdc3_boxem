@@ -74,24 +74,26 @@ export default function Blogs({ blogs, categories }) {
     //   `router.query.tag:${router.query.tag} router.query.page:${router.query.page}`
     // );
     if (router.query.tag === undefined || router.query.page === undefined) {
-      router.push({ query: { tag: "All", page: 1 } });
+      router.replace({ query: { tag: "All", page: 1 } });
       console.log(
         `router.query.tag:${router.query.tag} router.query.page:${router.query.page}`
       );
     }
   }, []);
-  function sortBlogList() {
+  function sortBlogList(sortBlogListResolve, tagName) {
     let sortedArticleListResult = [];
-    switch (router.query.tag) {
+    console.log(tagName);
+    switch (tagName) {
       case "All":
         sortedArticleListResult = blogs;
         break;
       default:
         blogs.map((b) => {
-          if (b.category.name.includes(router.query.tag)) {
+          if (b.category.name.includes(tagName)) {
             sortedArticleListResult.push(b);
           }
         });
+
         break;
     }
     // setSortedArticleList(sortedArticleListResult);
@@ -102,14 +104,18 @@ export default function Blogs({ blogs, categories }) {
     setResultArticleList(
       sliceByNumber(sortedArticleListResult, paginationPerPage)
     );
+    console.log(sliceByNumber(sortedArticleListResult, paginationPerPage));
+    sortBlogListResolve(
+      sliceByNumber(sortedArticleListResult, paginationPerPage)
+    );
   }
   useEffect(() => {
-    // console.log(Array.from(document.getElementsByClassName("cardunit")));
-    new Promise((resolve) => {
-      cardDisappearAnimation(resolve);
-    }).then(() => {
-      cardAppearAnimation();
-    });
+    // new Promise((resolve) => {
+    //   cardDisappearAnimation(resolve);
+    // }).then(() => {
+    //   cardAppearAnimation();
+    // });
+    cardAppearAnimation(resultArticleList);
   }, [router.query.tag, router.query.page]);
 
   function cardDisappearAnimation(resolve, reject) {
@@ -122,33 +128,33 @@ export default function Blogs({ blogs, categories }) {
             idx + 1 ===
             Array.from(document.getElementsByClassName("cardunit")).length
           ) {
-            sortBlogList();
             resolve();
           }
-        }, 30 * idx);
+        }, 100 * idx);
       }
     );
     if (Array.from(document.getElementsByClassName("cardunit")).length === 0) {
-      sortBlogList();
       resolve();
     }
   }
-  function cardAppearAnimation() {
+  function cardAppearAnimation(result) {
     cardunitDom.current = Array.from(
       document.getElementsByClassName("cardunit")
     );
+    console.log(cardunitDom.current);
     Array.from(document.getElementsByClassName("cardunit")).forEach(
       (c, idx) => {
+        console.log(idx);
         setTimeout(() => {
           c.classList.add("articleAppearAnimation");
         }, 150 * idx);
       }
     );
     beforeCardUnitValue.current = cardunitDom.current.length;
-    console.log(resultArticleList.length);
+    // console.log(resultArticleList.length);
     let counter = 0;
     blogs.map((b) => {
-      if (b.category.name.includes(router.query.tag)) {
+      if (b.category.name.includes(result.tag)) {
         ++counter;
       }
     });
@@ -180,7 +186,10 @@ export default function Blogs({ blogs, categories }) {
               <TagUnit
                 cardDisappearAnimation={cardDisappearAnimation}
                 cardAppearAnimation={cardAppearAnimation}
-                tag={paramState.tag}
+                sortBlogList={sortBlogList}
+                setResultArticleList={setResultArticleList}
+                tag={router.query.tag}
+                router={router}
                 name="All"
               >
                 All
@@ -191,9 +200,12 @@ export default function Blogs({ blogs, categories }) {
                 return (
                   <TagUnit
                     cardDisappearAnimation={cardDisappearAnimation}
+                    cardAppearAnimation={cardAppearAnimation}
+                    sortBlogList={sortBlogList}
+                    setResultArticleList={setResultArticleList}
                     categoryList={categoryList}
                     key={idx}
-                    tag={paramState.tag}
+                    tag={router.query.tag}
                     router={router}
                     name={c.name}
                   >
