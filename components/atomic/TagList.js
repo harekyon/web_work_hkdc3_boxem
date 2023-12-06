@@ -5,9 +5,9 @@ export default function TagList({ children }) {
   return (
     <div className={styles["taglist--wrap"]}>
       {children}
-      <div
+      {/* <div
         className={`${styles["taglist--unit"]} ${styles["taglist--unit__title"]}`}
-      ></div>
+      ></div> */}
     </div>
   );
 }

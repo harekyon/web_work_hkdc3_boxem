@@ -38,7 +38,7 @@ const breadcrumb = [
 ];
 
 export default function Blogs({ blogs, categories }) {
-  const paginationPerPage = 4;
+  const paginationPerPage = 6;
   const sliceByNumber = (array, number) => {
     const length = Math.ceil(array.length / number);
     return new Array(length)
@@ -109,6 +109,15 @@ export default function Blogs({ blogs, categories }) {
       sliceByNumber(sortedArticleListResult, paginationPerPage)
     );
   }
+  // useEffect(() => {
+  //   // new Promise((resolve) => {
+  //   //   cardDisappearAnimation(resolve);
+  //   // }).then(() => {
+  //   //   cardAppearAnimation();
+  //   // });
+  //   cardAppearAnimation(resultArticleList);
+  // }, [router.query.tag, router.query.page]);
+
   useEffect(() => {
     // new Promise((resolve) => {
     //   cardDisappearAnimation(resolve);
@@ -128,9 +137,11 @@ export default function Blogs({ blogs, categories }) {
             idx + 1 ===
             Array.from(document.getElementsByClassName("cardunit")).length
           ) {
-            resolve();
+            setTimeout(() => {
+              resolve();
+            }, 200);
           }
-        }, 100 * idx);
+        }, 90 * idx);
       }
     );
     if (Array.from(document.getElementsByClassName("cardunit")).length === 0) {
@@ -141,10 +152,8 @@ export default function Blogs({ blogs, categories }) {
     cardunitDom.current = Array.from(
       document.getElementsByClassName("cardunit")
     );
-    console.log(cardunitDom.current);
     Array.from(document.getElementsByClassName("cardunit")).forEach(
       (c, idx) => {
-        console.log(idx);
         setTimeout(() => {
           c.classList.add("articleAppearAnimation");
         }, 150 * idx);
@@ -164,8 +173,8 @@ export default function Blogs({ blogs, categories }) {
       articleNoneError.current = false;
     }
     // console.log(articleNoneError.current);
-    if (articleNoneError.current) {
-      errorPop("<span>記事は見つかりませんでした。タグ名を確認するのだ</span>");
+    if (articleNoneError.current && resultArticleList.length === 0) {
+      errorPop("<span>記事は見つかりませんでした</span>");
     }
   }
   return (
@@ -214,13 +223,7 @@ export default function Blogs({ blogs, categories }) {
                 );
               })}
             </TagList>
-            <button
-              onClick={() => {
-                router.push({ query: { page: 1 } });
-              }}
-            >
-              aaa
-            </button>
+
             <div className={`${styles["main--card-list"]} `}>
               <CardList>
                 {/* divで隠しているこの仕様はソート中の不自然な描画を見せないようにするため */}

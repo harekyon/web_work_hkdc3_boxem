@@ -12,11 +12,9 @@ export default function SidePanelProfile() {
       <div className={styles["panel-profile__img"]}>
         <img src="/mycat.jpg" />
       </div>
-      <span className={styles["panel-profile__job"]}>作り屋</span>
+      <span className={styles["panel-profile__job"]}></span>
       <span className={styles["panel-profile__name"]}>harekyon</span>
-      <span className={styles["panel-profile__prof"]}>
-        フロントエンジニア(22年～)
-      </span>
+      <span className={styles["panel-profile__prof"]}>ねこと音楽</span>
       <span className={styles["panel-profile__prof"]}></span>
     </div>
   );
