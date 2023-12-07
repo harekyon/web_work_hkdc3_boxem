@@ -4,8 +4,6 @@ import { useEffect, useRef } from "react";
 import { css } from "@emotion/react";
 import { useRouter } from "next/router";
 export default function Pagination({
-  page,
-  setPage,
   setJotaiPage,
   resultArticleList,
   ...props

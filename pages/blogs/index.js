@@ -38,7 +38,7 @@ const breadcrumb = [
 ];
 
 export default function Blogs({ blogs, categories }) {
-  const paginationPerPage = 6;
+  const paginationPerPage = 3;
   const sliceByNumber = (array, number) => {
     const length = Math.ceil(array.length / number);
     return new Array(length)
@@ -46,22 +46,14 @@ export default function Blogs({ blogs, categories }) {
       .map((_, i) => array.slice(i * number, (i + 1) * number));
   };
   const router = useRouter();
-  //ページ専用のステート
-  const [page, setPage] = useState(0);
-  //タグ専用のステート
-  const [tag, setTag] = useState("all");
+  const query = router.query;
   //カテゴリーのリストを呼び出しておく
   const categoryList = useRef(
     categories.map((c) => {
       return { id: c.id, name: c.name };
     })
   );
-  //タグの状態をまとめる
-  const [paramState, setParamState] = useState({
-    tag: "all",
-    page: 1,
-  });
-  const readyArticleList = useRef(blogs);
+
   //出力される記事の状態をまとめる
   const [resultArticleList, setResultArticleList] = useState(
     sliceByNumber(blogs, paginationPerPage)
@@ -69,17 +61,75 @@ export default function Blogs({ blogs, categories }) {
   const cardunitDom = useRef();
   const beforeCardUnitValue = useRef(0);
   const articleNoneError = useRef(false);
+
   useEffect(() => {
-    // console.log(
-    //   `router.query.tag:${router.query.tag} router.query.page:${router.query.page}`
-    // );
-    if (router.query.tag === undefined || router.query.page === undefined) {
-      router.replace({ query: { tag: "All", page: 1 } });
-      console.log(
-        `router.query.tag:${router.query.tag} router.query.page:${router.query.page}`
-      );
+    if (router.isReady) {
+      if (Object.keys(query).length === 0) {
+        //   //初期値
+        router.replace({ query: { tag: "All", page: 1 } });
+      } else {
+        new Promise((resolve, reject) => {
+          checkKey(resolve, reject);
+        })
+          .then(() => {})
+          .catch(() => {
+            if (resultArticleList.length === 0) {
+              errorPop("<span>このカテゴリの記事はありません</span>");
+              new Promise((resolve) => {
+                sortBlogList(resolve, "All");
+              }).then(() => {
+                router.push({ query: { tag: "All", page: 1 } });
+              });
+              return;
+            } else if (resultArticleList.length < query.page) {
+              errorPop(
+                `<span>無効なパラメータです(${query.tag}カテゴリは${resultArticleList.length}が最大です)</span>`
+              );
+              router.replace({ query: { tag: query.tag, page: 1 } });
+            }
+            if (query.page !== undefined && query.page.match(/[^0-9]/)) {
+              errorPop(
+                "<span>無効なパラメータです(数字以外が使われている)</span>"
+              );
+              router.replace({ query: { tag: query.tag, page: 1 } });
+            }
+
+            let tagNameInvalid = true;
+            categoryList.current.map((c) => {
+              c.name.toLowerCase() === query.tag.toLowerCase() &&
+                (tagNameInvalid = false);
+            });
+            query.tag.toLowerCase() === "all" && (tagNameInvalid = false);
+            if (tagNameInvalid) {
+              errorPop(`<span>カテゴリ "${query.tag}" は存在しません</span>`);
+              router.replace({ query: { tag: "All", page: 1 } });
+            }
+          });
+      }
+      function checkKey(resolve, reject) {
+        let correctKeyResult = { tag: false, page: false };
+        const checkTargetKeyArray = ["tag", "page"];
+        Object.keys(query).map((key) => {
+          if (checkTargetKeyArray.includes(key)) {
+            correctKeyResult[key] = true;
+          }
+        });
+        let formatKeyBool = Object.values(correctKeyResult);
+        console.log(checkTargetKeyArray);
+        let invalidResult = false;
+        formatKeyBool.map((m) => {
+          if (m === false) {
+            errorPop("<span>無効なパラメータです</span>");
+            router.replace({ query: { tag: "All", page: 1 } });
+            invalidResult = true;
+            return;
+          }
+        });
+        invalidResult ? resolve() : reject();
+      }
     }
-  }, []);
+  }, [router, query]);
+
   function sortBlogList(sortBlogListResolve, tagName) {
     let sortedArticleListResult = [];
     console.log(tagName);
@@ -93,18 +143,12 @@ export default function Blogs({ blogs, categories }) {
             sortedArticleListResult.push(b);
           }
         });
-
         break;
     }
-    // setSortedArticleList(sortedArticleListResult);
-    // console.log(`sortedArticleListResult categoryList:${categoryList}`);
-    // console.log(sortedArticleListResult);
-    // console.log(sliceByNumber(sortedArticleListResult, paginationPerPage));
 
     setResultArticleList(
       sliceByNumber(sortedArticleListResult, paginationPerPage)
     );
-    console.log(sliceByNumber(sortedArticleListResult, paginationPerPage));
     sortBlogListResolve(
       sliceByNumber(sortedArticleListResult, paginationPerPage)
     );
@@ -124,6 +168,9 @@ export default function Blogs({ blogs, categories }) {
     // }).then(() => {
     //   cardAppearAnimation();
     // });
+    console.log(
+      `router.query.tag:${router.query.tag} router.query.page:${router.query.page}`
+    );
     cardAppearAnimation(resultArticleList);
   }, [router.query.tag, router.query.page]);
 
@@ -139,9 +186,9 @@ export default function Blogs({ blogs, categories }) {
           ) {
             setTimeout(() => {
               resolve();
-            }, 200);
+            }, 150);
           }
-        }, 90 * idx);
+        }, 80 * idx);
       }
     );
     if (Array.from(document.getElementsByClassName("cardunit")).length === 0) {
@@ -173,9 +220,9 @@ export default function Blogs({ blogs, categories }) {
       articleNoneError.current = false;
     }
     // console.log(articleNoneError.current);
-    if (articleNoneError.current && resultArticleList.length === 0) {
-      errorPop("<span>記事は見つかりませんでした</span>");
-    }
+    // if (articleNoneError.current && resultArticleList.length === 0) {
+    //   errorPop("<span>記事は見つかりませんでした</span>");
+    // }
   }
   return (
     <>
@@ -273,8 +320,6 @@ export default function Blogs({ blogs, categories }) {
             <Pagination
               resultArticleList={resultArticleList}
               paginationPerPage={paginationPerPage}
-              page={page}
-              setPage={setPage}
               cardDisappearAnimation={cardDisappearAnimation}
               cardAppearAnimation={cardAppearAnimation}
             ></Pagination>
