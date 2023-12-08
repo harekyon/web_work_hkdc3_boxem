@@ -38,8 +38,6 @@ const getPresetKeyArray = (preset) => {
   return Object.keys(preset);
 };
 const popPresetKeyArray = getPresetKeyArray(popPreset);
-// let stringData = "";
-// let preChildArray = [];
 export default function BlogId({ data, poppreset }) {
   const [originalString, setOriginalString] = useState(data.content);
   const stringData = useRef("");
@@ -92,7 +90,6 @@ export default function BlogId({ data, poppreset }) {
     window.addEventListener("resize", resizeFunc);
 
     function resizeFunc() {
-      // console.log(window.innerWidth);
       const hoverPopUnit = document.getElementsByClassName("hover-pop__unit");
       const hoverPopTarget =
         document.getElementsByClassName("hover-pop__target");
@@ -100,7 +97,6 @@ export default function BlogId({ data, poppreset }) {
         const hoverPopUnitPositionLeft = h.getBoundingClientRect().left;
         const hoverPopTargetPositionLeft =
           hoverPopTarget[idx].getBoundingClientRect().left;
-        // const hoverPopUnitPositionTop = h.getBoundingClientRect().top;
         const hoverPopUnitWidth = h.offsetWidth - 10;
 
         if (idx === 1) {
@@ -120,18 +116,6 @@ export default function BlogId({ data, poppreset }) {
             h.style.right = `unset`;
           }
         }
-        // if (window.innerWidth < hoverPopUnitPositionLeft + hoverPopUnitWidth) {
-        //   // if (idx === 1) console.log("right");
-        //   h.style.left = `unset`;
-        //   h.style.right = `0px`;
-        // } else if (
-        //   window.innerWidth >
-        //   hoverPopUnitPositionLeft + hoverPopUnitWidth
-        // ) {
-        //   // if (idx === 1) console.log("left");
-        //   h.style.left = `0px`;
-        //   h.style.right = `unset`;
-        // }
       });
     }
     //preの中にcodeを入れなおす。
@@ -158,19 +142,7 @@ export default function BlogId({ data, poppreset }) {
         h.style.top = `-${h.offsetHeight}px`;
       });
     }
-    // function adjustPositionTopPop() {
-    //   const hoverPopUnit = document.getElementsByClassName("hover-pop__unit");
-    //   Array.from(hoverPopUnit).map((h) => {
-    //     console.log(h.offsetHeight);
-    //     h.style.top = `-${h.offsetHeight}px`;
-    //   });
-    // }
   }, []);
-
-  // console.log(preChildArray.current);]
-
-  // });
-  // console.log(originalString);
   return (
     <>
       <Seo
@@ -191,18 +163,6 @@ export default function BlogId({ data, poppreset }) {
             <ArticleMain>{originalString}</ArticleMain>
           </SectionMain>
         </FieldMain>
-        {/* <FieldSide>
-          <SectionTitle>PROFILE</SectionTitle>
-          <div
-            css={css`
-              width: 100%;
-              height: 100%;
-              padding: 0 10px 10px;
-            `}
-          >
-            <SidePanelProfile></SidePanelProfile>
-          </div>
-        </FieldSide> */}
       </MainWrap>
       <Footer />
     </>

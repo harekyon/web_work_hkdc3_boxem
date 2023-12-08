@@ -1,28 +1,51 @@
-import { convertDateStringToDate, formatDateDot, formatTag } from "@/libs/core";
 import styles from "./TagUnit.module.scss";
-import { css } from "@emotion/react";
 export default function TagUnit({
-  categoryList = null,
   tag,
-  setTag,
-  setPage,
-  setJotaiTag,
-  setJotaiPage,
-  inputId = null,
+  name = null,
+  router,
   children,
+  ...props
 }) {
-  // if()
-  // console.log(tag.name);
+  function queryFormatter(queryFormatResolve) {
+    // if (router?.query?.page ) {
+    //   router.push({ query: { tag: name, page: 1 } });
+    //   queryFormatResolve();
+    // } else {
+    //   router.push({ query: { tag: name, page: 1 } });
+    //   queryFormatResolve();
+    // }
+    router.push({ query: { tag: name, page: 1 } });
+    queryFormatResolve();
+  }
+
+  function sortTagProcess() {
+    new Promise((resolve) => {
+      new Promise((cardAnimResolve) => {
+        props.cardDisappearAnimation(cardAnimResolve);
+      }).then(() => {
+        resolve();
+      });
+    }).then(() => {
+      new Promise((sortBlogListResolve) => {
+        props.sortBlogList(sortBlogListResolve, name);
+      }).then(() => {
+        new Promise((queryFormatResolve) => {
+          queryFormatter(queryFormatResolve);
+        }).then(() => {});
+      });
+    });
+  }
   return (
     <div
       className={`${styles["tagunit--wrap"]} ${styles["tagunit__wrap"]}`}
       onClick={() => {
-        setJotaiPage(1);
-        setJotaiTag(formatTag(null, inputId).id);
+        sortTagProcess();
       }}
       data-tag={children}
       data-isactive={
-        tag.name.toLowerCase() === children.toLowerCase() ? "true" : "false"
+        router?.query?.tag?.toLowerCase() === children.toLowerCase()
+          ? "true"
+          : "false"
       }
     >
       {children}
